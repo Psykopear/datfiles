@@ -1,0 +1,44 @@
+general {
+  colors = true
+  interval = 4
+  color_good =     '#64a2d9'
+  color_degraded = '#ccdc90'
+  color_bad =      '#e89393'
+}
+
+
+order += "disk /"
+order += "wireless wlp58s0"
+order += "battery 0"
+order += "volume master"
+order += "time"
+
+wireless wlp58s0 {
+  format_up = "W: %quality %ip "
+  format_down = "W: down"
+}
+
+# ethernet em1 {
+#   # sudo setcap cap_net_admin=ep $(which i3status)
+#   format_up = "E: %ip (%speed)"
+#   format_down = "E: down"
+# }
+
+battery 0 {
+  format = "%status %percentage %remaining"
+}
+
+time {
+  format = "%d.%m.%Y %H:%M"
+}
+
+disk "/" {
+  format = "%free"
+}
+
+volume master {
+  format = "♪: %volume"
+  device = "default"
+  mixer = "Master"
+  mixer_idx = 0
+}
