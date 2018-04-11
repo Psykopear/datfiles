@@ -1,2 +1,4 @@
 # Nothing here
 !nvim/.config
+!nvim/*
+!nvim
