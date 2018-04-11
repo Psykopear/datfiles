@@ -32,4 +32,7 @@ This is a (not comprehensive right now) list of packages needed for this configu
 I use a lot of weird forks on AUR, that's not the recommended thing, you should probably stick to
 packages maintained by the arch developers when possible.
 
-volnoti sxhkd i3-gaps-next-git i3blocks-gaps-git pamixer playerctl feh i3lock-fancy-dualmonitors-git rofi compton stow urxvt
+## Repos
+sxhkd pamixer playerctl feh rofi compton stow rxvt-unicode xorg xorg-xinit base-devel git
+## AUR
+libinput-gestures volnoti i3-gaps-next-git i3blocks-gaps-git i3lock-fancy-dualmonitors-git
