@@ -1,0 +1,58 @@
+icons = "awesome"
+
+[theme]
+name = "solarized-dark"
+[theme.overrides]
+idle_bg = "#263238"
+idle_fg = "#CDD3DE"
+info_bg = "#80CBC4"
+info_fg = "#263238"
+good_bg = "#8BD649"
+good_fg = "#263238"
+warning_bg = "#FFCC00"
+warning_fg = "#263238"
+critical_bg = "#EC5F67"
+critical_fg = "#263238"
+
+# [[block]]
+# block = "net"
+# device = "wlp58s0"
+# speed_up = true
+# graph_up = false
+# interval = 1
+
+[[block]]
+block = "focused_window"
+max_width = 41
+
+[[block]]
+block = "cpu"
+interval = 1
+
+
+[[block]]
+block = "memory"
+display_type = "memory"
+format_mem = "{Mug}GB / {MTg}GB"
+format_swap = "{SFm}MB"
+
+[[block]]
+block = "battery"
+
+[[block]]
+block = "disk_space"
+path = "/"
+alias = "/"
+info_type = "available"
+unit = "GB"
+interval = 20
+
+[[block]]
+block = "sound"
+on_click = "pavucontrol"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%a %d/%m %R"
+on_click = "orage"

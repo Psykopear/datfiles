@@ -26,10 +26,11 @@ export ARCHFLAGS="-arch x86_64 -j5"
 
 # Aliases
 alias delete-pyc='find -name "*.pyc" -delete'
-alias s='yaourt -Ss'
-alias i='yaourt -S'
-alias u='yaourt -Syu --aur'
-alias r='yaourt -R'
+alias s='pikaur -Ss'
+alias i='pikaur -S'
+alias u='pikaur -Syu'
+alias udevel='pikaur -Syu --devel --needed --keepbuild'
+alias r='pikaur -R'
 alias j='jump'
 alias m='mark'
 alias ms='marks'
@@ -51,6 +52,12 @@ alias cpuser='lpass show --username -c'
 # web services
 alias weather='curl -s wttr.in/perugia | head -7'
 alias weatherforecast='curl -s wttr.in/perugia | head -37 | tail -30'
+
+# alias yarn
+alias yltub='yarn lint && yarn test -u && yarn build'
+
+# trying exa
+alias ls='exa'
 
 # extract archives
 function extract()
@@ -117,3 +124,9 @@ export DISABLE_AUTO_TITLE='true'
 
 # Lastpass passwd timeout
 export LPASS_AGENT_TIMEOUT=28800
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc'; fi

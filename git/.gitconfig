@@ -8,7 +8,8 @@
   st = status
   sd = !git status -s --branch && git diff
   br = branch
-  lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(yellow)- %an%C(reset)%C(auto)%d%C(reset)%n"        "%C(white)%s%C(reset)' --all
+  lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(yellow)- %an%C(reset)%C(auto)%d%C(reset)%n"        "%C(white)%<(100,trunc)%s%C(reset)' --all
+  serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 
 [color]
   ui = true
@@ -17,5 +18,22 @@
   default = simple
 
 [core]
-  pager = diff-so-fancy | less --tabs=4 -RFX
-  excludesfile = ~/.gitignore_global
+  pager = diff-so-fancy | less --tabs=4 -RFX #--pattern '^(Date|added|deleted|modified|): '
+  excludesfile = /home/docler/.gitignore_global
+
+[rerere]
+  enabled = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse

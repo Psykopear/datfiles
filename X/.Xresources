@@ -1,47 +1,54 @@
-!------------------------------------------------
 ! URxvt General config
 !------------------------------------------------
 URxvt*iconFile: /usr/share/icons/Numix-Circle/48/apps/terminal.svg
 URxvt.geometry: 80x22
-! Fonts
-URxvt*font: xft:OperatorMono Nerd Font:pixelsize=17
+
+! URxvt Fonts
+URxvt*font: xft:OperatorMono Nerd Font:pixelsize=25:antialias=false
+! URxvt*font: xft:FantasqueSansMono Nerd Font:style=Bold:pixelsize=25
 URxvt*letterSpace: 0
 URxvt*allow_bold: true
+
+! Xft.dpi: 196
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintslight
+Xft.hintstyle: hintfull
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
-! Borders
+
+! URxvt Borders
 URxvt*internalBorder: 0
 URxvt*externalBorder: 0
-! disable the fucking bell
+
+! URxvt Enable link support
+URxvt.perl-ext-common: default,matcher,clipboard,font-size
+
+!disable the fucking bell
 URxvt.insecure: false
-! Copy paste shortcuts
+
+! URxvt Copy paste shortcuts
 URxvt.iso14755: False
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
-! Scrollbar and cursor style
+
+! URxvt Scrollbar and cursor style
 URxvt*saveLines: 300000
 URxvt.scrollBar: false
 URxvt*cursorBlink: true
 URxvt*cursorUnderline: true
-! Dynamic font size
+! URxvt Dynamic font size
 URxvt.keysym.C-Up:     font-size:increase
 URxvt.keysym.C-Down:   font-size:decrease
+
 ! Real transparency
 urxvt*depth: 32
-urxvt*background: [90]#301624
-
-!------------------------------------------------
-! Colors
-!------------------------------------------------
-*background:  #301624
+urxvt*background: [100]#21252E
+*background:  #21252E
 *foreground:  #FFFFFF
-*color0:  #301624
+*color0:  #21252E
 *color1:  #f9aa2a
 *color2:  #A7DD1E
 *color3:  #f9d331
@@ -61,19 +68,36 @@ urxvt*background: [90]#301624
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
+! Enable the extended coloring options
+! rofi.color-enabled: true
+! !                  bg             border   separator
+! rofi.color-window: argb:da2f343f, argb:00000000,  900000,
+! !                  bg             fg       bg-alt   hl-bg    hl-fg
+! rofi.color-normal: argb:00000000, #FFFFFF, 000000, 000000,   #f8ae19
+! rofi.color-active: argb:00000000, #FFFFFF, argb:00000000,   argb:00000000, #f8ae19
+! rofi.color-urgent: #2f343f, #2f343f, #2f343f, #2f343f, #2f343f
+
+! Enable the extended coloring options
 rofi.color-enabled: true
-rofi.color-window: argb:ba2f343f, argb:00000000,  900000,
-rofi.color-normal: argb:00000000, #FFFFFF, 000000, 000000,   #f8ae19
-rofi.color-active: argb:00000000, #FFFFFF, argb:00000000,   argb:00000000, #f8ae19
-rofi.color-urgent: #2f343f, #2f343f, #2f343f, #2f343f, #2f343f
+
+! Property Name     BG       Border   Separator
+rofi.color-window:  #2C393F, #2C393F, #263238
+
+! Property Name     BG       FG       BG-alt   Head-BG  Head-FG
+rofi.color-normal:  #2C393F, #CDD3DE, #2C393F, #2C393F, #FFFFFF
+rofi.color-active:  #2C393F, #89DDFF, #2C393F, #2C393F, #89DDFF
+rofi.color-urgent: #2C393F, #EC5F67, #2C393F, #2C393F, #EC5F67
+
 rofi.separator-style: none
 rofi.sidebar-mode: true
 rofi.bw: 1
 rofi.columns: 1
 rofi.padding: 16
+
 rofi.yoffset: 0
 rofi.fake-transparency: true
 rofi.location: 0
 rofi.width: 900
+/* rofi.font: Ubuntu */
 rofi.lines: 12
 rofi.fixed-num-lines: true

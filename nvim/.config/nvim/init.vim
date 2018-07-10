@@ -7,17 +7,26 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'rbgrouleff/bclose.vim'
 
 " Linter
-"
 Plug 'w0rp/ale'
 
 " Flash line
 Plug 'inside/vim-search-pulse'
 
 " Autocomplete
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
+" Plug 'carlitux/deoplete-ternjs'
+" Plug 'zchee/deoplete-jedi'
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
+Plug 'Valloric/YouCompleteMe'
+
 
 " Searcher
 Plug 'mileszs/ack.vim'
@@ -46,7 +55,7 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-abolish'
 Plug 'luochen1990/rainbow'
 Plug 'stephpy/vim-yaml'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 
 " Colors
@@ -65,7 +74,7 @@ Plug 'kassio/neoterm'
 Plug 'rust-lang/rust.vim'
 
 " Interface
-Plug 'gcavallanti/vim-noscrollbar'
+" Plug 'gcavallanti/vim-noscrollbar'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " Moar fancy icons
@@ -77,8 +86,8 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
 
 " Tidal
-Plug 'munshkr/vim-tidal'
-Plug 'SirVer/ultisnips'
+" Plug 'munshkr/vim-tidal'
+" Plug 'SirVer/ultisnips'
 
 " QML
 Plug 'peterhoeg/vim-qml'
@@ -87,7 +96,7 @@ Plug 'peterhoeg/vim-qml'
 Plug 'jalvesaq/vimcmdline'
 
 " Solidity syntax
-Plug 'tomlion/vim-solidity'
+" Plug 'tomlion/vim-solidity'
 
 " Vim airline again?
 Plug 'vim-airline/vim-airline'
@@ -257,9 +266,53 @@ map <silent> <A-j> <C-W>-
 map <silent> <A-k> <C-W>+
 map <silent> <A-l> <C-w>>
 
-" Gui font
-" autocmd VimEnter * GuiFont! OperatorMono Nerd Font:h12
-" Guifont! "OperatorMono Nerd Font"
+"This function turns Rolodex Vim on or off for the current tab
+"If turning off, it sets all windows to equal height
+function! ToggleRolodexTab()
+    if exists("t:rolodex_tab") > 0
+        unlet t:rolodex_tab
+        call ClearRolodexSettings()
+        execute "normal \<C-W>="
+    else
+        let t:rolodex_tab = 1
+        call SetRolodexSettings()
+    endif
+endfunction
+
+"This function clears the Rolodex Vim settings and restores the previous values
+function! ClearRolodexSettings()
+    "Assume if one exists they all will
+    if exists("g:remember_ea") > 0
+        let &equalalways=g:remember_ea
+        let &winheight=g:remember_wh
+        let &winminheight=g:remember_wmh
+        let &helpheight=g:remember_hh
+        let &winwidth=g:remember_ww
+        let &winminwidth=g:remember_wmw
+    endif
+endfunction
+
+"This function set the Rolodex Vim settings and remembers the previous values for later
+function! SetRolodexSettings()
+    if exists("t:rolodex_tab") > 0
+        let g:remember_ea=&equalalways
+        let g:remember_wh=&winheight
+        let g:remember_wmh=&winminheight
+        let g:remember_hh=&helpheight
+        let g:remember_ww=&winwidth
+        let g:remember_wmw=&winminwidth
+        set noequalalways winminheight=0 winheight=9999 helpheight=9999 winminwidth=0 winwidth=150
+    endif
+endfunction
+
+"These two autocmds make Vim change the settings whenever a new tab is selected
+"We have to use TabLeave to always clear them.  If we try and turn them off
+"in TabEnter, it is too late ( I think, since WinEnter has already been called and triggered the display)
+au TabLeave * call ClearRolodexSettings()
+au TabEnter * call SetRolodexSettings()
+
+"With this mapping, F2 toggles a tab to be Rolodex style
+noremap <F2> :call ToggleRolodexTab()<CR>
 
 """"""""""""""""""
 " Status line
@@ -328,6 +381,7 @@ let g:NERDTreeMapNextHunk = ''
 let g:NERDTreeMapPrevHunk = ''
 let g:NERDTreeStatusline="%3*%{matchstr(b:NERDTreeRoot.path.str(), '\\s\\zs\\w\\(.*\\)')}"
 map <F3> :NERDTreeToggle<CR>
+" map <F3> :call rpcnotify(1, 'Gui', 'Command', 'ToggleSidebar')<CR>
 
 " Python highlights
 let python_highlight_all=1
@@ -347,6 +401,9 @@ nnoremap <silent> ,tl :call neoterm#clear()<cr>
 nnoremap <silent> ,tc :call neoterm#kill()<cr>
 map <F4> :Ttoggle<CR>
 let g:neoterm_keep_term_open = 0
+let g:neoterm_default_mod = 'rightbelow'
+let g:neoterm_size = '10'
+let g:neoterm_autoinsert = 1
 
 " Supercollider
 let g:sclangTerm = "urxvt -e"
@@ -409,16 +466,23 @@ if executable('pyls')
         \ })
 endif
 
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-nmap <leader>d :LspDefinition<CR>
+" Autocomp
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-let g:lsp_async_completion = 1
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_remove_duplicates = 1
+" let g:tern_request_timeout = 1
+" let g:tern_request_timeout = 6000
+" let g:tern#command = ["tern"]
+" let g:tern#arguments = ["--persistent"]
 
-set completeopt+=preview
+let g:ycm_python_binary_path = 'python'
+nnoremap <silent> K :YcmCompleter GetDoc<CR>
+nmap <leader>d :YcmComplete GoTo<CR>
+let g:ycm_auto_trigger = 0
+let g:ycm_min_num_of_chars_for_completion = 2
 
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+" set completeopt-=preview
+" set completeopt+=preview
+" let g:ycm_add_preview_to_completeopt = 0
 
 " folds
 nnoremap <space> za
@@ -439,3 +503,9 @@ autocmd FocusGained * GuiFont! OperatorMono Nerd Font:h12
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
+
+" Testing something
+" syntax on
+" autocmd WinEnter * set syntax=on
+" autocmd WinLeave * set syntax=off
+let g:ale_linters = {'javascript': ['eslint']}
