@@ -4,13 +4,17 @@ super + Return
 
 # program launcher
 super + o
-    rofi -modi combi,drun,run,ssh -combi-modi drun,run,ssh -show combi -padding 10 -seperator-style "none"
+    rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
 # Password manager
 super + shift + o
     gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass --clip
 # Connection manager
 super + alt + o
     exec networkmanager_dmenu
+
+# web search
+super + g
+    exec /home/docler/.local/bin/web-search.sh
 
 # file manager
 super + shift + f
@@ -45,7 +49,7 @@ super + alt + space
 
 # lock screen
 super + alt + l
-    /usr/local/bin/locker
+    i3lock-fancy -g
 
 #### I3 configs #####
 # i3 workspace switch

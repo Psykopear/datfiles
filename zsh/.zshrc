@@ -5,6 +5,8 @@ fpath+=~/.zfunc
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
 export PATH=$PATH:~/.local/bin/
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="half-life"
@@ -22,7 +24,7 @@ export WORKON_HOME=~/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
 
 # Compilation flags
-export ARCHFLAGS="-arch x86_64 -j5"
+export ARCHFLAGS="-arch x86_64 -j13"
 
 # Aliases
 alias delete-pyc='find -name "*.pyc" -delete'
@@ -117,13 +119,19 @@ export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
 export LESS='-R '
 
 # ZSH syntax highlight
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Tmux stuff
 export DISABLE_AUTO_TITLE='true'
 
 # Lastpass passwd timeout
 export LPASS_AGENT_TIMEOUT=28800
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc'; fi

@@ -14,13 +14,6 @@ warning_fg = "#263238"
 critical_bg = "#EC5F67"
 critical_fg = "#263238"
 
-# [[block]]
-# block = "net"
-# device = "wlp58s0"
-# speed_up = true
-# graph_up = false
-# interval = 1
-
 [[block]]
 block = "focused_window"
 max_width = 41
@@ -29,27 +22,18 @@ max_width = 41
 block = "cpu"
 interval = 1
 
+[[block]]
+block = "sound"
+on_click = "pavucontrol"
 
 [[block]]
 block = "memory"
 display_type = "memory"
-format_mem = "{Mug}GB / {MTg}GB"
-format_swap = "{SFm}MB"
+format_mem = "{MAg}GB"
 
 [[block]]
 block = "battery"
 
-[[block]]
-block = "disk_space"
-path = "/"
-alias = "/"
-info_type = "available"
-unit = "GB"
-interval = 20
-
-[[block]]
-block = "sound"
-on_click = "pavucontrol"
 
 [[block]]
 block = "time"

@@ -166,6 +166,7 @@ let g:onedark_color_overrides = {
 \}
 
 colorscheme onedark
+" colorscheme base16-materia
 
 " Esc with jj
 imap jj <Esc>
@@ -497,7 +498,7 @@ let g:startify_custom_indices = ['a','s','d','f']
 autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
 
 " Set gui font on focus (because on enter didn't work)
-autocmd FocusGained * GuiFont! OperatorMono Nerd Font:h12
+" autocmd FocusGained * GuiFont! OperatorMono Nerd Font:h12
 
 " incsearch
 map /  <Plug>(incsearch-forward)
