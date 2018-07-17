@@ -1,13 +1,18 @@
 # terminal emulator, with tmux by default
 super + Return
-	urxvt -e "tmux"
+    urxvt -e tmux
+
+super + p
+    mons -n top
 
 # program launcher
 super + o
     rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
+
 # Password manager
 super + shift + o
     gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass --clip
+
 # Connection manager
 super + alt + o
     exec networkmanager_dmenu
@@ -26,10 +31,10 @@ super + Escape
 
 # volume
 XF86Audio{Raise,Lower}Volume
-    ~/.config/i3/bin/volume.sh {up,down}
+    ~/.local/bin/volume -np -{i,d} 5
 
 XF86AudioMute
-    ~/.config/i3/bin/volume.sh mute
+    ~/.local/bin/volume -np -m
 
 # Audio player
 XF86AudioPlay
@@ -49,7 +54,7 @@ super + alt + space
 
 # lock screen
 super + alt + l
-    i3lock-fancy -g
+    i3lock-next
 
 #### I3 configs #####
 # i3 workspace switch

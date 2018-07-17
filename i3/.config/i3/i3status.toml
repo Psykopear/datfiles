@@ -16,24 +16,16 @@ critical_fg = "#263238"
 
 [[block]]
 block = "focused_window"
-max_width = 41
+max_width = 80
 
 [[block]]
 block = "cpu"
 interval = 1
 
 [[block]]
-block = "sound"
-on_click = "pavucontrol"
-
-[[block]]
 block = "memory"
 display_type = "memory"
 format_mem = "{MAg}GB"
-
-[[block]]
-block = "battery"
-
 
 [[block]]
 block = "time"

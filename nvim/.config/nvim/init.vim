@@ -100,6 +100,7 @@ Plug 'jalvesaq/vimcmdline'
 
 " Vim airline again?
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " And startify again?
 Plug 'mhinz/vim-startify'
@@ -165,8 +166,10 @@ let g:onedark_color_overrides = {
 \ "green": { "gui": "#A7DD1E", "cterm": "114", "cterm16": "2" },
 \}
 
-colorscheme onedark
-" colorscheme base16-materia
+" colorscheme onedark
+let base16colorspace=256
+colorscheme base16-materia
+let g:airline_theme='base16_flat'
 
 " Esc with jj
 imap jj <Esc>

@@ -1,10 +1,25 @@
+! Emacs stuff
+! UI elements
+Emacs.menuBar: 0
+Emacs.toolBar: 0
+Emacs.verticalScrollBars: off
+! Font settings
+Emacs.FontBackend: xft,x
+Emacs*font: OperatorMonoNerdFont-14:horiz=1920:vert=1080:spacing=m
+Emacs.geometry: 100x32
+
 ! URxvt General config
 !------------------------------------------------
 URxvt*iconFile: /usr/share/icons/Numix-Circle/48/apps/terminal.svg
 URxvt.geometry: 80x22
 
 ! URxvt Fonts
-URxvt*font: xft:OperatorMono Nerd Font:pixelsize=25:antialias=true
+URxvt*font: xft:OperatorMonoNerdFontMono:pixelsize=24:antialias=true:style=Medium
+URxvt*italicFont: xft:OperatorMonoNerdFontMono:pixelsize=24:antialias=true:style=Medium\ Italic
+URxvt*boldFont: xft:OperatorMonoNerdFont:pixelsize=24:antialias=true
+! URxvt*font: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true
+! URxvt*font: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true:minspace=False, xft:DejaVu Sans:pixelsize=24
+! URxvt*boldFont: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true:minspace=False, xft:DejaVu Sans:pixelsize=24
 ! URxvt*font: xft:FantasqueSansMono Nerd Font:style=Bold:pixelsize=25
 URxvt*letterSpace: 0
 URxvt*allow_bold: true
@@ -43,27 +58,47 @@ URxvt*cursorUnderline: true
 URxvt.keysym.C-Up:     font-size:increase
 URxvt.keysym.C-Down:   font-size:decrease
 
+
 ! Real transparency
-urxvt*depth: 32
-urxvt*background: [100]#21252E
-*background:  #21252E
+*background:  #263228
 *foreground:  #FFFFFF
-*color0:  #21252E
-*color1:  #f9aa2a
-*color2:  #A7DD1E
-*color3:  #f9d331
-*color4:  #00bbff
-*color5:  #e3308d
-*color6:  #00a8b2
-*color7:  #e2e8ea
-*color8:  #412b3b
-*color9:  #f9b977
-*color10:  #A7DD1E
-*color11:  #f9b22a
-*color12:  #7be6ff
-*color13:  #a72681
-*color14:  #20b8c4
-*color15:  #ffffff
+*color0:  #263228
+*color1:  #2C393F
+*color2:  #37474F
+*color3:  #707880
+*color4:  #C9CCD3
+*color5:  #CDD3DE
+*color6:  #D5DBE5
+*color7:  #FFFFFF
+*color8:  #EC5F67
+*color9:  #EA9560
+*color10:  #FFCC00
+*color11:  #8BD649
+*color12:  #80CBC4
+*color13:  #89DDFF
+*color14:  #82AAFF
+*color15:  #EC5F67
+! Real transparency
+! urxvt*depth: 32
+! urxvt*background: [100]#21252E
+! *background:  #262328
+! *foreground:  #FFFFFF
+! *color0:  #262328
+! *color1:  #f9aa2a
+! *color2:  #A7DD1E
+! *color3:  #f9d331
+! *color4:  #00bbff
+! *color5:  #e3308d
+! *color6:  #00a8b2
+! *color7:  #e2e8ea
+! *color8:  #412b3b
+! *color9:  #f9b977
+! *color10:  #A7DD1E
+! *color11:  #f9b22a
+! *color12:  #7be6ff
+! *color13:  #a72681
+! *color14:  #20b8c4
+! *color15:  #ffffff
 
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme

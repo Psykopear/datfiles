@@ -2,15 +2,21 @@ echo "[3m$(fortune -sa)\n"
 
 fpath+=~/.zfunc
 
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
 export PATH=$PATH:~/.local/bin/
-export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="half-life"
-# ZSH_THEME="pygmalion"
+ZSH_THEME="af-magic"
+#ZSH_THEME="cypher"
 plugins=(git jump)
 
 export EDITOR='nvim'
@@ -46,11 +52,6 @@ alias start='sudo systemctl start'
 alias stop='sudo systemctl stop'
 alias restart='sudo systemctl restart'
 
-# lastpass cli aliases
-alias lspass='lpass ls --color=always | less -r'
-alias cppass='lpass show --password -c'
-alias cpuser='lpass show --username -c'
-
 # web services
 alias weather='curl -s wttr.in/perugia | head -7'
 alias weatherforecast='curl -s wttr.in/perugia | head -37 | tail -30'
@@ -60,6 +61,10 @@ alias yltub='yarn lint && yarn test -u && yarn build'
 
 # trying exa
 alias ls='exa'
+
+# Mouse while typing
+alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 0'
+alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
 # extract archives
 function extract()
@@ -119,7 +124,7 @@ export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
 export LESS='-R '
 
 # ZSH syntax highlight
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # Tmux stuff
 export DISABLE_AUTO_TITLE='true'
@@ -127,11 +132,6 @@ export DISABLE_AUTO_TITLE='true'
 # Lastpass passwd timeout
 export LPASS_AGENT_TIMEOUT=28800
 
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc'; fi

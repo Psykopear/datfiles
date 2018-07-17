@@ -48,7 +48,7 @@
     # Browser for opening urls in context menu.
     browser = /usr/bin/chromium
 
-    icon_position = right
+    icon_position = left
     icon_folders = /usr/share/icons/Paper/32x32@2x/actions/:/usr/share/icons/Paper/32x32@2x/apps/:/usr/share/icons/Paper/32x32@2x/categories/:/usr/share/icons/Paper/32x32@2x/devices/:/usr/share/icons/Paper/32x32@2x/emblems/:/usr/share/icons/Paper/32x32@2x/emotes/:/usr/share/icons/Paper/32x32@2x/mimetypes/:/usr/share/icons/Paper/32x32@2x/places/:/usr/share/icons/Paper/32x32@2x/status/:/usr/share/icons/Paper/32x32@2x/web/
 
 frame_color = "#CDD3DE"

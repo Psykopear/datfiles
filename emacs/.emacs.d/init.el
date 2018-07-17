@@ -1,6 +1,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'load-path "/usr/lib/node_modules/ternjs/emacs/")
+(add-to-list 'load-path "/usr/lib/node_modules/tern/emacs/")
 
 (autoload 'tern-mode "tern.el" nil t)
 
@@ -21,7 +21,7 @@
  '(custom-safe-themes
    (quote
     ("d9dab332207600e49400d798ed05f38372ec32132b3f7d2ba697e59088021555" "eae831de756bb480240479794e85f1da0789c6f2f7746e5cc999370bbc8d9c8a" "0c3b1358ea01895e56d1c0193f72559449462e5952bded28c81a8e09b53f103f" "718fb4e505b6134cc0eafb7dad709be5ec1ba7a7e8102617d87d3109f56d9615" "aded4ec996e438a5e002439d58f09610b330bbc18f580c83ebaba026bbef6c82" "41eb3fe4c6b80c7ad156a8c52e9dd6093e8856c7bbf2b92cc3a4108ceb385087" "cabc32838ccceea97404f6fcb7ce791c6e38491fd19baa0fcfb336dcc5f6e23c" "1d079355c721b517fdc9891f0fda927fe3f87288f2e6cc3b8566655a64ca5453" "36746ad57649893434c443567cb3831828df33232a7790d232df6f5908263692" "7559ac0083d1f08a46f65920303f970898a3d80f05905d01e81d49bb4c7f9e39" "ea9e9f350c019474a5265c08f7441027b23c1da3f23b9c30517d60133bab679f" "196df8815910c1a3422b5f7c1f45a72edfa851f6a1d672b7b727d9551bb7c7ba" "93268bf5365f22c685550a3cbb8c687a1211e827edc76ce7be3c4bd764054bad" default)))
- '(font-use-system-font t)
+ ;; '(font-use-system-font t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
@@ -43,16 +43,25 @@
 (setq make-backup-files nil) ;; No scroll bar
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
-;; (load-theme 'material t)
+
+
 (load-theme 'base16-materia t)
+
+;; (load-theme 'material t)
 ;; (load-theme 'challenger-deep t)
 ;; (load-theme 'base16-railscasts t)
+
 (global-linum-mode 1)
 ;; (setq linum-format "%4d")
 (setq linum-format "%4d\u2502")
-(setq-default left-fringe-width  0)
-(setq-default right-fringe-width  10)
-(setq git-gutter-fr:side 'right-fringe)
+
+;; (setq-default left-fringe-width  0)
+(setq-default left-fringe-width  10)
+;; (setq-default right-fringe-width  10)
+(setq-default right-fringe-width  0)
+;; (setq git-gutter-fr:side 'right-fringe)
+(setq git-gutter-fr:side 'left-fringe)
+
 (setq create-lockfiles nil)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (setq auto-save-default nil)
@@ -137,7 +146,9 @@
 (global-set-key (kbd "M-o") 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
-(set-default-font "OperatorMono Nerd Font 14" nil t)
+;; (set-default-font "OperatorMonoNerd Font 14" nil t)
+;; (set-default-font "OperatorMono Nerd Font Mono 14" nil t)
+
 
 ;; Vertically centered cursors
 (and
@@ -202,10 +213,10 @@
 
 (require 'evil-numbers)
 
-(define-key evil-normal-state-map (kbd "C-s") 'evil-numbers/inc-at-pt)
-(define-key evil-visual-state-map (kbd "C-s") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/dec-at-pt)
-(define-key evil-visual-state-map (kbd "C-a") 'evil-numbers/dec-at-pt)
+(define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+(define-key evil-visual-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-z") 'evil-numbers/dec-at-pt)
+(define-key evil-visual-state-map (kbd "C-z") 'evil-numbers/dec-at-pt)
 
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "--no-autoindent --no-color-info --no-banner --no-confirm-exit  --simple")
@@ -224,3 +235,20 @@
         (indent-for-tab-command)))
     (indent-for-tab-command)))
 (global-set-key (kbd "RET") 'new-line-dwim)
+
+;;; SCLANG
+(add-to-list 'load-path "/usr/share/SuperCollider/Extensions/scide_scel")
+(require 'sclang)
+(require 'nav-flash)
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(require 'hl-line+)
+
+;; Function that flashes current line and sends data to python shell
+(defun flash-send ()
+  (interactive)
+  (elpy-shell-send-statement)
+  (flash-line-highlight))
+
+(define-key evil-visual-state-map (kbd "C-<return>") 'flash-send)
+(define-key evil-normal-state-map (kbd "C-<return>") 'flash-send)
+(define-key evil-insert-state-map (kbd "C-<return>") 'flash-send)
