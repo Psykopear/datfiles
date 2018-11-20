@@ -23,6 +23,10 @@ block = "cpu"
 interval = 1
 
 [[block]]
+block = "sound"
+on_click = "pavucontrol"
+
+[[block]]
 block = "memory"
 display_type = "memory"
 format_mem = "{MAg}GB"

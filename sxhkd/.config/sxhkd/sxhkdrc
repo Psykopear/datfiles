@@ -21,6 +21,10 @@ super + alt + o
 super + g
     exec /home/docler/.local/bin/web-search.sh
 
+# Bookmarks (with boosta)
+super + shift + b
+    exec /home/docler/.local/bin/boosta
+
 # file manager
 super + shift + f
     nautilus
@@ -44,10 +48,6 @@ XF86AudioNext
 XF86AudioPrev
     playerctl previous
 
-# screen brightness
-# XF86MonBrightness{Down,Up}
-#     xbacklight -{dec,inc} 5 -steps 1
-
 # wallpaper
 super + alt + space
     feh --randomize --recursive --bg-fill ~/.wallpapers
@@ -55,11 +55,6 @@ super + alt + space
 # lock screen
 super + alt + l
     i3lock-next
-
-#### I3 configs #####
-# i3 workspace switch
-super + grave
-    ~/scripts/i3_switch_workspace.sh
 
 #
 # bspwm hotkeys

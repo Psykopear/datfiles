@@ -1,7 +1,5 @@
 echo "[3m$(fortune -sa)\n"
 
-fpath+=~/.zfunc
-
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
@@ -17,7 +15,9 @@ export LC_ALL=en_US.UTF-8
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="af-magic"
 #ZSH_THEME="cypher"
-plugins=(git jump)
+plugins=(git jump kubectl)
+
+export BAT_THEME="TwoDark"
 
 export EDITOR='nvim'
 export TERMINAL='urxvt'
@@ -46,11 +46,14 @@ alias porcoddio='sudo $(fc -ln -1)'
 alias cd..='cd ..'
 alias jsonbello='python -m json.tool'
 alias qgit='git'
-
+alias localip='ip -o -4 addr | cut -d " " -f 7 | rg "192.168" | cut -d "/" -f 1'
+alias externalip='dig +short myip.opendns.com @resolver1.opendns.com'
 # Aliases for systemctl
 alias start='sudo systemctl start'
 alias stop='sudo systemctl stop'
 alias restart='sudo systemctl restart'
+# Literal search rg
+alias rgl="rg -F"
 
 # web services
 alias weather='curl -s wttr.in/perugia | head -7'
@@ -89,9 +92,24 @@ function extract()
     fi
 }
 
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+# export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
+export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
+# export FZF_DEFAULT_COMMAND='fd --type f'
+# If current selection is a text file shows its content,
+# if it's a directory shows its content, the rest is ignored
+FZF_CTRL_T_OPTS="--preview-window wrap --preview '
+if [[ -f {} ]]; then
+    file --mime {} | grep -q \"text\/.*;\" && bat --color \"always\" {} || (tput setaf 1; file --mime {})
+elif [[ -d {} ]]; then
+    exa -l --color always {}
+else;
+    tput setaf 1; echo YOU ARE NOT SUPPOSED TO SEE THIS!
+fi'"
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Android paths
 export ANDROID_HOME=/opt/android-sdk

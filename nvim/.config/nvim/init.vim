@@ -13,20 +13,7 @@ Plug 'w0rp/ale'
 Plug 'inside/vim-search-pulse'
 
 " Autocomplete
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install -g tern' }
-" Plug 'carlitux/deoplete-ternjs'
-" Plug 'zchee/deoplete-jedi'
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
 Plug 'Valloric/YouCompleteMe'
-
 
 " Searcher
 Plug 'mileszs/ack.vim'
@@ -84,6 +71,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'leafgarland/typescript-vim'
 
 " Tidal
 " Plug 'munshkr/vim-tidal'
@@ -258,6 +247,7 @@ au FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
 " tab switching map
 nmap <S-Tab> :bprevious!<CR>
 nmap <Tab> :bnext!<CR>
+
 " Close buffer
 noremap <leader>c :Bclose <CR>
 
@@ -513,3 +503,37 @@ map g/ <Plug>(incsearch-stay)
 " autocmd WinEnter * set syntax=on
 " autocmd WinLeave * set syntax=off
 let g:ale_linters = {'javascript': ['eslint']}
+
+" print semicolons
+" Prettier default: true
+let g:prettier#config#semi = 'true'
+
+" single quotes over double quotes
+" Prettier default: false
+let g:prettier#config#single_quote = 'false'
+
+" print spaces between brackets
+" Prettier default: true
+let g:prettier#config#bracket_spacing = 'true'
+
+" put > on the last line instead of new line
+" Prettier default: false
+let g:prettier#config#jsx_bracket_same_line = 'false'
+
+" avoid|always
+" Prettier default: avoid
+let g:prettier#config#arrow_parens = 'avoid'
+
+" none|es5|all
+" Prettier default: none
+let g:prettier#config#trailing_comma = 'none'
+
+" flow|babylon|typescript|css|less|scss|json|graphql|markdown
+" Prettier default: babylon
+let g:prettier#config#parser = 'babylon'
+
+" cli-override|file-override|prefer-file
+let g:prettier#config#config_precedence = 'prefer-file'
+
+" always|never|preserve
+let g:prettier#config#prose_wrap = 'preserve'

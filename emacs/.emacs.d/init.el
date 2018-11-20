@@ -1,6 +1,10 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'load-path "/usr/lib/node_modules/tern/emacs/")
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
+(add-to-list 'load-path "~/.emacs.d/lisp/emacs-application-framework")
+(require 'eaf)
 
 (autoload 'tern-mode "tern.el" nil t)
 
@@ -14,18 +18,22 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
-   ["#1f2022" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#4f97d7" "#a3a3a3"])
+   ["#263238" "#ec5f67" "#8bd649" "#ffcc00" "#89ddff" "#82aaff" "#89ddff" "#cdd3de"])
  '(ansi-term-color-vector
-   [unspecified "#1f2022" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#4f97d7" "#a3a3a3"] t)
+   [unspecified "#263238" "#ec5f67" "#8bd649" "#ffcc00" "#89ddff" "#82aaff" "#89ddff" "#cdd3de"] t)
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
     ("d9dab332207600e49400d798ed05f38372ec32132b3f7d2ba697e59088021555" "eae831de756bb480240479794e85f1da0789c6f2f7746e5cc999370bbc8d9c8a" "0c3b1358ea01895e56d1c0193f72559449462e5952bded28c81a8e09b53f103f" "718fb4e505b6134cc0eafb7dad709be5ec1ba7a7e8102617d87d3109f56d9615" "aded4ec996e438a5e002439d58f09610b330bbc18f580c83ebaba026bbef6c82" "41eb3fe4c6b80c7ad156a8c52e9dd6093e8856c7bbf2b92cc3a4108ceb385087" "cabc32838ccceea97404f6fcb7ce791c6e38491fd19baa0fcfb336dcc5f6e23c" "1d079355c721b517fdc9891f0fda927fe3f87288f2e6cc3b8566655a64ca5453" "36746ad57649893434c443567cb3831828df33232a7790d232df6f5908263692" "7559ac0083d1f08a46f65920303f970898a3d80f05905d01e81d49bb4c7f9e39" "ea9e9f350c019474a5265c08f7441027b23c1da3f23b9c30517d60133bab679f" "196df8815910c1a3422b5f7c1f45a72edfa851f6a1d672b7b727d9551bb7c7ba" "93268bf5365f22c685550a3cbb8c687a1211e827edc76ce7be3c4bd764054bad" default)))
- ;; '(font-use-system-font t)
+ '(elpy-test-runner (quote elpy-test-pytest-runner))
+ '(global-auto-revert-mode t)
  '(inhibit-startup-screen t)
+ '(neo-confirm-create-directory (quote off-p))
+ '(neo-confirm-create-file (quote off-p))
+ '(org-agenda-files (quote ("~/Agenda.org")))
  '(package-selected-packages
    (quote
-    (groovy-mode helm-ag pycoverage highlight-numbers js2-refactor js2-highlight-vars flatui-dark-theme base16-theme challenger-deep-theme evil-magit aggressive-indent ace-window company-jedi pipenv elm-mode elpy evil-numbers ws-butler evil-nerd-commenter avy evil-smartparens highlight-indentation yaml-mode toml-mode gdscript-mode fzf auto-virtualenvwrapper company-tern rg evil-leader material-theme flycheck centered-cursor-mode rainbow-delimiters helm-projectile rjsx-mode dashboard projectile helm key-chord evil neotree)))
+    (realgud docker treemacs-projectile treemacs-evil treemacs evil-magit magit magithub auto-package-update qml-mode csv-mode dockerfile-mode graphql-mode blacken jinja2-mode feature-mode gherkin-mode markdown-mode prettier-js yarn-mode all-the-icons rust-mode writeroom-mode importmagic flow-minor-mode groovy-mode helm-ag pycoverage highlight-numbers js2-refactor js2-highlight-vars flatui-dark-theme base16-theme challenger-deep-theme aggressive-indent ace-window company-jedi pipenv elm-mode elpy evil-numbers ws-butler evil-nerd-commenter avy evil-smartparens highlight-indentation yaml-mode toml-mode gdscript-mode fzf auto-virtualenvwrapper company-tern rg evil-leader material-theme flycheck centered-cursor-mode rainbow-delimiters helm-projectile rjsx-mode dashboard projectile helm key-chord evil neotree)))
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
@@ -46,14 +54,17 @@
 
 
 (load-theme 'base16-materia t)
+(setq base16-distinct-fringe-background nil)
 
 ;; (load-theme 'material t)
 ;; (load-theme 'challenger-deep t)
 ;; (load-theme 'base16-railscasts t)
 
 (global-linum-mode 1)
+(require 'linum-highlight-current-line-number)
 ;; (setq linum-format "%4d")
-(setq linum-format "%4d\u2502")
+; (setq linum-format "%4d\u2502")
+(setq linum-format 'linum-highlight-current-line-number)
 
 ;; (setq-default left-fringe-width  0)
 (setq-default left-fringe-width  10)
@@ -88,27 +99,39 @@
             (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
             (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
             (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
-(setq neo-theme 'nerd)
+(setq neo-theme 'ascii)
 
+(global-set-key (kbd "C-s") 'ace-swap-window)
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-h") 'windmove-left)
 (global-set-key (kbd "C-l") 'windmove-right)
+(global-set-key (kbd "M-k") 'shrink-window)
+(global-set-key (kbd "M-j") 'enlarge-window)
+(global-set-key (kbd "M-h") 'shrink-window-horizontally)
+(global-set-key (kbd "M-l") 'enlarge-window-horizontally)
 
 ;; You need to install fringe-helper.el
 (require 'git-gutter-fringe)
-;; (require 'git-gutter)
 (global-git-gutter-mode 1)
-;; (git-gutter:linum-setup)
+
+;; Function to open config file
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
 
 ; Evil leader
 (require 'evil-leader)
 (global-evil-leader-mode)
 (evil-leader/set-leader ",")
 (evil-leader/set-key
+  "ev" 'find-user-init-file
   "w" 'save-buffer
   "f" 'fzf-git-files
-  "a" 'rg-literal
+  "a" 'rg-dwim
+  "A" 'rg-literal
   "c" 'kill-this-buffer
   "g" 'evilnc-comment-or-uncomment-lines
   "q" 'delete-window
@@ -125,6 +148,14 @@
 ;; File explorer
 (require 'neotree)
 (global-set-key [f3] 'neotree-toggle)
+;; (setq neo-smart-open t)
+;; (setq neo-vc-integration t)
+;; (setq neo-autorefresh t)
+(setq neo-window-width 25)
+(setq neo-window-fixed-size nil)
+;; (global-set-key [f3] 'treemacs)
+;; (treemacs-toggle-fixed-width 0)
+;; (treemacs-resize-icons 18)
 
 ;; Start screen
 ;; (require 'dashboard)
@@ -135,7 +166,8 @@
 
 (require 'helm-projectile)
 (helm-projectile-on)
-(projectile-global-mode 1)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (setq projectile-switch-project-action 'neotree-projectile-action)
 
 ;; Rainbow
@@ -145,10 +177,6 @@
 ;; Ace-window
 (global-set-key (kbd "M-o") 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;; (set-default-font "OperatorMonoNerd Font 14" nil t)
-;; (set-default-font "OperatorMono Nerd Font Mono 14" nil t)
-
 
 ;; Vertically centered cursors
 (and
@@ -164,6 +192,7 @@
 (add-to-list 'company-backends 'company-tern)
 (add-hook 'js2-mode-hook (lambda ()
                            (evil-leader/set-key "d" 'tern-find-definition)
+                           (prettier-js-mode)
                            (company-mode)
                            (evil-smartparens-mode t)
                            (smartparens-mode t)
@@ -177,14 +206,18 @@
 
 
 (add-hook 'elpy-mode-hook (lambda ()
-                            (pipenv-mode t)
                             (evil-smartparens-mode t)
+                            (blacken-mode)
                             (smartparens-mode t)
-                            (pipenv-mode)
                             (evil-leader/set-key "d" 'elpy-goto-definition)))
-;; (add-hook 'python-mode-hook 'jedi:setup)
+(setq elpy-rpc-backend "jedi")
+(add-hook 'python-mode-hook #'pipenv-mode)
 ;; (require 'auto-virtualenvwrapper)
 ;; (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
+
+;; Folding
+(add-hook 'prog-mode-hook
+          (lambda () (hs-minor-mode) (evil-close-folds)))
 
 
 (require 'toml-mode)
@@ -205,7 +238,7 @@
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
-(highlight-indentation-mode t)
+(highlight-indentation-mode 0)
 (global-set-key (kbd "C-;") 'avy-goto-char)
 
 (require 'ws-butler)
@@ -217,6 +250,9 @@
 (define-key evil-visual-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C-z") 'evil-numbers/dec-at-pt)
 (define-key evil-visual-state-map (kbd "C-z") 'evil-numbers/dec-at-pt)
+;; (define-key evil-normal-state-map (kbd "<tab>") 'next-buffer)
+;; (define-key evil-visual-state-map (kbd "<S-tab>") 'previous-buffer)
+
 
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "--no-autoindent --no-color-info --no-banner --no-confirm-exit  --simple")
@@ -240,7 +276,6 @@
 (add-to-list 'load-path "/usr/share/SuperCollider/Extensions/scide_scel")
 (require 'sclang)
 (require 'nav-flash)
-(add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'hl-line+)
 
 ;; Function that flashes current line and sends data to python shell
@@ -252,3 +287,7 @@
 (define-key evil-visual-state-map (kbd "C-<return>") 'flash-send)
 (define-key evil-normal-state-map (kbd "C-<return>") 'flash-send)
 (define-key evil-insert-state-map (kbd "C-<return>") 'flash-send)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))

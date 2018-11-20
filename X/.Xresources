@@ -1,12 +1,27 @@
 ! Emacs stuff
-! UI elements
 Emacs.menuBar: 0
 Emacs.toolBar: 0
 Emacs.verticalScrollBars: off
-! Font settings
 Emacs.FontBackend: xft,x
-Emacs*font: OperatorMonoNerdFont-14:horiz=1920:vert=1080:spacing=m
-Emacs.geometry: 100x32
+! Emacs*font: OperatorMonoNerdFont-14:horiz=1920:vert=1080:spacing=m
+Emacs*font: OperatorMonoNerdFont-13
+Emacs*letterSpace: 0
+Emacs.geometry: 180x40
+
+! Fonts
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+xterm*font: xft:OperatorMonoNerdFontMono:pixelsize=19:antialias=true:style=Medium
+xterm*italicFont: xft:OperatorMonoNerdFontMono:pixelsize=19:antialias=true:style=Medium\ Italic
+xterm*boldFont: xft:OperatorMonoNerdFont:pixelsize=19:antialias=true
+xterm*letterSpace: 0
+xterm*allow_bold: true
+
 
 ! URxvt General config
 !------------------------------------------------
@@ -14,23 +29,12 @@ URxvt*iconFile: /usr/share/icons/Numix-Circle/48/apps/terminal.svg
 URxvt.geometry: 80x22
 
 ! URxvt Fonts
-URxvt*font: xft:OperatorMonoNerdFontMono:pixelsize=24:antialias=true:style=Medium
-URxvt*italicFont: xft:OperatorMonoNerdFontMono:pixelsize=24:antialias=true:style=Medium\ Italic
-URxvt*boldFont: xft:OperatorMonoNerdFont:pixelsize=24:antialias=true
-! URxvt*font: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true
-! URxvt*font: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true:minspace=False, xft:DejaVu Sans:pixelsize=24
-! URxvt*boldFont: xft:OperatorMono Nerd Font:pixelsize=24:antialias=true:minspace=False, xft:DejaVu Sans:pixelsize=24
-! URxvt*font: xft:FantasqueSansMono Nerd Font:style=Bold:pixelsize=25
+! URxvt*font: xft:OperatorMonoNerdFontMono:pixelsize=19:antialias=true:style=Medium,xft:Symbola,xft:Noto Emoji:minspace=False
+URxvt*font: xft:OperatorMonoNerdFontMono:pixelsize=19:antialias=true:style=Medium,xft:Noto Emoji:minspace=False,xft:Symbola
+URxvt*italicFont: xft:OperatorMonoNerdFontMono:pixelsize=19:antialias=true:style=Medium\ Italic
+URxvt*boldFont: xft:OperatorMonoNerdFont:pixelsize=19:antialias=true
 URxvt*letterSpace: 0
 URxvt*allow_bold: true
-
-! Xft.dpi: 196
-Xft.autohint: 0
-Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintfull
-Xft.hinting: 1
-Xft.antialias: 1
-Xft.rgba: rgb
 
 ! URxvt Borders
 URxvt*internalBorder: 0
@@ -58,8 +62,7 @@ URxvt*cursorUnderline: true
 URxvt.keysym.C-Up:     font-size:increase
 URxvt.keysym.C-Down:   font-size:decrease
 
-
-! Real transparency
+! Base16 colors
 *background:  #263228
 *foreground:  #FFFFFF
 *color0:  #263228
@@ -78,27 +81,6 @@ URxvt.keysym.C-Down:   font-size:decrease
 *color13:  #89DDFF
 *color14:  #82AAFF
 *color15:  #EC5F67
-! Real transparency
-! urxvt*depth: 32
-! urxvt*background: [100]#21252E
-! *background:  #262328
-! *foreground:  #FFFFFF
-! *color0:  #262328
-! *color1:  #f9aa2a
-! *color2:  #A7DD1E
-! *color3:  #f9d331
-! *color4:  #00bbff
-! *color5:  #e3308d
-! *color6:  #00a8b2
-! *color7:  #e2e8ea
-! *color8:  #412b3b
-! *color9:  #f9b977
-! *color10:  #A7DD1E
-! *color11:  #f9b22a
-! *color12:  #7be6ff
-! *color13:  #a72681
-! *color14:  #20b8c4
-! *color15:  #ffffff
 
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
@@ -112,17 +94,6 @@ rofi.color-normal: argb:00000000, #FFFFFF, 000000, 000000,   #ccff00
 rofi.color-active: argb:00000000, #FFFFFF, argb:00000000,   argb:00000000, #f8ae19
 rofi.color-urgent: #2f343f, #2f343f, #2f343f, #2f343f, #2f343f
 
-! ! Enable the extended coloring options
-! rofi.color-enabled: true
-!
-! ! Property Name     BG       Border   Separator
-! rofi.color-window:  #2C393F, #2C393F, #263238
-!
-! ! Property Name     BG       FG       BG-alt   Head-BG  Head-FG
-! rofi.color-normal:  #2C393F, #CDD3DE, #2C393F, #2C393F, #FFFFFF
-! rofi.color-active:  #2C393F, #89DDFF, #2C393F, #2C393F, #89DDFF
-! rofi.color-urgent: #2C393F, #EC5F67, #2C393F, #2C393F, #EC5F67
-!
 rofi.separator-style: none
 rofi.sidebar-mode: true
 rofi.bw: 1
