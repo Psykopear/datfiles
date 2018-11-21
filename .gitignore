@@ -3,3 +3,7 @@
 !nvim/*
 !nvim
 plugged
+# Emacs
+auto-save-list
+elpa
+projectile-bookmarks.eld

@@ -18,7 +18,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+    (prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
