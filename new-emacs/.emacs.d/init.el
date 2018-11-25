@@ -308,6 +308,7 @@
               (define-key evil-normal-state-local-map (kbd "K") 'prodigy-prev-with-status)
               (define-key evil-normal-state-local-map (kbd "o") 'prodigy-display-process)
               (define-key evil-normal-state-local-map (kbd "m") 'prodigy-mark)
+              (define-key evil-normal-state-local-map (kbd "M") 'prodigy-mark-all)
               (define-key evil-normal-state-local-map (kbd "s") 'prodigy-start)
               (define-key evil-normal-state-local-map (kbd "S") 'prodigy-stop)))
   (prodigy-define-service

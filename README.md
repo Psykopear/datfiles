@@ -23,3 +23,5 @@ $ stow git
 $ stow X
 $ stow zsh
 `
+
+`thermald/etc/thermald/thermald-conf.xml` is the thermald configuration for XPS 15 9570
