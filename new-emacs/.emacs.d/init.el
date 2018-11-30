@@ -20,7 +20,7 @@
  '(neo-window-fixed-size nil)
  '(package-selected-packages
    (quote
-    (evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+    (blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
@@ -29,7 +29,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(line-number-current-line ((t (:background "dark orange" :foreground "#2C393F" :inverse-video t)))))
 
 ;; Emacs configuration first
 (setq-default indent-tabs-mode nil) ;; No tabs
@@ -44,9 +44,12 @@
 (setq base16-distinct-fringe-background nil)
 
 ;; Line number and fringe settings
-(global-linum-mode 1)
+;; (global-linum-mode 1)
+;; (global-nlinum-mode 1)
+(global-display-line-numbers-mode 1)
 (require 'linum-highlight-current-line-number)
 (setq linum-format 'linum-highlight-current-line-number)
+;; (setq nlinum-format 'linum-highlight-current-line-number)
 (setq-default left-fringe-width  10)
 (setq-default right-fringe-width  0)
 
@@ -80,6 +83,20 @@
   (package-install 'use-package))
 
 (eval-when-compile (require 'use-package))
+
+;; DOOM Modeline
+(use-package doom-modeline
+  :ensure t
+  :defer t
+  :config
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-major-mode-icon t)
+  :hook (after-init . doom-modeline-init))
+
+;; Faster linum mode
+;; (use-package nlinum
+  ;; :ensure t
+  ;; :defer t)
 
 ;; Magit
 (use-package magit
@@ -255,6 +272,13 @@
   :defer t
   )
 
+;; Neotree
+(use-package hide-mode-line
+  :ensure t
+  :after (neotree)
+  :config 
+  (add-hook 'neotree-mode-hook #'hide-mode-line-mode))
+
 (use-package neotree
   :ensure t
   :after (evil)
@@ -284,17 +308,16 @@
   :init (elpy-enable)
   :config
   (evil-leader/set-key "d" 'elpy-goto-definition)
+  (evil-leader/set-key "b" 'elpy-black-fix-code)
   (setq
    python-shell-interpreter "ipython"
    python-shell-interpreter-args "--no-autoindent --no-color-info --no-banner --no-confirm-exit  --simple")
   (setq elpy-rpc-backend "jedi"))
-  ;; (progn
-    ;;  Flymake
-    ;; (when (require 'flycheck nil t)
-      ;; (remove-hook 'elpy-modules 'elpy-module-flymake)
-      ;; (remove-hook 'elpy-modules 'elpy-module-yasnippet)
-      ;; (remove-hook 'elpy-mode-hook 'elpy-module-highlight-indentation))
-    ;; (setq elpy-rpc-backend "jedi")))
+
+(use-package blacken
+  :ensure t
+  :defer t
+  :after (elpy))
 
 (use-package prodigy
   :ensure t
