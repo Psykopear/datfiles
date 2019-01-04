@@ -1,3 +1,7 @@
+;; Set garbage collector threshold to a high value during startup
+;; set it back to its default value at the end of the init script
+(setq gc-cons-threshold 100000000)
+
 (package-initialize)
 
 (require 'package)
@@ -17,19 +21,35 @@
  '(elpy-test-runner (quote elpy-test-pytest-runner))
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
+ '(magit-diff-refine-hunk (quote all))
+ '(neo-vc-integration (quote (face)))
  '(neo-window-fixed-size nil)
  '(package-selected-packages
    (quote
-    (blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+    (qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode magit-gh-pulls esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+ '(realgud-safe-mode nil)
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(tabbar-background-color "gray19")
+ '(tabbar-mode t nil (tabbar))
+ '(tabbar-mwheel-mode t nil (tabbar))
+ '(tabbar-separator (quote ("-")))
+ '(tabbar-use-images nil)
+ '(tool-bar-mode nil)
+ '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(line-number-current-line ((t (:background "dark orange" :foreground "#2C393F" :inverse-video t)))))
+ '(line-number-current-line ((t (:background "dark orange" :foreground "#2C393F" :inverse-video t))))
+ '(tabbar-button ((t nil)))
+ '(tabbar-button-highlight ((t nil)))
+ '(tabbar-default ((t (:inherit variable-pitch :foreground "dim gray" :height 0.8))))
+ '(tabbar-selected ((t (:foreground "dark orange"))))
+ '(tabbar-selected-modified ((t (:foreground "red"))))
+ '(tabbar-unselected ((t nil))))
+
 
 ;; Emacs configuration first
 (setq-default indent-tabs-mode nil) ;; No tabs
@@ -43,17 +63,12 @@
 (load-theme 'base16-materia t)
 (setq base16-distinct-fringe-background nil)
 
-;; Line number and fringe settings
-;; (global-linum-mode 1)
-;; (global-nlinum-mode 1)
 (global-display-line-numbers-mode 1)
-(require 'linum-highlight-current-line-number)
-(setq linum-format 'linum-highlight-current-line-number)
-;; (setq nlinum-format 'linum-highlight-current-line-number)
 (setq-default left-fringe-width  10)
 (setq-default right-fringe-width  0)
 
 ;; Movement
+(global-set-key (kbd "C-s") 'ace-swap-window)
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-h") 'windmove-left)
@@ -73,9 +88,9 @@
 ;; SCLang
 (add-to-list 'load-path "/usr/share/SuperCollider/Extensions/scide_scel")
 (require 'sclang)
+
 ;; in ~/.emacs.d/lisp/ directory
 (require 'hl-line+)
-
 
 ;;; USE PACKAGE
 (unless (package-installed-p 'use-package)
@@ -83,6 +98,15 @@
   (package-install 'use-package))
 
 (eval-when-compile (require 'use-package))
+
+;; Buffer move
+(use-package buffer-move
+  :config
+  (global-set-key (kbd "C-S-k") 'buf-move-up)
+  (global-set-key (kbd "C-S-j") 'buf-move-down)
+  (global-set-key (kbd "C-S-h") 'buf-move-left)
+  (global-set-key (kbd "C-S-l") 'buf-move-right)
+  :ensure t)
 
 ;; DOOM Modeline
 (use-package doom-modeline
@@ -93,17 +117,30 @@
   (setq doom-modeline-major-mode-icon t)
   :hook (after-init . doom-modeline-init))
 
-;; Faster linum mode
-;; (use-package nlinum
-  ;; :ensure t
-  ;; :defer t)
+;; Multiple cursors
+(use-package multiple-cursors
+  :ensure t
+  :defer t
+  :init
+  (progn
+    ;; these need to be defined here - if they're lazily
+    ;; loaded with :bind they don't work.
+    (global-set-key (kbd "C-<") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C->") 'mc/mark-previous-like-this)))
 
 ;; Magit
 (use-package magit
   :ensure t
   :defer t
-  :config (require 'evil-magit)
+  :config
+  (require 'evil-magit)
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
   :bind ("C-c g" . magit-status))
+
+(use-package magit-gh-pulls
+  :ensure t
+  :defer t
+  :after (magit))
 
 (use-package evil-magit
   :ensure t
@@ -140,6 +177,7 @@
   evil
   :ensure t
   :config
+  (add-to-list 'evil-insert-state-modes 'indium-repl-mode)
   ;; Function that flashes current line and sends data to python shell
   (defun flash-send ()
     (interactive)
@@ -149,6 +187,8 @@
   (define-key evil-visual-state-map (kbd "C-<return>") 'flash-send)
   (define-key evil-normal-state-map (kbd "C-<return>") 'flash-send)
   (define-key evil-insert-state-map (kbd "C-<return>") 'flash-send)
+  (define-key evil-normal-state-map (kbd "TAB") 'tabbar-forward-tab)
+  (define-key evil-normal-state-map (kbd "<backtab>") 'tabbar-forward-group)
   (evil-mode))
 
 ;; Function to open config file
@@ -171,7 +211,6 @@
               "c" 'kill-this-buffer
               "q" 'delete-window
               "g" 'comment-line
-              "t" 'elpy-test
               "m" 'toggle-truncate-lines
               "h" 'split-window-vertically
               "v" 'split-window-horizontally
@@ -181,7 +220,7 @@
 (use-package
   helm-projectile
   :ensure t
-  :config 
+  :config
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (helm-projectile-on)
   (projectile-mode +1)
@@ -200,13 +239,24 @@
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
   :config
   (sp-local-pair '(emacs-lisp-mode) "'" "'" :actions nil)
-  (sp-local-pair '(emacs-lisp-mode) "`" "`" :actions nil)
- )
+  (sp-local-pair '(emacs-lisp-mode) "`" "`" :actions nil))
+
+;; LANGUAGES
+
+;; qml
+(use-package qml-mode
+  :ensure t
+  :defer t)
 
 ;; Dockerfile
 (use-package dockerfile-mode
   :ensure t
   :defer t)
+
+;; Docker control
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
 
 ;; Groovy / jenkinsfile
 (use-package groovy-mode
@@ -243,16 +293,19 @@
   (eldoc-mode +1)
   (prettier-js-mode +1)
   (smartparens-mode +1)
-  (evil-leader/set-key "d" 'tide-jump-to-definition)
+  ;; Treat '_' as part of the word
+  (add-hook 'rjsx-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  (evil-leader/set-key-for-mode 'rjsx-mode "t" 'mocha-test-at-point)
+  (evil-leader/set-key-for-mode 'rjsx-mode "d" 'tide-jump-to-definition)
+  (evil-leader/set-key-for-mode 'rjsx-mode "D" 'tide-jump-back)
   (company-mode +1)
   (tide-hl-identifier-mode +1))
 
 (use-package tide
   :ensure t
   :config
-  (progn
-    (add-hook 'typescript-mode-hook #'setup-tide-mode)
-    (add-hook 'rjsx-mode-hook #'setup-tide-mode)))
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+  (add-hook 'rjsx-mode-hook #'setup-tide-mode))
 
 ;; Json
 (use-package json-mode
@@ -266,6 +319,70 @@
   :defer t
   :mode "\\.js$")
 
+;; Indium
+(use-package indium
+  :ensure t
+  :defer t)
+(use-package realgud
+  :ensure t
+  :defer t)
+
+
+
+;; JS DEBUG
+(use-package mocha
+  :ensure t
+  :commands (mocha-test-project
+             mocha-debug-project
+             mocha-test-file
+             mocha-debug-file
+             mocha-test-at-point
+             mocha-debug-at-point)
+  :config
+  ;; Clear up stray ansi escape sequences.
+  (defvar jj*--mocha-ansi-escape-sequences
+    ;; https://emacs.stackexchange.com/questions/18457/stripping-stray-ansi-escape-sequences-from-eshell
+    (rx (or
+         "^[\\[[0-9]+[a-z]"
+         "�[1A"
+         "�[999D")))
+
+  (defun jj*--mocha-compilation-filter ()
+    "Filter function for compilation output."
+    (ansi-color-apply-on-region compilation-filter-start (point-max))
+    (save-excursion
+      (goto-char compilation-filter-start)
+      (while (re-search-forward jj*--mocha-ansi-escape-sequences nil t)
+        (replace-match ""))))
+  (advice-add 'mocha-compilation-filter :override 'jj*--mocha-compilation-filter)
+  ;; https://github.com/scottaj/mocha.el/issues/3
+  (defcustom mocha-jest-command "node_modules/jest/bin/jest.js --colors"
+    "The path to the jest command to run."
+    :type 'string
+    :group 'mocha)
+  (defun mocha-generate-command--jest-command (debug &optional filename testname)
+    "Generate a command to run the test suite with jest.
+If DEBUG is true, then make this a debug command.
+If FILENAME is specified run just that file otherwise run
+MOCHA-PROJECT-TEST-DIRECTORY.
+IF TESTNAME is specified run jest with a pattern for just that test."
+    (let ((target (if testname (concat " --testNamePattern \"" testname "\"") ""))
+          (path (if (or filename mocha-project-test-directory)
+                    (concat " --testPathPattern \""
+                            (if filename filename mocha-project-test-directory)
+                            "\"")
+                  ""))
+          (node-command
+           (concat mocha-which-node
+                   (if debug (concat " --inspect=" mocha-debug-port) ""))))
+      (concat node-command " "
+              mocha-jest-command
+              target
+              path)))
+
+  (advice-add 'mocha-generate-command
+              :override 'mocha-generate-command--jest-command))
+
 ;; Ace
 (use-package ace-window
   :ensure t
@@ -276,7 +393,7 @@
 (use-package hide-mode-line
   :ensure t
   :after (neotree)
-  :config 
+  :config
   (add-hook 'neotree-mode-hook #'hide-mode-line-mode))
 
 (use-package neotree
@@ -289,6 +406,7 @@
   (setq neo-theme 'ascii)
   (add-hook 'neotree-mode-hook
             (lambda ()
+              (display-line-numbers-mode 0)
               (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
               (define-key evil-normal-state-local-map (kbd "o") 'neotree-enter)
               (define-key evil-normal-state-local-map (kbd "c") 'neotree-create-node)
@@ -301,14 +419,27 @@
               (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)
               (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide))))
 
+;; Python
 (use-package elpy
   :ensure t
   :defer t
   :commands elpy-enable
   :init (elpy-enable)
   :config
-  (evil-leader/set-key "d" 'elpy-goto-definition)
-  (evil-leader/set-key "b" 'elpy-black-fix-code)
+  ;; Autoload virtualenv if a .venv file is found
+  (defun pyvenv-autoload ()
+    (require 'projectile)
+    (let* ((pdir (projectile-project-root)) (pfile (concat pdir ".venv")))
+      (if (file-exists-p pfile)
+          (pyvenv-workon (with-temp-buffer
+                           (insert-file-contents pfile)
+                           (nth 0 (split-string (buffer-string))))))))
+  ;; Treat '_' as part of the word
+  (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  (add-hook 'python-mode-hook 'pyvenv-autoload)
+  (evil-leader/set-key-for-mode 'python-mode "t" 'elpy-test)
+  (evil-leader/set-key-for-mode 'python-mode "d" 'elpy-goto-definition)
+  (evil-leader/set-key-for-mode 'python-mode "b" 'elpy-black-fix-code)
   (setq
    python-shell-interpreter "ipython"
    python-shell-interpreter-args "--no-autoindent --no-color-info --no-banner --no-confirm-exit  --simple")
@@ -319,12 +450,37 @@
   :defer t
   :after (elpy))
 
-(use-package prodigy
+;; RUST Mode
+(use-package rust-mode
   :ensure t
   :defer t
   :config
+  (evil-leader/set-key-for-mode 'rust-mode "d" 'racer-find-definition)
+  (progn
+    (use-package racer
+      :ensure t
+      :config
+      (setq racer-rust-src-path
+            "/home/docler/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+    (use-package flycheck-rust
+      :ensure t
+      :config
+      (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode)
+    (add-hook 'rust-mode-hook #'electric-pair-mode)
+    (setq rust-format-on-save t)))
+
+;; Services
+(use-package prodigy
+  :ensure t
+  :defer t
+  :bind ("C-c s" . prodigy)
+  :config
   (add-hook 'prodigy-mode-hook
             (lambda ()
+              (define-key evil-normal-state-local-map (kbd "r") 'prodigy-restart)
               (define-key evil-normal-state-local-map (kbd "f") 'prodigy-add-tag-filter)
               (define-key evil-normal-state-local-map (kbd "F") 'prodigy-clear-filters)
               (define-key evil-normal-state-local-map (kbd "J") 'prodigy-next-with-status)
@@ -334,22 +490,6 @@
               (define-key evil-normal-state-local-map (kbd "M") 'prodigy-mark-all)
               (define-key evil-normal-state-local-map (kbd "s") 'prodigy-start)
               (define-key evil-normal-state-local-map (kbd "S") 'prodigy-stop)))
-  (prodigy-define-service
-    :name "Siqtraq services"
-    :command "docker-compose"
-    :cwd "/home/docler/workspace/siqtraq/"
-    :args '("-f" "docker-services.yml" "up")
-    :tags '(siqtraq run backend)
-    :stop-signal 'sigkill
-    :kill-process-buffer-on-stop t)
-  (prodigy-define-service
-    :name "Siqtraq runserver"
-    :cwd "/home/docler/workspace/siqtraq/"
-    :command "pipenv"
-    :args '("run" "python" "siq/manage.py" "runserver")
-    :tags '(siqtraq run backend)
-    :stop-signal 'sigkill
-    :kill-process-buffer-on-stop t)
   (prodigy-define-service
     :name "Siqtraq yarn watch"
     :cwd "/home/docler/workspace/siqtraq/frontend"
@@ -397,12 +537,7 @@
     :tags '(wfp-oev)
     :stop-signal 'sigkill
     :kill-process-buffer-on-stop t)
-  (prodigy-define-service
-    :name "WFP-OEV runserver"
-    :cwd "/home/docler/workspace/wfp-oev"
-    :command "/home/docler/.virtualenvs/wfp-oev/bin/python"
-    :args '("manage.py" "runserver")
-    :tags '(wfp-oev)
-    :stop-signal 'sigkill
-    :kill-process-buffer-on-stop t)
   )
+
+;; Set back to its default value
+(setq gc-cons-threshold 800000)

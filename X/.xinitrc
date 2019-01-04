@@ -9,6 +9,9 @@ xinput --set-prop 'SYNA2393:00 06CB:7A13 Touchpad' "libinput Natural Scrolling E
 # xinput --set-prop 11 275 1
 # xinput --set-prop 11 285 1
 
+# Set keyboard speed, default is 660 25
+xset r rate 300 65
+
 
 # Keyboard layout
 # -layout us,it \
@@ -30,7 +33,7 @@ compton &
 mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
-nm-applet &
+# nm-applet &
 arandr-indicator &
 xfce4-power-manager &
 # pasystray &
@@ -62,3 +65,4 @@ mkdir $HOME/tmp
 # xrandr --output eDP-1-1 --primary
 # Start WM!
 exec i3
+# exec xfce4-session

@@ -17,14 +17,6 @@ super + shift + o
 super + alt + o
     exec networkmanager_dmenu
 
-# web search
-super + g
-    exec /home/docler/.local/bin/web-search.sh
-
-# Bookmarks (with boosta)
-super + shift + b
-    exec /home/docler/.local/bin/boosta
-
 # file manager
 super + shift + f
     nautilus

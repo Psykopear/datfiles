@@ -7,3 +7,7 @@ plugged
 auto-save-list
 elpa
 projectile-bookmarks.eld
+.mc-lists.el
+recentf
+new-emacs/.emacs.d/var/
+

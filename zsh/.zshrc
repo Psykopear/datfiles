@@ -1,4 +1,4 @@
-echo "[3m$(fortune -sa)\n"
+# echo "[3m$(fortune -sa)\n"
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
@@ -8,13 +8,15 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
-export PATH=$PATH:~/.local/bin/
+export PATH=$PATH:~/.local/bin/:~/.yarn/bin/
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="af-magic"
-#ZSH_THEME="cypher"
+# ZSH_THEME="af-magic"
+ZSH_THEME="flazz"
+# ZSH_THEME="kennethreitz"
+# ZSH_THEME="norm"
 plugins=(git jump kubectl)
 
 export BAT_THEME="TwoDark"
@@ -25,9 +27,9 @@ export BROWSER='firefox'
 
 source $ZSH/oh-my-zsh.sh
 
-# Virtualenvwrapper
+# Virtualenvwrapper, lazily loaded
 export WORKON_HOME=~/.virtualenvs
-source /usr/bin/virtualenvwrapper.sh
+source /usr/bin/virtualenvwrapper_lazy.sh
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64 -j13"
@@ -92,10 +94,18 @@ function extract()
     fi
 }
 
-# eval $(thefuck --alias)
+# Lazy load thefuck aliases
+fuck() {
+   [ -z "$FUCKED" ] && {
+       FUCKED=1
+       unset -f fuck;
+       eval $(thefuck --alias)
+   }
+   fuck
+}
 
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-# export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
 # export FZF_DEFAULT_COMMAND='fd --type f'
 # If current selection is a text file shows its content,
