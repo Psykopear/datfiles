@@ -37,5 +37,6 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+
 [github]
 	user = psykopear@gmail.com

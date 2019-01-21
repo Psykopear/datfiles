@@ -94,14 +94,20 @@ function extract()
     fi
 }
 
+change-version() {
+  if [ -z $1 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
+  if [ -z $2 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
+  rg -l $1 | xargs sed -i s/$1/$2/
+}
+
 # Lazy load thefuck aliases
 fuck() {
-   [ -z "$FUCKED" ] && {
-       FUCKED=1
-       unset -f fuck;
-       eval $(thefuck --alias)
-   }
-   fuck
+  [ -z "$FUCKED" ] && {
+    FUCKED=1
+    unset -f fuck;
+    eval $(thefuck --alias)
+  }
+  fuck
 }
 
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh

@@ -26,7 +26,7 @@
  '(neo-window-fixed-size nil)
  '(package-selected-packages
    (quote
-    (qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode magit-gh-pulls esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+    (forge qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
  '(realgud-safe-mode nil)
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
@@ -50,7 +50,8 @@
  '(tabbar-selected-modified ((t (:foreground "red"))))
  '(tabbar-unselected ((t nil))))
 
-
+(require 'bind-key)
+(require 'use-package)
 ;; Emacs configuration first
 (setq-default indent-tabs-mode nil) ;; No tabs
 (setq make-backup-files nil) ;; No backup/save files
@@ -66,6 +67,14 @@
 (global-display-line-numbers-mode 1)
 (setq-default left-fringe-width  10)
 (setq-default right-fringe-width  0)
+
+(defun toggle-maximize-buffer () "Maximize buffer"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
 
 ;; Movement
 (global-set-key (kbd "C-s") 'ace-swap-window)
@@ -98,15 +107,29 @@
   (package-install 'use-package))
 
 (eval-when-compile (require 'use-package))
+(require 'use-package)
+
+;; Tabbar
+(use-package tabbar
+  :ensure t
+  :defer t)
+
+;; Theme
+(use-package base16-theme
+  :ensure t
+  :defer t)
 
 ;; Buffer move
 (use-package buffer-move
+  :ensure t
+  :defer t
   :config
   (global-set-key (kbd "C-S-k") 'buf-move-up)
   (global-set-key (kbd "C-S-j") 'buf-move-down)
   (global-set-key (kbd "C-S-h") 'buf-move-left)
   (global-set-key (kbd "C-S-l") 'buf-move-right)
-  :ensure t)
+  )
+
 
 ;; DOOM Modeline
 (use-package doom-modeline
@@ -134,13 +157,24 @@
   :defer t
   :config
   (require 'evil-magit)
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+  ;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
   :bind ("C-c g" . magit-status))
 
-(use-package magit-gh-pulls
-  :ensure t
-  :defer t
-  :after (magit))
+(use-package forge
+  :after magit
+  :ensure t)
+
+;; (use-package magithub
+;;   :after magit
+;;   :ensure t
+;;   :config
+;;   (magithub-feature-autoinject t)
+;;   (setq magithub-clone-default-directory "~/repos"))
+
+;; (use-package magit-gh-pulls
+;;   :ensure t
+;;   :defer t
+;;   :after (magit))
 
 (use-package evil-magit
   :ensure t
@@ -188,7 +222,7 @@
   (define-key evil-normal-state-map (kbd "C-<return>") 'flash-send)
   (define-key evil-insert-state-map (kbd "C-<return>") 'flash-send)
   (define-key evil-normal-state-map (kbd "TAB") 'tabbar-forward-tab)
-  (define-key evil-normal-state-map (kbd "<backtab>") 'tabbar-forward-group)
+  (define-key evil-normal-state-map (kbd "<backtab>") 'tabbar-backward-tab)
   (evil-mode))
 
 ;; Function to open config file

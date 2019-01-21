@@ -25,18 +25,14 @@ setxkbmap \
 
 # Startup programs...
 libinput-gestures-setup start
-# libinput-gestures &
 xedgewarp -b &
-# redshift -l geoclue2 &
 redshift -l 43.106277:12.386502 &
 compton &
 mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
-# nm-applet &
 arandr-indicator &
 xfce4-power-manager &
-# pasystray &
 comptray &
 
 export QT_STYLE_OVERRIDE=gtk
@@ -52,10 +48,10 @@ sxhkd &
 # Hack to make gtk apps startup time human
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY &
 
-# polkit session
+polkit session
 lxsession &
 
-xrandr --dpi 96
+# xrandr --dpi 96
 
 
 # Delete $HOME/tmp folder and create it again
@@ -65,4 +61,6 @@ mkdir $HOME/tmp
 # xrandr --output eDP-1-1 --primary
 # Start WM!
 exec i3
+# exec theshell
 # exec xfce4-session
+# exec enlightenment_start
