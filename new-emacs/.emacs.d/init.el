@@ -28,6 +28,7 @@
    (quote
     (forge qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
  '(realgud-safe-mode nil)
+ '(sclang-indent-level 2)
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
  '(tabbar-background-color "gray19")
@@ -61,7 +62,9 @@
 (setq auto-save-default nil)
 
 ;; Theme
-(load-theme 'base16-materia t)
+;; (load-theme 'base16-materia t)
+(load-theme 'unikitty-dark t)
+;; (load-theme 'base16-lovelace t)
 (setq base16-distinct-fringe-background nil)
 
 (global-display-line-numbers-mode 1)
@@ -97,9 +100,11 @@
 ;; SCLang
 (add-to-list 'load-path "/usr/share/SuperCollider/Extensions/scide_scel")
 (require 'sclang)
+(require 'w3m)
 
 ;; in ~/.emacs.d/lisp/ directory
 (require 'hl-line+)
+(require 'coverage-mode)
 
 ;;; USE PACKAGE
 (unless (package-installed-p 'use-package)
@@ -111,11 +116,6 @@
 
 ;; Tabbar
 (use-package tabbar
-  :ensure t
-  :defer t)
-
-;; Theme
-(use-package base16-theme
   :ensure t
   :defer t)
 
@@ -327,6 +327,7 @@
   (eldoc-mode +1)
   (prettier-js-mode +1)
   (smartparens-mode +1)
+  (rainbow-delimiters-mode +1)
   ;; Treat '_' as part of the word
   (add-hook 'rjsx-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (evil-leader/set-key-for-mode 'rjsx-mode "t" 'mocha-test-at-point)
@@ -453,6 +454,7 @@ IF TESTNAME is specified run jest with a pattern for just that test."
               (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)
               (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide))))
 
+
 ;; Python
 (use-package elpy
   :ensure t
@@ -460,6 +462,8 @@ IF TESTNAME is specified run jest with a pattern for just that test."
   :commands elpy-enable
   :init (elpy-enable)
   :config
+
+  (rainbow-delimiters-mode +1)
   ;; Autoload virtualenv if a .venv file is found
   (defun pyvenv-autoload ()
     (require 'projectile)
