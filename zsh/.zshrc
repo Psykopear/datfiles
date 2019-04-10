@@ -54,6 +54,11 @@ alias externalip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias start='sudo systemctl start'
 alias stop='sudo systemctl stop'
 alias restart='sudo systemctl restart'
+alias ustatus='systemctl --user status'
+alias ustart='systemctl --user start'
+alias ustop='systemctl --user stop'
+alias urestart='systemctl --user restart'
+alias git-server='git daemon --reuseaddr --base-path=. --export-all --verbose'
 # Literal search rg
 alias rgl="rg -F"
 
@@ -99,6 +104,9 @@ change-version() {
   if [ -z $2 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
   rg -l $1 | xargs sed -i s/$1/$2/
 }
+
+# Load nvm
+source /usr/share/nvm/init-nvm.sh
 
 # Lazy load thefuck aliases
 fuck() {
@@ -166,9 +174,23 @@ export DISABLE_AUTO_TITLE='true'
 # Lastpass passwd timeout
 export LPASS_AGENT_TIMEOUT=28800
 
+# Full load test
+_fulload() {
+    dd if=/dev/zero of=/dev/null \
+  | dd if=/dev/zero of=/dev/null \
+  | dd if=/dev/zero of=/dev/null \
+  | dd if=/dev/zero of=/dev/null \
+  | dd if=/dev/zero of=/dev/null \
+  | dd if=/dev/zero of=/dev/null &
+}
+
+alias fulload='_fulload; read; killall dd'
+
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc'; fi
+
+source /home/docler/.config/broot/launcher/bash/br

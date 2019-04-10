@@ -1,9 +1,13 @@
 # terminal emulator, with tmux by default
 super + Return
-    urxvt -e tmux
+    alacritty -e tmux
 
 super + p
     mons -n top
+
+# Fix set rate
+super + shift + s
+    xset r rate 300 65
 
 # program launcher
 super + o
@@ -46,7 +50,7 @@ super + alt + space
 
 # lock screen
 super + alt + l
-    i3lock-next
+    ~/.local/bin/lock
 
 #
 # bspwm hotkeys

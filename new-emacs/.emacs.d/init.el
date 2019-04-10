@@ -18,23 +18,21 @@
  '(ansi-term-color-vector
    [unspecified "#263238" "#ec5f67" "#8bd649" "#ffcc00" "#89ddff" "#82aaff" "#89ddff" "#cdd3de"] t)
  '(column-number-mode t)
- '(elpy-test-runner (quote elpy-test-pytest-runner))
+ '(elpy-test-runner 'elpy-test-pytest-runner)
  '(inhibit-startup-screen t)
  '(js-indent-level 2)
- '(magit-diff-refine-hunk (quote all))
- '(neo-vc-integration (quote (face)))
+ '(magit-diff-refine-hunk 'all)
+ '(neo-vc-integration '(face))
  '(neo-window-fixed-size nil)
  '(package-selected-packages
-   (quote
-    (forge qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package)))
+   '(ox-jira language-detection forge qml-mode docker buffer-move tabbar realgud mocha indium flycheck-rust racer rust-mode esup multiple-cursors blacken hide-mode-line doom-modeline evil-magit magit nav-flash markdown-mode yaml-mode groovy-mode dockerfile-mode evil-smartparens prettier-js diff-hl prodigy tide helm-projectile evil-leader evil json-mode rjsx-mode js2-mode use-package-chords elpy neotree modalka ace-window company rg base16-theme helm use-package))
  '(realgud-safe-mode nil)
- '(sclang-indent-level 2)
  '(sclang-show-workspace-on-startup nil)
  '(show-paren-mode t)
  '(tabbar-background-color "gray19")
  '(tabbar-mode t nil (tabbar))
  '(tabbar-mwheel-mode t nil (tabbar))
- '(tabbar-separator (quote ("-")))
+ '(tabbar-separator '("-"))
  '(tabbar-use-images nil)
  '(tool-bar-mode nil)
  '(vc-follow-symlinks t))
@@ -43,7 +41,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(line-number-current-line ((t (:background "dark orange" :foreground "#2C393F" :inverse-video t))))
+ '(fringe ((t (:background "nil"))))
+ '(line-number ((t (:background "#263238" :foreground "#707880"))))
+ '(line-number-current-line ((t (:background "dark orange" :foreground "#263238" :inverse-video t))))
  '(tabbar-button ((t nil)))
  '(tabbar-button-highlight ((t nil)))
  '(tabbar-default ((t (:inherit variable-pitch :foreground "dim gray" :height 0.8))))
@@ -61,11 +61,12 @@
 (setq create-lockfiles nil)
 (setq auto-save-default nil)
 
+;; Remove trailing whitespace at save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; Theme
-;; (load-theme 'base16-materia t)
-(load-theme 'unikitty-dark t)
+;; (load-theme 'unikitty-dark t)
 ;; (load-theme 'base16-lovelace t)
-(setq base16-distinct-fringe-background nil)
 
 (global-display-line-numbers-mode 1)
 (setq-default left-fringe-width  10)
@@ -97,6 +98,11 @@
       scroll-conservatively 10000
       scroll-preserve-screen-position 1)
 
+;; Fringe colors
+(set-face-attribute 'fringe nil :background nil)
+(set-face-attribute 'line-number nil :background nil)
+(set-face-attribute 'line-number-current-line nil :foreground "#263238")
+
 ;; SCLang
 (add-to-list 'load-path "/usr/share/SuperCollider/Extensions/scide_scel")
 (require 'sclang)
@@ -113,6 +119,26 @@
 
 (eval-when-compile (require 'use-package))
 (require 'use-package)
+
+;; JIRA integration
+(use-package ejira
+  :load-path "/home/docler/repos/ejira"
+  :commands ejira-update-issues-in-active-sprint
+  :ensure    nil
+  :init
+  (setq jiralib2-url             "https://evonove.atlassian.net"
+        jiralib2-user-login-name "federico.dolce@evonove.it"
+        ejira-projects           '("MNT" "ESHOP" "SIQ")
+        ejira-main-project       "MNT"
+        ejira-my-org-directory   "/home/docler/org/work/"
+        ejira-done-states        '("Done")
+        ejira-in-progress-states '("In Progress" "In Review" "Testing")
+        ejira-high-priorities    '("High" "Highest")
+        ejira-low-priorities     '("Low" "Lowest"))
+  :config
+  (require 'ejira)
+  (require 'org-agenda)
+  (org-add-agenda-custom-command ejira-sprint-agenda))
 
 ;; Tabbar
 (use-package tabbar
@@ -182,7 +208,15 @@
   :defer t)
 
 ;; Theme
-(use-package base16-theme :ensure t)
+(use-package base16-theme
+  :ensure t
+  :config (load-theme 'base16-materia t))
+  ;; :init
+  ;; (setq base16-distinct-fringe-background nil)
+  ;; (set-face-attribute 'fringe nil :background nil)
+  ;; (set-face-attribute 'line-number nil :background nil)
+  ;; (set-face-attribute 'line-number-current-line nil :foreground "#263238"))
+
 
 ;; Nav-flash, for foxdot
 (use-package nav-flash :ensure t)
@@ -311,7 +345,14 @@
 (use-package company
   :ensure t
   :defer t
+  :config
+  (push 'company-lsp company-backends)
   :init (global-company-mode))
+
+(use-package company-lsp
+  :commands company-lsp
+  :ensure t
+  :defer t)
 
 ;; Prettier JS
 (use-package prettier-js
@@ -319,6 +360,21 @@
   :defer t
   :config
   (add-hook 'rjsx-mode-hook 'prettier-js-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :defer t)
+
+(use-package lsp-vue
+  :ensure t
+  :config (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
+  :defer t
+  )
+
+(use-package vue-mode
+  :ensure t
+  :defer t)
 
 ;; Tide
 (defun setup-tide-mode ()
@@ -353,6 +409,12 @@
   :ensure t
   :defer t
   :mode "\\.js$")
+
+;; Typescript
+(use-package typescript-mode
+  :ensure t
+  :defer t
+  :mode "\\.ts")
 
 ;; Indium
 (use-package indium

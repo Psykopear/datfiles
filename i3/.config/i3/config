@@ -39,6 +39,7 @@ set $default_gaps_inner 5
 set $default_gaps_outer 5
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
+gaps top 50
 
 set $mod Mod4
 
@@ -46,6 +47,9 @@ font pango:OperatorMono Nerd Font 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
+# sticky
+bindsym $mod+i sticky toggle
 
 # kill focused window
 bindsym $mod+q kill
@@ -99,17 +103,16 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+x move workspace to output left
 
 # Workspace names
-# rename workspace 1 to "Ciao"
-set $ws1 "1:  "
-set $ws2 "2:  "
-set $ws3 "3:  "
-set $ws4 "4: 4 "
-set $ws5 "5: 5 "
-set $ws6 "6: 6 "
-set $ws7 "7: 7 "
-set $ws8 "8: 8 "
-set $ws9 "9: 9 "
-set $ws10 "10:  "
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -150,21 +153,21 @@ bindsym $mod+n scratchpad show
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+  # These bindings trigger as soon as you enter the resize mode
+  bindsym h resize shrink width 1 px or 1 ppt
+  bindsym j resize grow height 1 px or 1 ppt
+  bindsym k resize shrink height 1 px or 1 ppt
+  bindsym l resize grow width 1 px or 1 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+  # same bindings, but for the arrow keys
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -177,70 +180,46 @@ set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
 bindsym $mod+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
-        bindsym o      mode "$mode_gaps_outer"
-        bindsym i      mode "$mode_gaps_inner"
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+  bindsym o      mode "$mode_gaps_outer"
+  bindsym i      mode "$mode_gaps_inner"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_inner" {
-        bindsym plus  gaps inner current plus 5
-        bindsym minus gaps inner current minus 5
-        bindsym 0     gaps inner current set 0
+  bindsym plus  gaps inner current plus 5
+  bindsym minus gaps inner current minus 5
+  bindsym 0     gaps inner current set 0
 
-        bindsym Shift+plus  gaps inner all plus 5
-        bindsym Shift+minus gaps inner all minus 5
-        bindsym Shift+0     gaps inner all set 0
+  bindsym Shift+plus  gaps inner all plus 5
+  bindsym Shift+minus gaps inner all minus 5
+  bindsym Shift+0     gaps inner all set 0
 
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_outer" {
-        bindsym plus  gaps outer current plus 5
-        bindsym minus gaps outer current minus 5
-        bindsym 0     gaps outer current set 0
+  bindsym plus  gaps outer current plus 5
+  bindsym minus gaps outer current minus 5
+  bindsym 0     gaps outer current set 0
 
-        bindsym Shift+plus  gaps outer all plus 5
-        bindsym Shift+minus gaps outer all minus 5
-        bindsym Shift+0     gaps outer all set 0
+  bindsym Shift+plus  gaps outer all plus 5
+  bindsym Shift+minus gaps outer all minus 5
+  bindsym Shift+0     gaps outer all set 0
 
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-bar {
-    # status_command i3status-rs /usr/share/doc/i3status-rust/examples/example_config.toml
-    status_command i3status-rs /home/docler/.config/i3/i3status.toml
-    i3bar_command i3bar
-    position top
-    tray_output primary
-
-    font pango:OperatorMono Nerd Font 16
-
-    strip_workspace_numbers yes
-    bindsym button4 nop
-    bindsym button5 nop
-    height 28
-
-    colors {
-        background $base00
-        separator  $base01
-        statusline $base04
-
-        # State             Border  BG      Text
-        focused_workspace   $base05 $base0D $base00
-        active_workspace    $base05 $base03 $base00
-        inactive_workspace  $base03 $base01 $base05
-        urgent_workspace    $base08 $base08 $base00
-        binding_mode        $base00 $base0A $base00
-    }
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
 for_window [class=".*"] title_format "<span color='#483C6C'><b> %class </b></span><span color='#301624' font='OperatorMono 8'>%title</span>"
 for_window [class=".*"] border pixel 0
-# for_window [class=".*"] floating enable
 for_window [class="QtQmlViewer"] floating enable
+for_window [class="Yad"] floating enable
+# for_window [class="Godot_Engine"] floating enable
+# for_window [class="Gravitone"] floating enable
+for_window [instance="Godot_Engine"] floating enable
+for_window [class="Python Qt Live Coding"] floating enable move window to position 20 50
 for_window [class="Calculator"] floating enable
 for_window [class="Blender Render"] floating enable
 for_window [class="scide"] floating enable
@@ -255,9 +234,6 @@ for_window [class="qjackctl"] floating enable
 for_window [class="Simplescreenrecorder"] floating enable
 for_window [class="main.py"] floating enable
 for_window [class="nvim-qt"] floating enable
-# for_window [class="Firefox"] border pixel 0
-# for_window [class="URxvt"] border pixel 0
-# for_window [class="Dunst"] border pixel 0
 for_window [class="Nautilus"] floating enable
 for_window [class="Cadence"] floating enable
 for_window [class="Blezz"] floating enable
@@ -269,3 +245,15 @@ for_window [class="Qemu-system-x86_64"] move window to position 0 -34
 for_window [class="Qemu-system-x86_64"] resize set 1920 1080
 for_window [class="Uzbl-core"] focus child, layout tabbed, focus
 
+# Tray
+bar {
+    i3bar_command i3bar -t
+    position               bottom
+    workspace_buttons      no
+    mode hide
+    colors {
+        separator            #00FFFF00
+        background           #00000000
+        statusline           #00dddd00
+    }
+}

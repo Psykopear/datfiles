@@ -12,6 +12,9 @@ Plug 'w0rp/ale'
 " Flash line
 Plug 'inside/vim-search-pulse'
 
+" Indent line
+" Plug 'Yggdroot/indentLine'
+
 " Autocomplete
 Plug 'Valloric/YouCompleteMe'
 
@@ -59,13 +62,11 @@ Plug 'kassio/neoterm'
 
 " Rust
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 
 " Interface
 " Plug 'gcavallanti/vim-noscrollbar'
 Plug 'vim-ctrlspace/vim-ctrlspace'
-
-" Moar fancy icons
-Plug 'ryanoasis/vim-devicons'
 
 " Javascript del cazzo
 Plug 'pangloss/vim-javascript'
@@ -96,6 +97,9 @@ Plug 'mhinz/vim-startify'
 
 " Incsearch
 Plug 'haya14busa/incsearch.vim'
+
+" Moar fancy icons
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -147,18 +151,18 @@ set autoread
 syntax enable
 set background=dark
 
-let g:onedark_color_overrides = {
-\ "black": {"gui": "#301624", "cterm": "235", "cterm16": "0" },
-\ "red": { "gui": "#FF217C", "cterm": "204", "cterm16": "1" },
-\ "blue": { "gui": "#20B8C3", "cterm": "39", "cterm16": "4" },
-\ "purple": { "gui": "#C320C1", "cterm": "170", "cterm16": "5" },
-\ "green": { "gui": "#A7DD1E", "cterm": "114", "cterm16": "2" },
-\}
+" let g:onedark_color_overrides = {
+" \ "black": {"gui": "#301624", "cterm": "235", "cterm16": "0" },
+" \ "red": { "gui": "#FF217C", "cterm": "204", "cterm16": "1" },
+" \ "blue": { "gui": "#20B8C3", "cterm": "39", "cterm16": "4" },
+" \ "purple": { "gui": "#C320C1", "cterm": "170", "cterm16": "5" },
+" \ "green": { "gui": "#A7DD1E", "cterm": "114", "cterm16": "2" },
+" \}
 
-" colorscheme onedark
+colorscheme onedark
 let base16colorspace=256
-colorscheme base16-materia
-let g:airline_theme='base16_flat'
+" colorscheme base16-materia
+let g:airline_theme='onedark'
 
 " Esc with jj
 imap jj <Esc>
@@ -537,3 +541,13 @@ let g:prettier#config#config_precedence = 'prefer-file'
 
 " always|never|preserve
 let g:prettier#config#prose_wrap = 'preserve'
+
+
+" let g:ycm_server_python_interpreter = '/usr/bin/python3.6'
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+" Rust config
+let g:racer_cmd = "/home/docler/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+let g:racer_insert_paren = 1
+au FileType rust nmap gd <Plug>(rust-def)

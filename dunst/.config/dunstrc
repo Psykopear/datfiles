@@ -1,5 +1,5 @@
 [global]
-    font = Mono 14
+    font = OperatorMono Nerd Font Mono 18:style=Regular
     markup = yes
 
     # The format of the message.  Possible variables are:
@@ -20,10 +20,10 @@
     word_wrap = yes
     ignore_newline = no
 
-    geometry = "650x5-20+45"
+    geometry = "650x5-10+45"
     shrink = no
 
-    transparency = 0
+    transparency = 10
     idle_threshold = 0
     monitor = 0
     follow = mouse
@@ -46,7 +46,7 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/chromium
+    browser = /usr/bin/firefox-developer-edition
 
     icon_position = left
     icon_folders = /usr/share/icons/Paper/32x32@2x/actions/:/usr/share/icons/Paper/32x32@2x/apps/:/usr/share/icons/Paper/32x32@2x/categories/:/usr/share/icons/Paper/32x32@2x/devices/:/usr/share/icons/Paper/32x32@2x/emblems/:/usr/share/icons/Paper/32x32@2x/emotes/:/usr/share/icons/Paper/32x32@2x/mimetypes/:/usr/share/icons/Paper/32x32@2x/places/:/usr/share/icons/Paper/32x32@2x/status/:/usr/share/icons/Paper/32x32@2x/web/
