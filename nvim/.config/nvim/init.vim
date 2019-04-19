@@ -13,13 +13,13 @@ Plug 'w0rp/ale'
 Plug 'inside/vim-search-pulse'
 
 " Indent line
-" Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Autocomplete
 Plug 'Valloric/YouCompleteMe'
 
 " Searcher
-Plug 'mileszs/ack.vim'
+Plug 'mhinz/vim-grepper'
 
 " Git stuff
 Plug 'airblade/vim-gitgutter'
@@ -45,7 +45,6 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-abolish'
 Plug 'luochen1990/rainbow'
 Plug 'stephpy/vim-yaml'
-" Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 
 " Colors
@@ -65,7 +64,6 @@ Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 
 " Interface
-" Plug 'gcavallanti/vim-noscrollbar'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " Javascript del cazzo
@@ -75,18 +73,14 @@ Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
 
-" Tidal
-" Plug 'munshkr/vim-tidal'
-" Plug 'SirVer/ultisnips'
-
 " QML
 Plug 'peterhoeg/vim-qml'
 
 " Python send to buffer
 Plug 'jalvesaq/vimcmdline'
 
-" Solidity syntax
-" Plug 'tomlion/vim-solidity'
+" Python formatter
+Plug 'ambv/black'
 
 " Vim airline again?
 Plug 'vim-airline/vim-airline'
@@ -144,6 +138,10 @@ set number
 " set synmaxcol=256
 " syntax sync minlines=256
 
+" Set virtualenv
+let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
+let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
+
 " Autoread (reload the file if it has been modified by another source)
 set autoread
 
@@ -151,18 +149,10 @@ set autoread
 syntax enable
 set background=dark
 
-" let g:onedark_color_overrides = {
-" \ "black": {"gui": "#301624", "cterm": "235", "cterm16": "0" },
-" \ "red": { "gui": "#FF217C", "cterm": "204", "cterm16": "1" },
-" \ "blue": { "gui": "#20B8C3", "cterm": "39", "cterm16": "4" },
-" \ "purple": { "gui": "#C320C1", "cterm": "170", "cterm16": "5" },
-" \ "green": { "gui": "#A7DD1E", "cterm": "114", "cterm16": "2" },
-" \}
-
 colorscheme onedark
-let base16colorspace=256
-" colorscheme base16-materia
 let g:airline_theme='onedark'
+" let base16colorspace=256
+" colorscheme base16-materia
 
 " Esc with jj
 imap jj <Esc>
@@ -264,83 +254,10 @@ map <silent> <A-j> <C-W>-
 map <silent> <A-k> <C-W>+
 map <silent> <A-l> <C-w>>
 
-"This function turns Rolodex Vim on or off for the current tab
-"If turning off, it sets all windows to equal height
-function! ToggleRolodexTab()
-    if exists("t:rolodex_tab") > 0
-        unlet t:rolodex_tab
-        call ClearRolodexSettings()
-        execute "normal \<C-W>="
-    else
-        let t:rolodex_tab = 1
-        call SetRolodexSettings()
-    endif
-endfunction
-
-"This function clears the Rolodex Vim settings and restores the previous values
-function! ClearRolodexSettings()
-    "Assume if one exists they all will
-    if exists("g:remember_ea") > 0
-        let &equalalways=g:remember_ea
-        let &winheight=g:remember_wh
-        let &winminheight=g:remember_wmh
-        let &helpheight=g:remember_hh
-        let &winwidth=g:remember_ww
-        let &winminwidth=g:remember_wmw
-    endif
-endfunction
-
-"This function set the Rolodex Vim settings and remembers the previous values for later
-function! SetRolodexSettings()
-    if exists("t:rolodex_tab") > 0
-        let g:remember_ea=&equalalways
-        let g:remember_wh=&winheight
-        let g:remember_wmh=&winminheight
-        let g:remember_hh=&helpheight
-        let g:remember_ww=&winwidth
-        let g:remember_wmw=&winminwidth
-        set noequalalways winminheight=0 winheight=9999 helpheight=9999 winminwidth=0 winwidth=150
-    endif
-endfunction
-
-"These two autocmds make Vim change the settings whenever a new tab is selected
-"We have to use TabLeave to always clear them.  If we try and turn them off
-"in TabEnter, it is too late ( I think, since WinEnter has already been called and triggered the display)
-au TabLeave * call ClearRolodexSettings()
-au TabEnter * call SetRolodexSettings()
-
-"With this mapping, F2 toggles a tab to be Rolodex style
-noremap <F2> :call ToggleRolodexTab()<CR>
 
 """"""""""""""""""
 " Status line
 """"""""""""""""""
-" Function: display errors from Ale in statusline
-" function! LinterStatus() abort
-"    let l:counts = ale#statusline#Count(bufnr(''))
-"    let l:all_errors = l:counts.error + l:counts.style_error
-"    let l:all_non_errors = l:counts.total - l:all_errors
-"    return l:counts.total == 0 ? '' : printf(
-"    \ 'W:%d E:%d',
-"    \ l:all_non_errors,
-"    \ l:all_errors
-"    \)
-" endfunction
-
-" set laststatus=2
-" set statusline=
-" set statusline+=\ %*
-" set statusline+=%3*\ \ %{expand('%:h')}\/
-" set statusline+=%1*%t%*
-" set statusline+=%1*%m
-" set statusline+=%=
-" set statusline+=%3*\ %{LinterStatus()}
-" set statusline+=\ %#keyword#%l/%L\:%c
-" set statusline+=%1*\ %{noscrollbar#statusline()}
-
-" hi User1 ctermfg=4
-" hi User2 ctermbg=grey ctermfg=black
-" hi User3 ctermfg=3
 
 " Gonvim
 let g:gonvim_draw_statusline = 0
@@ -352,16 +269,19 @@ let g:gonvim_draw_statusline = 0
 tnoremap <Esc> <C-\><C-n>
 
 " CTRLSpace
-nnoremap <silent><C-space> :CtrlSpace<CR>
+" nnoremap <silent><C-space> :CtrlSpace<CR>
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
 let g:CtrlSpaceSymbols = { "CS": "#", "All": "ALL" }
 
-" Ack
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
+" Ripgrep
+" nnoremap <Leader>a :Rg<CR>
+" let g:rg_highlight=1
+" nnoremap <leader>a :GrepperRg<cr>
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
+nnoremap <leader>a :Grepper -tool rg -cword -noprompt -highlight<cr>
+
 
 " Gitgutter
 let g:gitgutter_realtime=1
@@ -379,7 +299,6 @@ let g:NERDTreeMapNextHunk = ''
 let g:NERDTreeMapPrevHunk = ''
 let g:NERDTreeStatusline="%3*%{matchstr(b:NERDTreeRoot.path.str(), '\\s\\zs\\w\\(.*\\)')}"
 map <F3> :NERDTreeToggle<CR>
-" map <F3> :call rpcnotify(1, 'Gui', 'Command', 'ToggleSidebar')<CR>
 
 " Python highlights
 let python_highlight_all=1
@@ -394,9 +313,6 @@ let test#python#runner = 'pytest'
 let test#python#pytest#options = '-s -vv'
 
 " Neoterm
-nnoremap <silent> ,th :call neoterm#close()<cr>
-nnoremap <silent> ,tl :call neoterm#clear()<cr>
-nnoremap <silent> ,tc :call neoterm#kill()<cr>
 map <F4> :Ttoggle<CR>
 let g:neoterm_keep_term_open = 0
 let g:neoterm_default_mod = 'rightbelow'
@@ -404,7 +320,7 @@ let g:neoterm_size = '10'
 let g:neoterm_autoinsert = 1
 
 " Supercollider
-let g:sclangTerm = "urxvt -e"
+let g:sclangTerm = "termite -e"
 let g:scFlash = 1
 let g:sclangPipeApp     = "~/.config/nvim/plugged/scvim/bin/start_pipe"
 let g:sclangDispatcher  = "~/.config/nvim/plugged/scvim/bin/sc_dispatcher"
@@ -425,9 +341,6 @@ let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
 
-" tidal
-let g:tidal_default_config = {"socket_name": "default", "target_pane": "1"}
-
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<c-s>"
 let g:UltiSnipsJumpForwardTrigger="<c-n>"
@@ -436,9 +349,14 @@ set runtimepath+=~/.config/nvim/docler_snippets
 
 " Ctrlp
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let g:ctrlp_user_command = 'fd -t f'
 
 " Map send to repl
-nmap <C-c> :TREPLSendLine<CR><Plug>Pulse
+" nmap <C-c> :TREPLSendLine<CR><Plug>Pulse
+" imap <C-c> <Esc>:TREPLSendLine<CR><Plug>Pulse<CR>i
+nnoremap <silent> <C-CR> :TREPLSendLine<cr>
+nnoremap <silent> <C-CR> mm(V):TREPLSendSelection<cr>'m
+vnoremap <silent> <C-CR> :TREPLSendSelection<cr>
 
 " Do not lint or fix minified files.
 let g:ale_pattern_options = {
@@ -452,35 +370,20 @@ let g:ale_fixers = { 'javascript': ['eslint'] }
 nmap <F8> <Plug>(ale_fix)
 
 " FoxDot specific
-nmap <C-x> :T Clock.clear()<CR>
-
-" LSP autocompletion
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+" nmap <C-x> :T Clock.clear()<CR>
 
 " Autocomp
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" let g:tern_request_timeout = 1
-" let g:tern_request_timeout = 6000
-" let g:tern#command = ["tern"]
-" let g:tern#arguments = ["--persistent"]
 
 let g:ycm_python_binary_path = 'python'
 nnoremap <silent> K :YcmCompleter GetDoc<CR>
 nmap <leader>d :YcmComplete GoTo<CR>
 let g:ycm_auto_trigger = 0
 let g:ycm_min_num_of_chars_for_completion = 2
+set completeopt-=preview
 
-" set completeopt-=preview
 " set completeopt+=preview
-" let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_add_preview_to_completeopt = 1
 
 " folds
 nnoremap <space> za
@@ -493,9 +396,6 @@ let g:startify_fortune_use_unicode = 1
 let g:startify_enable_unsafe = 1
 let g:startify_custom_indices = ['a','s','d','f']
 autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
-
-" Set gui font on focus (because on enter didn't work)
-" autocmd FocusGained * GuiFont! OperatorMono Nerd Font:h12
 
 " incsearch
 map /  <Plug>(incsearch-forward)
@@ -550,4 +450,18 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:racer_cmd = "/home/docler/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
 let g:racer_insert_paren = 1
+
 au FileType rust nmap gd <Plug>(rust-def)
+
+let g:rustfmt_autosave = 1
+
+nmap tb :tabclose<CR>
+function! OpenCurrentAsNewTab()
+    let l:currentPos = getcurpos()
+    tabedit %
+    call setpos(".", l:currentPos)
+endfunction
+nmap tt :call OpenCurrentAsNewTab()<CR>
+
+" airline configs
+let g:airline_statusline_ontop=0
