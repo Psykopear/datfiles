@@ -1,5 +1,8 @@
 call plug#begin('~/.config/nvim/plugged')
 
+" Let's try
+Plug 'Psykopear/neovim-package-info', { 'do': './install.sh' }
+
 " Trim whitespaces
 Plug 'ntpeters/vim-better-whitespace'
 
@@ -13,7 +16,13 @@ Plug 'w0rp/ale'
 Plug 'inside/vim-search-pulse'
 
 " Indent line
-Plug 'Yggdroot/indentLine'
+" Too heavy since it uses highlight column
+" Keep track of:
+" - https://github.com/neovim/neovim/issues/1767
+" - https://github.com/neovim/neovim/issues/8538
+" Once those two tickets are closed, implement a better plugin in Rust
+" Plug 'Yggdroot/indentLine'
+" Plug 'nathanaelkane/vim-indent-guides'
 
 " Autocomplete
 Plug 'Valloric/YouCompleteMe'
@@ -64,7 +73,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 
 " Interface
-Plug 'vim-ctrlspace/vim-ctrlspace'
+" Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " Javascript del cazzo
 Plug 'pangloss/vim-javascript'
@@ -77,10 +86,12 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peterhoeg/vim-qml'
 
 " Python send to buffer
-Plug 'jalvesaq/vimcmdline'
+" Plug 'jalvesaq/vimcmdline'
+Plug 'vim-python/python-syntax'
 
 " Python formatter
 Plug 'ambv/black'
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " Vim airline again?
 Plug 'vim-airline/vim-airline'
@@ -90,7 +101,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'
 
 " Incsearch
-Plug 'haya14busa/incsearch.vim'
+" Plug 'haya14busa/incsearch.vim'
 
 " Moar fancy icons
 Plug 'ryanoasis/vim-devicons'
@@ -146,13 +157,13 @@ let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
 set autoread
 
 " Colors
+set termguicolors
 syntax enable
 set background=dark
-
 colorscheme onedark
+
+" airline configs
 let g:airline_theme='onedark'
-" let base16colorspace=256
-" colorscheme base16-materia
 
 " Esc with jj
 imap jj <Esc>
@@ -204,7 +215,8 @@ nnoremap <leader>i gg=G``zz<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 
 " Cursor is a block in normal mode and a blinking line in insert mode
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkon1,r-cr:hor20-Cursor/lCursor
+" set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkon1,r-cr:hor20-Cursor/lCursor
+set guicursor=n-v-c:block/lCursor-blinkon0,i-ci:ver25/lCursor-blinkon1,r-cr:hor20/lCursor
 
 " When you go from insert mode to normal mode, the cursor generally goes back
 " one character. This code fix this behaviour
@@ -239,8 +251,8 @@ au FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
 au FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
 
 " tab switching map
-nmap <S-Tab> :bprevious!<CR>
-nmap <Tab> :bnext!<CR>
+" nmap <S-Tab> :bprevious!<CR>
+" nmap <Tab> :bnext!<CR>
 
 " Close buffer
 noremap <leader>c :Bclose <CR>
@@ -268,18 +280,16 @@ let g:gonvim_draw_statusline = 0
 " Neoterm
 tnoremap <Esc> <C-\><C-n>
 
-" CTRLSpace
-" nnoremap <silent><C-space> :CtrlSpace<CR>
-let g:CtrlSpaceDefaultMappingKey = "<C-space> "
-let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-let g:CtrlSpaceSymbols = { "CS": "#", "All": "ALL" }
+" CTRLSpace is slow so I'll just use ctrlp
+nnoremap <silent><C-space> :CtrlPBuffer<CR>
+" let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+" let g:CtrlSpaceGlobCommand = 'rg -l --nocolor -g ""'
+" let g:CtrlSpaceSymbols = { "CS": "#", "All": "ALL" }
+" let g:CtrlSpaceSearchTiming = 500
 
 " Ripgrep
-" nnoremap <Leader>a :Rg<CR>
-" let g:rg_highlight=1
-" nnoremap <leader>a :GrepperRg<cr>
-nmap gs  <plug>(GrepperOperator)
-xmap gs  <plug>(GrepperOperator)
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
 nnoremap <leader>a :Grepper -tool rg -cword -noprompt -highlight<cr>
 
 
@@ -352,11 +362,11 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let g:ctrlp_user_command = 'fd -t f'
 
 " Map send to repl
-" nmap <C-c> :TREPLSendLine<CR><Plug>Pulse
-" imap <C-c> <Esc>:TREPLSendLine<CR><Plug>Pulse<CR>i
-nnoremap <silent> <C-CR> :TREPLSendLine<cr>
-nnoremap <silent> <C-CR> mm(V):TREPLSendSelection<cr>'m
-vnoremap <silent> <C-CR> :TREPLSendSelection<cr>
+nmap <C-c> :TREPLSendLine<CR><Plug>Pulse
+imap <C-c> <Esc>:TREPLSendLine<CR><Plug>Pulse<CR>i
+" nnoremap <silent> <C-CR> :TREPLSendLine<cr>
+" nnoremap <silent> <C-CR> mm(V):TREPLSendSelection<cr>'m
+" vnoremap <silent> <C-CR> :TREPLSendSelection<cr>
 
 " Do not lint or fix minified files.
 let g:ale_pattern_options = {
@@ -377,7 +387,8 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 let g:ycm_python_binary_path = 'python'
 nnoremap <silent> K :YcmCompleter GetDoc<CR>
-nmap <leader>d :YcmComplete GoTo<CR>
+nmap gd :YcmComplete GoTo<CR>
+let g:ycm_key_invoke_completion = '<C-x><C-o>'
 let g:ycm_auto_trigger = 0
 let g:ycm_min_num_of_chars_for_completion = 2
 set completeopt-=preview
@@ -390,22 +401,18 @@ nnoremap <space> za
 set foldmethod=indent
 
 " startify
-let g:startify_list_order = [['== Projects =='], 'sessions', ['== Recent =='], 'files']
+let g:startify_lists = [
+            \ { 'header': [' == Projects =='], 'type': 'sessions' },
+            \ { 'header': [' == Recent =='], 'type': 'files'},
+            \ ]
 let g:startify_change_to_vcs_root = 1
+let g:startify_change_to_dir = 1
 let g:startify_fortune_use_unicode = 1
 let g:startify_enable_unsafe = 1
 let g:startify_custom_indices = ['a','s','d','f']
 autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
 
-" incsearch
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-
-" Testing something
-" syntax on
-" autocmd WinEnter * set syntax=on
-" autocmd WinLeave * set syntax=off
+" Ale
 let g:ale_linters = {'javascript': ['eslint']}
 
 " print semicolons
@@ -463,5 +470,3 @@ function! OpenCurrentAsNewTab()
 endfunction
 nmap tt :call OpenCurrentAsNewTab()<CR>
 
-" airline configs
-let g:airline_statusline_ontop=0

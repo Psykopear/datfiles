@@ -76,6 +76,8 @@ alias ls='exa'
 alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 0'
 alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
+alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket termite -e nvim'
+
 # extract archives
 function extract()
 {

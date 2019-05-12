@@ -1,6 +1,6 @@
 # terminal emulator, with tmux by default
 super + Return
-    alacritty -e tmux
+    termite
 
 super + p
     mons -n top
@@ -46,7 +46,7 @@ XF86AudioPrev
 
 # wallpaper
 super + alt + space
-    feh --randomize --recursive --bg-fill ~/.wallpapers
+    feh --randomize --recursive --bg-fill ~/.wallpapers/space.png
 
 # lock screen
 super + alt + l
