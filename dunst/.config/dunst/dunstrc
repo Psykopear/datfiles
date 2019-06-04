@@ -49,28 +49,46 @@
     browser = /usr/bin/firefox-developer-edition
 
     icon_position = left
-    icon_folders = /usr/share/icons/Paper/32x32@2x/actions/:/usr/share/icons/Paper/32x32@2x/apps/:/usr/share/icons/Paper/32x32@2x/categories/:/usr/share/icons/Paper/32x32@2x/devices/:/usr/share/icons/Paper/32x32@2x/emblems/:/usr/share/icons/Paper/32x32@2x/emotes/:/usr/share/icons/Paper/32x32@2x/mimetypes/:/usr/share/icons/Paper/32x32@2x/places/:/usr/share/icons/Paper/32x32@2x/status/:/usr/share/icons/Paper/32x32@2x/web/
+    icon_folders = /usr/share/icons/Paper/16x16@2x/actions/:/usr/share/icons/Paper/16x16@2x/apps/:/usr/share/icons/Paper/16x16@2x/categories/:/usr/share/icons/Paper/16x16@2x/devices/:/usr/share/icons/Paper/16x16@2x/emblems/:/usr/share/icons/Paper/16x16@2x/emotes/:/usr/share/icons/Paper/16x16@2x/mimetypes/:/usr/share/icons/Paper/16x16@2x/places/:/usr/share/icons/Paper/16x16@2x/status/:/usr/share/icons/Paper/16x16@2x/web/
 
-frame_color = "#CDD3DE"
-separator_color = "#CDD3DE"
+frame_color = "#abb2bf"
+separator_color = "#abb2bf"
 
 [urgency_low]
     msg_urgency = low
-    background = "#2C393F"
-    foreground = "#707880"
+    background = "#FFFFFF"
+    foreground = "#545862"
 
 [urgency_normal]
     msg_urgency = normal
-    background = "#37474F"
-    foreground = "#CDD3DE"
+    background = "#3e4451"
+    foreground = "#abb2bf"
 
 [urgency_critical]
     msg_urgency = critical
-    background = "#EC5F67"
-    foreground = "#D5DBE5"
+    background = "#e06c75"
+    foreground = "#b6bdca"
 
 [shortcuts]
     close = ctrl+space
     close_all = ctrl+shift+space
     history = ctrl+grave
     context = ctrl+shift+period
+
+frame_color = "#abb2bf"
+separator_color = "#abb2bf"
+
+[base16_low]
+    msg_urgency = low
+    background = "#353b45"
+    foreground = "#545862"
+
+[base16_normal]
+    msg_urgency = normal
+    background = "#3e4451"
+    foreground = "#abb2bf"
+
+[base16_critical]
+    msg_urgency = critical
+    background = "#e06c75"
+    foreground = "#b6bdca"

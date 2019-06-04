@@ -40,3 +40,6 @@
 
 [github]
 	user = psykopear@gmail.com
+
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gdiff\" \"$MERGED\"

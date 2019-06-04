@@ -1,6 +1,6 @@
 # terminal emulator, with tmux by default
 super + Return
-    termite
+    alacritty
 
 super + p
     mons -n top

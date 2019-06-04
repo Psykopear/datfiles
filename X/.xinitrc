@@ -40,8 +40,10 @@ mons -a & # Disable other displays if only one monitor
 # Tray area stuff
 xfce4-power-manager &
 
+# Variables
 export QT_STYLE_OVERRIDE=gtk
 export QT_QPA_PLATFORMTHEME=gtk2
+export TERM=alacritty
 
 # Set background
 feh --bg-fill /home/docler/.wallpapers/space.png &

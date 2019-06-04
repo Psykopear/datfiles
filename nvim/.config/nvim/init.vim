@@ -9,11 +9,8 @@ Plug 'ntpeters/vim-better-whitespace'
 " Close buffer
 Plug 'rbgrouleff/bclose.vim'
 
-" Linter
-Plug 'w0rp/ale'
-
 " Flash line
-Plug 'inside/vim-search-pulse'
+" Plug 'inside/vim-search-pulse'
 
 " Indent line
 " Too heavy since it uses highlight column
@@ -21,11 +18,14 @@ Plug 'inside/vim-search-pulse'
 " - https://github.com/neovim/neovim/issues/1767
 " - https://github.com/neovim/neovim/issues/8538
 " Once those two tickets are closed, implement a better plugin in Rust
+" edit: with alacritty it seems to work better
 " Plug 'Yggdroot/indentLine'
-" Plug 'nathanaelkane/vim-indent-guides'
 
 " Autocomplete
 Plug 'Valloric/YouCompleteMe'
+
+" Linter
+" Plug 'w0rp/ale'
 
 " Searcher
 Plug 'mhinz/vim-grepper'
@@ -33,6 +33,7 @@ Plug 'mhinz/vim-grepper'
 " Git stuff
 Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-fugitive'
 
 " Test stuff
 Plug 'janko-m/vim-test'
@@ -49,9 +50,9 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-projectionist'
 Plug 'luochen1990/rainbow'
 Plug 'stephpy/vim-yaml'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -77,7 +78,7 @@ Plug 'racer-rust/vim-racer'
 
 " Javascript del cazzo
 Plug 'pangloss/vim-javascript'
-Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
@@ -87,6 +88,8 @@ Plug 'peterhoeg/vim-qml'
 
 " Python send to buffer
 " Plug 'jalvesaq/vimcmdline'
+" Plug 'jpalardy/vim-slime'
+Plug 'Vigemus/iron.nvim'
 Plug 'vim-python/python-syntax'
 
 " Python formatter
@@ -132,6 +135,12 @@ set nowrap
 nnoremap j jzz
 nnoremap k kzz
 nnoremap G Gzz
+" set scrolloff=999
+" augroup VCenterCursor
+"   au!
+"   au BufEnter,WinEnter,WinNew,VimResized *,*.*
+"         \ let &scrolloff=winheight(win_getid())/2
+" augroup END
 
 " Various settings
 set shell=/bin/zsh
@@ -166,7 +175,7 @@ colorscheme onedark
 let g:airline_theme='onedark'
 
 " Esc with jj
-imap jj <Esc>
+inoremap jj <C-O>:stopinsert<CR>
 
 " Use system clipboard
 set clipboard+=unnamedplus
@@ -185,10 +194,12 @@ set ignorecase               " ignore case when searching
 set smartcase                " ignore case if search pattern is lower case case-sensitive otherwise
 
 " Folding
-set foldenable
-set foldlevelstart=10        " default folding level when buffer is opened
-set foldnestmax=10           " maximum nested fold
-set foldmethod=syntax        " fold based on indentation
+" set foldlevelstart=1        " default folding level when buffer is opened
+" set foldnestmax=10           " maximum nested fold
+" set foldmethod=indent
+nmap <space> ]mzz
+nmap <s-space> [mzz
+
 
 " Set unset wrap
 nmap <leader>m :set wrap!<CR>zz
@@ -220,10 +231,10 @@ set guicursor=n-v-c:block/lCursor-blinkon0,i-ci:ver25/lCursor-blinkon1,r-cr:hor2
 
 " When you go from insert mode to normal mode, the cursor generally goes back
 " one character. This code fix this behaviour
-let CursorColumnI = 0 " The cursor column position in INSERT
-autocmd InsertEnter * let CursorColumnI = col('.')
-autocmd CursorMovedI * let CursorColumnI = col('.')
-autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
+" let CursorColumnI = 0 " The cursor column position in INSERT
+" autocmd InsertEnter * let CursorColumnI = col('.')
+" autocmd CursorMovedI * let CursorColumnI = col('.')
+" autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
 " Split
 noremap <Leader>h :<C-u>split<CR>
@@ -247,8 +258,8 @@ set mousemodel=popup
 set mouse=a
 
 " Python breakpoints
-au FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
-au FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
+" au FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
+" au FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
 
 " tab switching map
 " nmap <S-Tab> :bprevious!<CR>
@@ -330,10 +341,10 @@ let g:neoterm_size = '10'
 let g:neoterm_autoinsert = 1
 
 " Supercollider
-let g:sclangTerm = "termite -e"
+let g:sclangTerm = "alacritty -e"
 let g:scFlash = 1
-let g:sclangPipeApp     = "~/.config/nvim/plugged/scvim/bin/start_pipe"
-let g:sclangDispatcher  = "~/.config/nvim/plugged/scvim/bin/sc_dispatcher"
+let g:sclangPipeApp = "~/.config/nvim/plugged/scvim/bin/start_pipe"
+let g:sclangDispatcher = "~/.config/nvim/plugged/scvim/bin/sc_dispatcher"
 
 " Devicons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
@@ -351,54 +362,26 @@ let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
 
-" Ultisnips
-let g:UltiSnipsExpandTrigger="<c-s>"
-let g:UltiSnipsJumpForwardTrigger="<c-n>"
-let g:UltiSnipsJumpBackwardTrigger="<c-p>"
-set runtimepath+=~/.config/nvim/docler_snippets
-
 " Ctrlp
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let g:ctrlp_user_command = 'fd -t f'
-
-" Map send to repl
-nmap <C-c> :TREPLSendLine<CR><Plug>Pulse
-imap <C-c> <Esc>:TREPLSendLine<CR><Plug>Pulse<CR>i
-" nnoremap <silent> <C-CR> :TREPLSendLine<cr>
-" nnoremap <silent> <C-CR> mm(V):TREPLSendSelection<cr>'m
-" vnoremap <silent> <C-CR> :TREPLSendSelection<cr>
 
 " Do not lint or fix minified files.
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
 \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-\ '/home/docler/Music/': {'ale_linters': [], 'ale_fixers': []},
 \}
 
-" fix js files with eslint
-let g:ale_fixers = { 'javascript': ['eslint'] }
-nmap <F8> <Plug>(ale_fix)
-
-" FoxDot specific
-" nmap <C-x> :T Clock.clear()<CR>
-
 " Autocomp
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 let g:ycm_python_binary_path = 'python'
 nnoremap <silent> K :YcmCompleter GetDoc<CR>
 nmap gd :YcmComplete GoTo<CR>
 let g:ycm_key_invoke_completion = '<C-x><C-o>'
 let g:ycm_auto_trigger = 0
-let g:ycm_min_num_of_chars_for_completion = 2
+let g:ycm_min_num_of_chars_for_completion = 0
 set completeopt-=preview
-
-" set completeopt+=preview
-" let g:ycm_add_preview_to_completeopt = 1
-
-" folds
-nnoremap <space> za
-set foldmethod=indent
 
 " startify
 let g:startify_lists = [
@@ -414,42 +397,31 @@ autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
 
 " Ale
 let g:ale_linters = {'javascript': ['eslint']}
-
 " print semicolons
 " Prettier default: true
 let g:prettier#config#semi = 'true'
-
 " single quotes over double quotes
 " Prettier default: false
 let g:prettier#config#single_quote = 'false'
-
 " print spaces between brackets
 " Prettier default: true
 let g:prettier#config#bracket_spacing = 'true'
-
 " put > on the last line instead of new line
 " Prettier default: false
 let g:prettier#config#jsx_bracket_same_line = 'false'
-
 " avoid|always
 " Prettier default: avoid
 let g:prettier#config#arrow_parens = 'avoid'
-
 " none|es5|all
 " Prettier default: none
 let g:prettier#config#trailing_comma = 'none'
-
 " flow|babylon|typescript|css|less|scss|json|graphql|markdown
 " Prettier default: babylon
 let g:prettier#config#parser = 'babylon'
-
 " cli-override|file-override|prefer-file
 let g:prettier#config#config_precedence = 'prefer-file'
-
 " always|never|preserve
 let g:prettier#config#prose_wrap = 'preserve'
-
-
 " let g:ycm_server_python_interpreter = '/usr/bin/python3.6'
 let g:ycm_collect_identifiers_from_tags_files = 1
 
@@ -469,4 +441,11 @@ function! OpenCurrentAsNewTab()
     call setpos(".", l:currentPos)
 endfunction
 nmap tt :call OpenCurrentAsNewTab()<CR>
+
+"" PYTHON REPL
+au FileType python map <leader>d ctrap
+au FileType python imap <leader>d <Esc>ctrapi
+let g:iron_repl_open_cmd = "split"
+
+set guifont=Operator\ Mono\ Nerd\ Font\ Mono
 
