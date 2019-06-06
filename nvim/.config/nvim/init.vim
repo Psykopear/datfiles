@@ -1,5 +1,12 @@
 call plug#begin('~/.config/nvim/plugged')
 
+" Debug
+" Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+" Plug 'idanarye/vim-vebugger'
+" Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
+Plug 'liuchengxu/vista.vim'
+
 " Let's try
 Plug 'Psykopear/neovim-package-info', { 'do': './install.sh' }
 
@@ -9,16 +16,12 @@ Plug 'ntpeters/vim-better-whitespace'
 " Close buffer
 Plug 'rbgrouleff/bclose.vim'
 
-" Flash line
-" Plug 'inside/vim-search-pulse'
-
 " Indent line
 " Too heavy since it uses highlight column
 " Keep track of:
 " - https://github.com/neovim/neovim/issues/1767
 " - https://github.com/neovim/neovim/issues/8538
 " Once those two tickets are closed, implement a better plugin in Rust
-" edit: with alacritty it seems to work better
 " Plug 'Yggdroot/indentLine'
 
 " Autocomplete
@@ -50,9 +53,9 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-projectionist'
+" Plug 'tpope/vim-endwise'
+" Plug 'tpope/vim-abolish'
+" Plug 'tpope/vim-projectionist'
 Plug 'luochen1990/rainbow'
 Plug 'stephpy/vim-yaml'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -64,7 +67,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'supercollider/scvim'
 
 " Virtualenv
-Plug 'jmcantrell/vim-virtualenv'
+" Plug 'jmcantrell/vim-virtualenv'
 
 " Neoterm
 Plug 'kassio/neoterm'
@@ -73,12 +76,8 @@ Plug 'kassio/neoterm'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 
-" Interface
-" Plug 'vim-ctrlspace/vim-ctrlspace'
-
 " Javascript del cazzo
 Plug 'pangloss/vim-javascript'
-" Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
@@ -87,27 +86,22 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peterhoeg/vim-qml'
 
 " Python send to buffer
-" Plug 'jalvesaq/vimcmdline'
-" Plug 'jpalardy/vim-slime'
 Plug 'Vigemus/iron.nvim'
 Plug 'vim-python/python-syntax'
 
 " Python formatter
 Plug 'ambv/black'
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " Vim airline again?
+" Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " And startify again?
 Plug 'mhinz/vim-startify'
 
-" Incsearch
-" Plug 'haya14busa/incsearch.vim'
-
 " Moar fancy icons
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -127,6 +121,7 @@ set shiftwidth=4    " number of spaces to use for autoindent
 set expandtab       " tabs are space
 set autoindent
 set copyindent      " copy indent from the previous line
+set noshowmode
 
 " Wrap lines
 set nowrap
@@ -173,6 +168,9 @@ colorscheme onedark
 
 " airline configs
 let g:airline_theme='onedark'
+" let g:lightline = {
+"       \ 'colorscheme': 'one',
+"       \ }
 
 " Esc with jj
 inoremap jj <C-O>:stopinsert<CR>
@@ -320,6 +318,7 @@ let g:NERDTreeMapNextHunk = ''
 let g:NERDTreeMapPrevHunk = ''
 let g:NERDTreeStatusline="%3*%{matchstr(b:NERDTreeRoot.path.str(), '\\s\\zs\\w\\(.*\\)')}"
 map <F3> :NERDTreeToggle<CR>
+map <F8> :Vista!!<CR>
 
 " Python highlights
 let python_highlight_all=1
@@ -364,7 +363,8 @@ let g:vim_jsx_pretty_colorful_config = 1
 
 " Ctrlp
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_user_command = 'fd -t f'
+let g:ctrlp_user_command = 'fd -c never -t f'
+let g:ctrlp_use_caching = 0
 
 " Do not lint or fix minified files.
 let g:ale_pattern_options = {
@@ -380,7 +380,7 @@ nnoremap <silent> K :YcmCompleter GetDoc<CR>
 nmap gd :YcmComplete GoTo<CR>
 let g:ycm_key_invoke_completion = '<C-x><C-o>'
 let g:ycm_auto_trigger = 0
-let g:ycm_min_num_of_chars_for_completion = 0
+let g:ycm_min_num_of_chars_for_completion = 1
 set completeopt-=preview
 
 " startify

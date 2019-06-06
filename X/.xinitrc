@@ -34,7 +34,7 @@ xedgewarp -b &
 libinput-gestures-setup start
 # redshift -l 43.106277:12.386502 &
 redshift &
-compton &
+compton --experimental-backends &
 mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
