@@ -1,11 +1,20 @@
 call plug#begin('~/.config/nvim/plugged')
 
-" Debug
-" Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
-" Plug 'idanarye/vim-vebugger'
-" Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+" Various languages syntax styles
+Plug 'sheerun/vim-polyglot'
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+Plug 'itchyny/lightline.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'ruanyl/coverage.vim'
 
-Plug 'liuchengxu/vista.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Let's try
 Plug 'Psykopear/neovim-package-info', { 'do': './install.sh' }
@@ -16,27 +25,10 @@ Plug 'ntpeters/vim-better-whitespace'
 " Close buffer
 Plug 'rbgrouleff/bclose.vim'
 
-" Indent line
-" Too heavy since it uses highlight column
-" Keep track of:
-" - https://github.com/neovim/neovim/issues/1767
-" - https://github.com/neovim/neovim/issues/8538
-" Once those two tickets are closed, implement a better plugin in Rust
-" Plug 'Yggdroot/indentLine'
-
-" Autocomplete
-Plug 'Valloric/YouCompleteMe'
-
-" Linter
-" Plug 'w0rp/ale'
-
-" Searcher
-Plug 'mhinz/vim-grepper'
-
 " Git stuff
 Plug 'airblade/vim-gitgutter'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-fugitive'
+Plug 'samoshkin/vim-mergetool'
 
 " Test stuff
 Plug 'janko-m/vim-test'
@@ -48,60 +40,40 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 
 " Nerdtree
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-git'
+Plug 'kristijanhusak/defx-icons'
 
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-endwise'
-" Plug 'tpope/vim-abolish'
-" Plug 'tpope/vim-projectionist'
 Plug 'luochen1990/rainbow'
-Plug 'stephpy/vim-yaml'
-Plug 'ctrlpvim/ctrlp.vim'
 
 " Colors
 Plug 'joshdick/onedark.vim'
 
-" SuperCollider stuff
-Plug 'supercollider/scvim'
-
-" Virtualenv
-" Plug 'jmcantrell/vim-virtualenv'
-
 " Neoterm
 Plug 'kassio/neoterm'
 
-" Rust
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
-
 " Javascript del cazzo
-Plug 'pangloss/vim-javascript'
-Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
 
-" QML
-Plug 'peterhoeg/vim-qml'
-
 " Python send to buffer
 Plug 'Vigemus/iron.nvim'
-Plug 'vim-python/python-syntax'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " Python formatter
-Plug 'ambv/black'
-
-" Vim airline again?
-" Plug 'itchyny/lightline.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" And startify again?
-Plug 'mhinz/vim-startify'
+Plug 'python/black'
 
 " Moar fancy icons
-" Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
+
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    !cargo build --release
+  endif
+endfunction
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 
 call plug#end()
 
@@ -114,7 +86,7 @@ set encoding=utf8
 let mapleader=","
 let maplocalleader=","
 
-" Spaces & Tabs
+"" Spaces & Tabs
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
 set shiftwidth=4    " number of spaces to use for autoindent
@@ -122,22 +94,8 @@ set expandtab       " tabs are space
 set autoindent
 set copyindent      " copy indent from the previous line
 set noshowmode
-
-" Wrap lines
-set nowrap
-
-" Keep cursor vertically centered
-nnoremap j jzz
-nnoremap k kzz
-nnoremap G Gzz
-" set scrolloff=999
-" augroup VCenterCursor
-"   au!
-"   au BufEnter,WinEnter,WinNew,VimResized *,*.*
-"         \ let &scrolloff=winheight(win_getid())/2
-" augroup END
-
-" Various settings
+set nowrap          " Wrap lines
+"" Various settings
 set shell=/bin/zsh
 set noswapfile
 set showmatch
@@ -145,59 +103,70 @@ set incsearch
 set history=2000
 set hlsearch
 set hidden
-set nocompatible
-set cursorline
+" set cursorline
 set lazyredraw
 set number
-" set cursorcolumn
-" set synmaxcol=256
-" syntax sync minlines=256
+" Use system clipboard
+set clipboard+=unnamedplus
+" UI Config
+set showcmd " show command in bottom bar
+set wildmenu " visual autocomplete for command menu
+set showmatch " highlight matching brace
+set nobackup
+set noswapfile
+" Search
+set incsearch " search as characters are entered
+set hlsearch " highlight matche
+set ignorecase " ignore case when searching
+set smartcase " ignore case if search pattern is lower case case-sensitive otherwise
+set autoread " Autoread (reload the file if it has been modified by another source)
+" Mouse integration
+set mousemodel=popup
+set mouse=a
+" Height of the popup window
+set pumheight=10
+" Conceal
+set conceallevel=3
+" Always draw the signcolumn.
+set signcolumn=yes
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+set completeopt=noinsert,menuone,noselect
+" set ttimeout
+" set ttimeoutlen=0
+
+" Keep cursor vertically centered
+" nnoremap j }zz
+" nnoremap k {zz
+nnoremap <space> }
+" nnoremap <M-space> {
+set scrolloff=900
+nnoremap G Gzz
 
 " Set virtualenv
 let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
 let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
-
-" Autoread (reload the file if it has been modified by another source)
-set autoread
+let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
 
 " Colors
 set termguicolors
-syntax enable
 set background=dark
+syntax enable
+set synmaxcol=200
 colorscheme onedark
 
 " airline configs
 let g:airline_theme='onedark'
-" let g:lightline = {
-"       \ 'colorscheme': 'one',
-"       \ }
 
 " Esc with jj
-inoremap jj <C-O>:stopinsert<CR>
-
-" Use system clipboard
-set clipboard+=unnamedplus
-
-" UI Config
-set showcmd                  " show command in bottom bar
-set wildmenu                 " visual autocomplete for command menu
-set showmatch                " highlight matching brace
-set nobackup
-set noswapfile
-
-" Search
-set incsearch                " search as characters are entered
-set hlsearch                 " highlight matche
-set ignorecase               " ignore case when searching
-set smartcase                " ignore case if search pattern is lower case case-sensitive otherwise
+inoremap jj <Esc>
 
 " Folding
 " set foldlevelstart=1        " default folding level when buffer is opened
 " set foldnestmax=10           " maximum nested fold
 " set foldmethod=indent
-nmap <space> ]mzz
-nmap <s-space> [mzz
-
+" nmap ]] ]]zz
+" nmap [[ [[zz
 
 " Set unset wrap
 nmap <leader>m :set wrap!<CR>zz
@@ -225,7 +194,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Cursor is a block in normal mode and a blinking line in insert mode
 " set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor-blinkon1,r-cr:hor20-Cursor/lCursor
-set guicursor=n-v-c:block/lCursor-blinkon0,i-ci:ver25/lCursor-blinkon1,r-cr:hor20/lCursor
+" set guicursor=n-v-c:block/lCursor-blinkon0,i-ci:ver25/lCursor-blinkon1,r-cr:hor20/lCursor
 
 " When you go from insert mode to normal mode, the cursor generally goes back
 " one character. This code fix this behaviour
@@ -235,39 +204,42 @@ set guicursor=n-v-c:block/lCursor-blinkon0,i-ci:ver25/lCursor-blinkon1,r-cr:hor2
 " autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
 " Split
-noremap <Leader>h :<C-u>split<CR>
-noremap <Leader>v :<C-u>vsplit<CR>
+noremap <leader>h :<C-u>split<CR>
+noremap <leader>v :<C-u>vsplit<CR>
 
 " Switching windows
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
+" noremap <C-j> <C-w>j
+" noremap <C-S-J> <C-w>J
+" noremap <C-k> <C-w>k
+" noremap <C-S-K> <C-w>K
+" noremap <C-l> <C-w>l
+" noremap <C-S-L> <C-w>L
+" noremap <C-h> <C-w>h
+" noremap <C-S-H> <C-w>H
+
 tnoremap <C-h> <C-\><C-n><C-w>h
 tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 
+
 " Delete previous character with backspace in normal mode
 noremap <BS> hx
 
-" Mouse integration
-set mousemodel=popup
-set mouse=a
-
-" Python breakpoints
-" au FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
-" au FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
 
 " tab switching map
-" nmap <S-Tab> :bprevious!<CR>
-" nmap <Tab> :bnext!<CR>
+nmap <S-Tab> :bprevious!<CR>
+nmap <Tab> :bnext!<CR>
 
 " Close buffer
 noremap <leader>c :Bclose <CR>
+noremap <leader>bd :1,100bd<CR>
 
 " Automatically trim whitespaces on save
-autocmd BufWritePost * StripWhitespace
+" autocmd BufWritePost * StripWhitespace
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
 
 " Resize
 map <silent> <A-h> <C-w><
@@ -275,53 +247,46 @@ map <silent> <A-j> <C-W>-
 map <silent> <A-k> <C-W>+
 map <silent> <A-l> <C-w>>
 
+" Open in new tab
+nmap tb :tabclose<CR>
+function! OpenCurrentAsNewTab()
+    let l:currentPos = getcurpos()
+    tabedit %
+    call setpos(".", l:currentPos)
+endfunction
+nmap tt :call OpenCurrentAsNewTab()<CR>
 
-""""""""""""""""""
-" Status line
-""""""""""""""""""
-
-" Gonvim
-let g:gonvim_draw_statusline = 0
+" set guifont=Operator\ Mono\ Nerd\ Font\ Mono
 
 """"""""""""""""""
 " Plugins configs
 """"""""""""""""""
+
 " Neoterm
 tnoremap <Esc> <C-\><C-n>
-
-" CTRLSpace is slow so I'll just use ctrlp
-nnoremap <silent><C-space> :CtrlPBuffer<CR>
-" let g:CtrlSpaceDefaultMappingKey = "<C-space> "
-" let g:CtrlSpaceGlobCommand = 'rg -l --nocolor -g ""'
-" let g:CtrlSpaceSymbols = { "CS": "#", "All": "ALL" }
-" let g:CtrlSpaceSearchTiming = 500
-
-" Ripgrep
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
-nnoremap <leader>a :Grepper -tool rg -cword -noprompt -highlight<cr>
-
+map <F4> :Ttoggle<CR>
+let g:neoterm_keep_term_open = 0
+let g:neoterm_default_mod = 'rightbelow'
+let g:neoterm_size = '10'
+let g:neoterm_autoinsert = 1
+" function! s:neoterm_settings() abort
+"     let &l:statusline='%#NonText#'
+"     let &l:laststatus=0
+" endfunction
+" au FileType neoterm call s:neoterm_settings()
 
 " Gitgutter
 let g:gitgutter_realtime=1
 
-" NerdTree
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__', '\.qmlc$']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=0
-let g:nerdtree_tabs_focus_on_files=1
-let g:nerdtree_tabs_autoclose = 1
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-let g:NERDTreeMapNextHunk = ''
-let g:NERDTreeMapPrevHunk = ''
-let g:NERDTreeStatusline="%3*%{matchstr(b:NERDTreeRoot.path.str(), '\\s\\zs\\w\\(.*\\)')}"
-map <F3> :NERDTreeToggle<CR>
-map <F8> :Vista!!<CR>
+" fuGITive
+nmap <silent><Leader>g :G<CR><C-w>L:vertical resize 50<CR>
+" nmap <silent><Leader>g :Gina status<CR>
+
+" Vista
+" map <F8> :Vista!!<CR>
 
 " Python highlights
-let python_highlight_all=1
+" let python_highlight_all=1
 
 " Rainbow
 let g:rainbow_active = 1
@@ -332,13 +297,6 @@ let test#strategy = 'neoterm'
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-s -vv'
 
-" Neoterm
-map <F4> :Ttoggle<CR>
-let g:neoterm_keep_term_open = 0
-let g:neoterm_default_mod = 'rightbelow'
-let g:neoterm_size = '10'
-let g:neoterm_autoinsert = 1
-
 " Supercollider
 let g:sclangTerm = "alacritty -e"
 let g:scFlash = 1
@@ -347,13 +305,10 @@ let g:sclangDispatcher = "~/.config/nvim/plugged/scvim/bin/sc_dispatcher"
 
 " Devicons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
-let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ' '
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 0
-
-" Jedi
-let g:jedi#show_call_signatures = "2"
 
 " Js configs
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
@@ -361,91 +316,270 @@ let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
 
-" Ctrlp
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_user_command = 'fd -c never -t f'
-let g:ctrlp_use_caching = 0
 
-" Do not lint or fix minified files.
-let g:ale_pattern_options = {
-\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-\}
-
-" Autocomp
-" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-let g:ycm_python_binary_path = 'python'
-nnoremap <silent> K :YcmCompleter GetDoc<CR>
-nmap gd :YcmComplete GoTo<CR>
-let g:ycm_key_invoke_completion = '<C-x><C-o>'
-let g:ycm_auto_trigger = 0
-let g:ycm_min_num_of_chars_for_completion = 1
-set completeopt-=preview
-
-" startify
-let g:startify_lists = [
-            \ { 'header': [' == Projects =='], 'type': 'sessions' },
-            \ { 'header': [' == Recent =='], 'type': 'files'},
-            \ ]
-let g:startify_change_to_vcs_root = 1
-let g:startify_change_to_dir = 1
-let g:startify_fortune_use_unicode = 1
-let g:startify_enable_unsafe = 1
-let g:startify_custom_indices = ['a','s','d','f']
-autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
-
-" Ale
-let g:ale_linters = {'javascript': ['eslint']}
-" print semicolons
-" Prettier default: true
+" Prettier
 let g:prettier#config#semi = 'true'
-" single quotes over double quotes
-" Prettier default: false
 let g:prettier#config#single_quote = 'false'
-" print spaces between brackets
-" Prettier default: true
 let g:prettier#config#bracket_spacing = 'true'
-" put > on the last line instead of new line
-" Prettier default: false
 let g:prettier#config#jsx_bracket_same_line = 'false'
-" avoid|always
-" Prettier default: avoid
 let g:prettier#config#arrow_parens = 'avoid'
-" none|es5|all
-" Prettier default: none
 let g:prettier#config#trailing_comma = 'none'
-" flow|babylon|typescript|css|less|scss|json|graphql|markdown
-" Prettier default: babylon
 let g:prettier#config#parser = 'babylon'
-" cli-override|file-override|prefer-file
 let g:prettier#config#config_precedence = 'prefer-file'
-" always|never|preserve
 let g:prettier#config#prose_wrap = 'preserve'
-" let g:ycm_server_python_interpreter = '/usr/bin/python3.6'
-let g:ycm_collect_identifiers_from_tags_files = 1
 
 " Rust config
 let g:racer_cmd = "/home/docler/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
 let g:racer_insert_paren = 1
-
-au FileType rust nmap gd <Plug>(rust-def)
-
 let g:rustfmt_autosave = 1
 
-nmap tb :tabclose<CR>
-function! OpenCurrentAsNewTab()
-    let l:currentPos = getcurpos()
-    tabedit %
-    call setpos(".", l:currentPos)
+" Python REPL
+au FileType python map <leader>d :call luaeval('require("iron").core.send(_A[1],_A[2])', [&ft, getline(line("'{"), line("'}"))])<CR>
+au FileType python imap <leader>d <Esc>:call luaeval('require("iron").core.send(_A[1],_A[2])', [&ft, getline(line("'{"), line("'}"))])<CR>
+" let g:iron_repl_open_cmd = "split"
+" let g:iron_repl_open_cmd = 'topright horizontal 100 split'
+
+""""""""""""""
+" COMPLETION "
+""""""""""""""
+
+" Language client
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+let g:LanguageClient_useVirtualText=0
+let g:LanguageClient_diagnosticsSignsMax=10
+let g:LanguageClient_settingsPath = "/home/docler/.config/nvim/settings.json"
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'python': ['python', '-m', 'pyls'],
+    \ 'c': ['clangd'],
+    \ 'gluon': ['gluon_language-server'],
+    \ 'javascript': ['typescript-language-server', '--stdio'],
+    \ 'reason': ['/home/docler/.local/bin/reason-language-server'],
+    \ }
+
+
+" Defx
+au FileType defx call s:defx_my_settings()
+map <leader>f :Defx -toggle -listed -resume -columns=indent:git:icons:filename <CR>
+
+function! s:defx_my_settings() abort
+    setlocal signcolumn=no
+    setlocal statusline='%#NonText#'
+    " Define mappings
+    nnoremap <silent><buffer><expr> <CR>
+                \ defx#do_action('drop')
+    nnoremap <silent><buffer><expr> c
+                \ defx#do_action('copy')
+    nnoremap <silent><buffer><expr> m
+                \ defx#do_action('move')
+    nnoremap <silent><buffer><expr> p
+                \ defx#do_action('paste')
+    nnoremap <silent><buffer><expr> o
+                \ defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('drop')
+    nnoremap <silent><buffer><expr> K
+                \ defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> N
+                \ defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M
+                \ defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr> S
+                \ defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr> d
+                \ defx#do_action('remove')
+    nnoremap <silent><buffer><expr> r
+                \ defx#do_action('rename')
+    nnoremap <silent><buffer><expr> !
+                \ defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> x
+                \ defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> yy
+                \ defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> .
+                \ defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> ;
+                \ defx#do_action('repeat')
+    nnoremap <silent><buffer><expr> H
+                \ defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> q
+                \ defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Space>
+                \ defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *
+                \ defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> <C-g>
+                \ defx#do_action('print')
+    nnoremap <silent><buffer><expr> C
+                \ defx#do_action('change_vim_cwd')
 endfunction
-nmap tt :call OpenCurrentAsNewTab()<CR>
 
-"" PYTHON REPL
-au FileType python map <leader>d ctrap
-au FileType python imap <leader>d <Esc>ctrapi
-let g:iron_repl_open_cmd = "split"
+" Here I use a different unicode space character as root_marker,
+" because it breaks with a normal space or empty string
+call defx#custom#option('_', {
+            \   'direction': 'topleft',
+            \   'root_marker': ' ',
+            \   'split': 'vertical',
+            \   'winwidth': 30,
+            \ })
+let g:defx_icons_enable_syntax_highlight = 1
+" Change default colors
+hi link DefxIconsMarkIcon Statement
+hi link DefxIconsDirectory Type
+hi link DefxIconsParentDirectory Type
+hi link DefxIconsSymlinkDirectory Type
+hi link DefxIconsOpenedTreeIcon Type
+hi link DefxIconsNestedTreeIcon Type
+hi link DefxIconsClosedTreeIcon Type
+call defx#custom#column('filename', {
+            \ 'root_marker_highlight': 'Ignore',
+            \ 'min_width': 30,
+            \ 'max_width': 300
+            \ })
+call defx#custom#column('git', 'indicators', {
+  \ 'Modified'  : '',
+  \ 'Staged'    : '',
+  \ 'Untracked' : '',
+  \ 'Renamed'   : '',
+  \ 'Unmerged'  : '',
+  \ 'Ignored'   : '',
+  \ 'Deleted'   : '',
+  \ 'Unknown'   : '?'
+  \ })
 
-set guifont=Operator\ Mono\ Nerd\ Font\ Mono
+" Python highlight
+let g:semshi#excluded_hl_groups=['local', 'global', 'imported', 'parameter', 'free', 'attribute']
+let g:semshi#simplify_markup=v:true
+let g:semshi#error_sign=v:false
+let g:semshi#update_delay_factor=0.0001
+function MyCustomHighlights()
+    hi semshiParameterUnused guifg=#c8ccd4 cterm=underline gui=underline
+    hi semshiBuiltin         guifg=#56b6c2
+    hi semshiSelf            guifg=#56b6c2
+    hi semshiUnresolved      guifg=#c8ccd4 cterm=underline gui=underline
+    hi semshiSelected        guifg=#c8ccd4 guibg=#282c34
+endfunction
+autocmd FileType python call MyCustomHighlights()
 
+" FZF configs
+nnoremap <leader>a :Rg <C-R><C-W><cr>
+nnoremap <silent> <C-space> :Buffers<CR>
+nnoremap <silent><C-p> :FZF<CR>
+nnoremap <silent><C-t> :Tags<CR>
+nnoremap <silent><C-s> :Rg<CR>
+
+" Generate tags for :Tags command only using filtered files (no hiddend
+" directories and no gitignored files)
+let g:fzf_tags_command = 'rg --files | ctags --links=no -L-'
+
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+            \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+function! FloatingFZF()
+  let buf = nvim_create_buf(v:false, v:true)
+  call setbufvar(buf, '&signcolumn', 'no')
+  let height = &lines - 3
+  let width = float2nr(&columns - (&columns * 2 / 10))
+  let col = float2nr((&columns - width) / 2)
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': 1,
+        \ 'col': col,
+        \ 'width': width,
+        \ 'height': height
+        \ }
+  call nvim_open_win(buf, v:true, opts)
+endfunction
+
+" Polyglot
+let g:polyglot_disabled = ['python']
+
+" Markdown
+let g:markdown_composer_browser = 'qutebrowser'
+let g:markdown_composer_open_browser = 0
+
+" Statusline
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
+
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?'   '.l:branchname.'  ':''
+endfunction
+
+function! Filename()
+    let l:filename = expand('%f')
+    return strlen(l:filename) > 0 ? '   '.l:filename.' ' : '   Empty '
+endfunction
+
+function! RightStatus()
+    return '  '.line('.').':'.col('.').' '
+endfunction
+
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=%{StatuslineGit()}
+set statusline+=%#DiffAdd#
+set statusline+=%{Filename()}
+set statusline+=%#CursorColumn#
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#QuickFixLine#
+set statusline+=\ %p%%
+set statusline+=%{RightStatus()}
+
+" Function to toggle hiding of the statusline
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+nnoremap <S-h> :call ToggleHiddenAll()<CR>
+
+" Closetag config
+let g:closetag_filenames = '*.html,*.js,*.jsx'
+let g:closetag_xhtml_filenames = '*.js,*.xhtml,*.jsx'
+let g:closetag_filetypes = 'html,xhtml,phtml,javascript,jsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_close_shortcut = '<leader>>'
+
+" Lightline
+let g:lightline = {
+            \ 'colorscheme': 'one',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'gitbranch', 'readonly', 'relativepath', 'modified' ] ],
+            \   'right': [ [ 'lineinfo' ],
+            \            [ 'percent' ],
+            \            [ 'filetype' ] ]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'fugitive#head'
+            \ },
+            \ }
+
+" Vim coverage
+let g:coverage_json_report_path = 'coverage/coverage-final.json'
+let g:coverage_sign_covered = ''
+let g:coverage_sign_uncovered = ''
+" let g:coverage_auto_start = 0
+" let g:coverage_enabled = 0

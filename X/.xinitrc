@@ -47,7 +47,6 @@ export TERM=alacritty
 
 # Set background
 feh --bg-fill /home/docler/.wallpapers/space.png &
-# feh --bg-fill /home/docler/.wallpapers/ &
 
 # Keys bindings, DE/WM agnostic
 #### Now started as a systemd user service,

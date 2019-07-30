@@ -8,7 +8,7 @@
   st = status
   sd = !git status -s --branch && git diff
   br = branch
-  lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(yellow)- %an%C(reset)%C(auto)%d%C(reset)%n"        "%C(white)%<(100,trunc)%s%C(reset)' --all --decorate-refs-exclude='refs/pullreqs/*'
+  lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(yellow)- %an%C(reset)%C(auto)%d%C(reset)%n"        "%C(white)%<(100,trunc)%s%C(reset)' --all #--decorate-refs-exclude='refs/pullreqs/*'
   serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 
 [color]
@@ -19,7 +19,8 @@
 
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX #--pattern '^(Date|added|deleted|modified|): '
-  excludesfile = /home/docler/.gitignore_global
+	excludesfile = ~/.gitignore
+  editor =  nvim
 
 [rerere]
   enabled = true

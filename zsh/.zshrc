@@ -8,9 +8,12 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
-export PATH=$PATH:~/.local/bin/:~/.yarn/bin/
+export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+# Neovim remote command
+export NVR_CMD=nvim-qt
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="af-magic"
@@ -77,6 +80,29 @@ alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Dis
 alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
 alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim'
+
+
+# fkill - kill processes - list only the ones you can kill. Modified the earlier script.
+function fkill() {
+    local pid
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi
+
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi
+}
+
+function tj() {
+    jump $1
+    tmux
+}
+source /home/docler/.oh-my-zsh/plugins/jump/jump.plugin.zsh
+compctl -K _completemarks tj
 
 # extract archives
 function extract()
@@ -196,3 +222,4 @@ if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc'; fi
 
 source /home/docler/.config/broot/launcher/bash/br
+
