@@ -2,24 +2,32 @@
 super + Return
     alacritty
 
+super + shift + Return
+    alacritty -e tmux
+
 super + p
     mons -n top
+
+super + shift + p
+    ~/.config/polybar/launch.sh &!
 
 # Fix set rate
 super + shift + s
     xset r rate 300 65
 
 # program launcher
+# super + o
+#     rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
 super + o
-    rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
+    ~/.config/polybar/scripts/elementary-menu-alt
 
 # Password manager
 super + shift + o
-    gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass --clip
+    gopass ls --flat | rofi -dmenu -i -p 'gopass:' -lines 5 -width 30 -location 2 -hide-scrollbar true | xargs --no-run-if-empty gopass --clip
 
 # Connection manager
 super + alt + o
-    networkmanager_dmenu
+    ~/.config/polybar/scripts/networkmenu
 
 # file manager
 super + shift + f

@@ -34,7 +34,7 @@ xedgewarp -b &
 libinput-gestures-setup start
 # redshift -l 43.106277:12.386502 &
 redshift &
-compton --experimental-backends &
+picom --experimental-backends &
 mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
@@ -53,7 +53,8 @@ feh --bg-fill /home/docler/.wallpapers/space.png &
 #### not sure it's a good idea
 # sxhkd -c /home/docler/.config/sxhkd/sxhkdrc.bspwm &
 sxhkd &
-polybar top &
+sh ~/.config/polybar/launch.sh &!
+# polybar top &
 # conky-startup.sh &
 
 # Hack to make gtk apps startup time human

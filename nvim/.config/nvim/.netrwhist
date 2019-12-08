@@ -1,6 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/home/docler'
-let g:netrw_dirhist_2='/home/docler/repos'
-let g:netrw_dirhist_3='/home/docler/repos/python-xlib'
-let g:netrw_dirhist_4='/home/docler/workspace/merchant'
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/docler/.Xresources.d'
+let g:netrw_dirhist_6='/home/docler/study/rust'
+let g:netrw_dirhist_5='/home/docler/study/rust/try-iced'
+let g:netrw_dirhist_4='/home/docler/workspace/wanda/ops'
+let g:netrw_dirhist_3='/home/docler/workspace/wanda/platforms/android/app/build'
+let g:netrw_dirhist_2='/home/docler/workspace/whip/docs/study/recording_points'
+let g:netrw_dirhist_1='/home/docler/workspace/whip/docs/study'

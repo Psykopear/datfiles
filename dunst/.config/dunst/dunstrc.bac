@@ -75,3 +75,29 @@ separator_color = "#abb2bf"
     history = ctrl+grave
     context = ctrl+shift+period
 
+frame_color = "#abb2bf"
+separator_color = "#abb2bf"
+
+frame_color = "#abb2bf"
+separator_color = "#abb2bf"
+
+frame_color = "#959DCB"
+separator_color = "#959DCB"
+
+frame_color = "#f5f7ff"
+separator_color = "#f5f7ff"
+
+[base16_low]
+    msg_urgency = low
+    background = "#100e23"
+    foreground = "#a6b3cc"
+
+[base16_normal]
+    msg_urgency = normal
+    background = "#565575"
+    foreground = "#f5f7ff"
+
+[base16_critical]
+    msg_urgency = critical
+    background = "#ff8080"
+    foreground = "#dfe2f1"

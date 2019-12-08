@@ -19,7 +19,7 @@
 
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX #--pattern '^(Date|added|deleted|modified|): '
-	excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore
   editor =  nvim
 
 [rerere]
@@ -39,8 +39,8 @@
 	new = green bold
 	whitespace = red reverse
 
-[github]
-	user = psykopear@gmail.com
+; [merge]
+;     conflictStyle = diff3
 
 [mergetool "nvim"]
   cmd = nvim -f -c \"Gdiff\" \"$MERGED\"

@@ -1,14 +1,14 @@
 # echo "[3m$(fortune -sa)\n"
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
+# BASE16_SHELL="$HOME/.config/base16-shell/"
+# [ -n "$PS1" ] && \
+#     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+#         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
-export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin
+export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:`yarn global bin`
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -33,6 +33,10 @@ source $ZSH/oh-my-zsh.sh
 # Virtualenvwrapper, lazily loaded
 export WORKON_HOME=~/.virtualenvs
 source /usr/bin/virtualenvwrapper_lazy.sh
+
+# Fish like completion
+source ~/repos/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey '^ ' autosuggest-accept
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64 -j13"
@@ -64,6 +68,7 @@ alias urestart='systemctl --user restart'
 alias git-server='git daemon --reuseaddr --base-path=. --export-all --verbose'
 # Literal search rg
 alias rgl="rg -F"
+alias b="backblaze-b2"
 
 # web services
 alias weather='curl -s wttr.in/perugia | head -7'
@@ -80,6 +85,10 @@ alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Dis
 alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
 alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim'
+
+# DIOPORCO
+# alias ionic='/home/docler/.nvm/versions/node/v12.4.0/lib/node_modules/ionic/bin/ionic'
+# alias cordova='/home/docler/.nvm/versions/node/v12.4.0/lib/node_modules/cordova/bin/cordova'
 
 
 # fkill - kill processes - list only the ones you can kill. Modified the earlier script.
@@ -135,6 +144,16 @@ change-version() {
 
 # Load nvm
 source /usr/share/nvm/init-nvm.sh
+
+# Lazy load pythonz
+pythonz() {
+    [ -z "$PYTHONZED" ] && {
+        PYTHONZED=1
+        unset -f pythonz
+        source ~/.pythonz/etc/bashrc
+    }
+    pythonz $@
+}
 
 # Lazy load thefuck aliases
 fuck() {

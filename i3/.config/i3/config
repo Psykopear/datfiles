@@ -17,17 +17,17 @@ set_from_resource $base0E color14
 set_from_resource $base0F color15
 
 # Basic color configuration using the Base16 variables for windows and borders.
-# Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base00 $base00 $base06 $base06 $base00
-client.focused_inactive $base00 $base00 $base07 $base03 $base00
-client.unfocused        $base00 $base00 $base07 $base01 $base00
-client.urgent           $base08 $base08 $base00 $base08 $base00
-client.placeholder      $base00 $base00 $base05 $base00 $base00
+# Property Name         Border    BG        Text    Indicator Child Border
+client.focused          #002635C0 #002635C0 $base06 $base06   $base00
+client.focused_inactive #002635C0 #002635C0 $base07 $base03   $base00
+client.unfocused        #002635C0 #002635C0 $base07 $base01   $base00
+client.urgent           #002635C0 #002635C0 $base00 $base08   $base00
+client.placeholder      #002635C0 #002635C0 $base05 $base00   $base00
 client.background $base00
 
 ### Borders ###
-default_border pixel 3
-default_floating_border pixel 3
+# default_border pixel 3
+# default_floating_border pixel 3
 # bindsym $mod+semicolon exec i3-msg border color $base0D
 # bindsym $mod+semicolon exec i3-msg border pixel 5
 # bindsym --release $mod+semicolon exec i3-msg border pixel 0
@@ -41,7 +41,7 @@ set $default_gaps_inner 5
 set $default_gaps_outer 5
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
-gaps top 50
+# gaps top 50
 
 set $mod Mod4
 
@@ -49,6 +49,9 @@ font pango:OperatorMono Nerd Font 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
+# Middle button over titlebar kills window
+bindsym --release button2 kill
 
 # sticky
 bindsym $mod+i sticky toggle
@@ -202,12 +205,18 @@ mode "$mode_gaps_outer" {
   bindsym Escape mode "default"
 }
 
+title_align center
 # for_window [class=".*"] title_format "<span color='#483C6C' size='smaller'><b> %class </b></span><span color='#301624' font='OperatorMono 8' size='smaller'>%title</span>"
-for_window [class=".*"] title_format "<b><span size='smaller' color='#B26CC7'>   %class<span color='#483C6C'> ¤ </span><span color='#4DA4AF'>%title</span></span></b>"
+for_window [class=".*"] title_format "<span font='OperatorMono 12' color='#B26CC7'><b>»</b></span> <span font='OperatorMono 12' color='#4DA4AF'><b>%title</b></span> <span font='OperatorMono 12' color='#B26CC7'><b>«</b></span>"
+# for_window [class=".*"] title_format "<span color='#483C6C'> ¤ </span><span font='OperatorMono 12' color='#4DA4AF'><b>%title</b></span>"
+# for_window [class=".*"] title_format "<span font='OperatorMono 12'> » </span><span font='OperatorMono 12'><b>%title</b></span>"
 # for_window [class=".*"] border pixel 0
 # for_window [class="Alacritty"] border pixel 0
-for_window [class=".*irefox.*"] border pixel 0
+# for_window [class=".*irefox.*"] border pixel 0
 for_window [class="QtQmlViewer"] floating enable
+for_window [class="qutebrowser"] floating enable
+for_window [class="cpuplot"] floating enable
+for_window [class="*lacritty*" title="*doclerss*"] floating enable
 for_window [class="GLFW-Application"] floating enable
 for_window [class="Yad"] floating enable
 # for_window [class="Godot_Engine"] floating enable
@@ -239,6 +248,7 @@ for_window [class="Qemu-system-x86_64"] move window to position 0 -34
 for_window [class="Qemu-system-x86_64"] resize set 1920 1080
 for_window [class="Uzbl-core"] focus child, layout tabbed, focus
 for_window [title=".*nannou.*"] floating enable
+for_window [title=".*Add FX to.*"] floating enable
 
 # Tray
 bar {
