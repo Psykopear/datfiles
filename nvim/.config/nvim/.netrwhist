@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =7
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/docler/repos/nerd-font-cheatsheets'
+let g:netrw_dirhist_8='/home/docler/.tmux'
 let g:netrw_dirhist_7='/home/docler/.Xresources.d'
 let g:netrw_dirhist_6='/home/docler/study/rust'
 let g:netrw_dirhist_5='/home/docler/study/rust/try-iced'

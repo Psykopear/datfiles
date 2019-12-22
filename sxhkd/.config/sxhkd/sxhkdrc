@@ -23,7 +23,9 @@ super + o
 
 # Password manager
 super + shift + o
-    gopass ls --flat | rofi -dmenu -i -p 'gopass:' -lines 5 -width 30 -location 2 -hide-scrollbar true | xargs --no-run-if-empty gopass --clip
+    ~/.config/polybar/scripts/password-manager
+
+# gopass ls --flat | rofi -dmenu -i -p 'gopass:' -lines 5 -width 30 -location 6 -hide-scrollbar true | xargs --no-run-if-empty gopass --clip */
 
 # Connection manager
 super + alt + o
@@ -54,7 +56,10 @@ XF86AudioPrev
 
 # wallpaper
 super + alt + space
-    feh --randomize --recursive --bg-fill ~/.wallpapers/space.png
+    feh --randomize --bg-fill Pictures/FFBackground.jpg
+
+# feh --randomize --bg-fill ~/.config/polybar/wallpaper/
+# feh --randomize --bg-fill .rust_wallpapers/
 
 # lock screen
 super + alt + l

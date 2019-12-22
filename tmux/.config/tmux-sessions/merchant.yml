@@ -1,0 +1,16 @@
+session_name: merchant
+start_directory: ~/workspace/merchant
+shell_command_before:
+  - workon merchant
+windows:
+  - window_name: editor
+    panes:
+      - nvim
+  - window_name: free-shell
+    panes:
+      - clear && git st
+  - window_name: docker-services
+    focus: True
+    panes:
+      - docker-compose -f docker-compose-services.yml up
+      - python merchant/manage.py runserver

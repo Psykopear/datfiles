@@ -1,0 +1,16 @@
+session_name: ecommerchant
+start_directory: ~/workspace/ecommerchant
+shell_command_before:
+  - workon ecommerchant
+windows:
+  - window_name: editor
+    panes:
+      - nvim
+  - window_name: free-shell
+    panes:
+      - clear && git st
+  - window_name: docker-services
+    focus: True
+    panes:
+      - docker-compose up
+      - python django-ecommerchant/manage.py runserver

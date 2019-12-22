@@ -14,7 +14,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'supercollider/scvim'
 
 " Colorizer
-Plug 'lilydjwg/colorizer'
+" Plug 'lilydjwg/colorizer'
+Plug 'norcalli/nvim-colorizer.lua'
 
 " Indentline, might be slow
 " Plug 'Yggdroot/indentLine'
@@ -559,7 +560,7 @@ function! FloatingFZF()
 endfunction
 
 " Polyglot
-let g:polyglot_disabled = ['python']
+let g:polyglot_disabled = ['python', 'csv']
 
 " Markdown
 let g:markdown_composer_browser = 'qutebrowser'
@@ -611,14 +612,13 @@ let g:closetag_close_shortcut = '<leader>>'
 " let g:lightline.colorscheme = "one"
 " let g:lightline.colorscheme = "palenight"
 " let g:lightline.colorscheme = "challenger_deep"
-let g:airline_theme = "challenger_deep"
+" let g:airline_theme = "challenger_deep"
+let g:airline_theme = 'rigel'
 let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#hunks#enabled = 0
 let g:airline#extensions#branch#enabled = 0
-let g:airline_section_a = ''
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+" let g:airline_section_c = ''
 let g:airline_left_sep = "\uE0B8"
 let g:airline_right_sep = "\uE0BA"
 let g:airline_left_alt_sep = "\uE0B9"
@@ -653,4 +653,6 @@ let g:languagetool_server='/usr/share/java/languagetool/languagetool-server.jar'
 let g:vim_markdown_conceal_code_blocks = 0
 
 let g:rigel_airline = 1
-let g:airline_theme = 'rigel'
+
+" Picom config file as dosini
+au BufRead,BufNewFile picom.conf set filetype=dosini

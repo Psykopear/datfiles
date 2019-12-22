@@ -8,7 +8,7 @@
 
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
-export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:`yarn global bin`
+export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:/home/docler/.nvm/versions/node/v12.4.0/bin
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -41,7 +41,13 @@ bindkey '^ ' autosuggest-accept
 # Compilation flags
 export ARCHFLAGS="-arch x86_64 -j13"
 
+# Function used to load tmuxp projects
+load() {
+    tmuxp load .config/tmux-sessions/$1.yml
+}
+
 # Aliases
+alias h='howdoi -c -a'
 alias delete-pyc='find -name "*.pyc" -delete'
 alias s='pikaur -Ss'
 alias i='pikaur -S'

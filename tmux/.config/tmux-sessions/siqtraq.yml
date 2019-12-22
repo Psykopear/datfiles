@@ -1,0 +1,16 @@
+session_name: siqtraq
+start_directory: ~/workspace/siqtraq
+windows:
+  - window_name: editor
+    panes:
+      - pipenv run nvim
+  - window_name: free-shell
+    panes:
+      - clear && git st
+  - window_name: docker-services
+    layout: even-vertical
+    focus: True
+    panes:
+      - pipenv run python siq/manage.py runserver
+      - docker-compose -f docker-services.yml up
+      - cd frontend && yarn watch
