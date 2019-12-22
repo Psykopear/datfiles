@@ -4,7 +4,7 @@ It includes git, i3, neovim, tmux, X and zsh configs
 
 # Usage
 First clone the repository in your home directory.
-If cloning elsewhere, call stow with the `--dir $HOME` parameter to set your home as the target directory)
+If cloning elsewhere, call stow with the `--dir $HOME` parameter to set your home as the target directory
 `
 $ git clone git@github.com:psykopear/datfiles .dotfiles
 `
