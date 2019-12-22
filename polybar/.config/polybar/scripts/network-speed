@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+dev=$1
+ip route show | grep -q "$dev"  || exit
+read rx <"/sys/class/net/$dev/statistics/rx_bytes"
+read tx <"/sys/class/net/$dev/statistics/tx_bytes"
+sleep 0.5
+read newrx <"/sys/class/net/$dev/statistics/rx_bytes"
+read newtx <"/sys/class/net/$dev/statistics/tx_bytes"
+
+# convert bytes/0.5s to kbyte/s: (bytes / 1024) * 2 => bytes / 512
+rxbytes=$(((newrx - rx) / 512))
+txbytes=$(((newtx - tx) / 512))
+
+get_color() {
+    if (( $1 < 200 )); then
+        echo "#FFFFFF"
+    elif (( $1 < 500 )); then
+        echo "#00FFCC"
+    elif (( $1 < 1500 )); then
+        echo "#DDDD11"
+    elif (( $1 < 5000 )); then
+        echo "#DD9911"
+    elif (( $1 < 5000 )); then
+        echo "#DD7373"
+    else
+        echo "#840000"
+    fi
+}
+
+rxcolor=$(get_color $rxbytes)
+txcolor=$(get_color $txbytes)
+
+if [[ $dev == "wl"* ]]; then
+    icon="直"
+else
+    icon=""
+fi
+
+echo "$icon  %{F$rxcolor}%{F-} %{F$txcolor}%{F-}"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -u
+set -e
+
+function get_layouts()
+{
+    autorandr
+}
+
+function main()
+{
+    local layouts="$(get_layouts)"
+
+    local layout=$( (echo "${layouts}")  | rofi -dmenu -p "Layout:" -location 5 -yoffset -26 -width 12 -lines 5 -hide-scrollbar -font "Monospace 13")
+    local matching=$( (echo "${layouts}") | grep "^${layout}$")
+
+    autorandr --load $matching
+}
+
+main

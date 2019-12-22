@@ -1,0 +1,3 @@
+#!/bin/sh
+networkmanager_dmenu -location 5 -yoffset -26 -width 500 -hide-scrollbar true
+
