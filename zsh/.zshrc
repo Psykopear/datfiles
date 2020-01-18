@@ -248,3 +248,4 @@ if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
 
 source /home/docler/.config/broot/launcher/bash/br
 
+[ -f ~/.fzf.colors ] && source ~/.fzf.colors

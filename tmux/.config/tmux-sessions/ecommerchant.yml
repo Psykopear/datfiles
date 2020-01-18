@@ -3,12 +3,9 @@ start_directory: ~/workspace/ecommerchant
 shell_command_before:
   - workon ecommerchant
 windows:
-  - window_name: editor
+  - window_name: zsh
     panes:
-      - nvim
-  - window_name: free-shell
-    panes:
-      - clear && git st
+      - nvr -s && clear && git st
   - window_name: docker-services
     focus: True
     panes:

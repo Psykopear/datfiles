@@ -1,11 +1,10 @@
 call plug#begin('~/.config/nvim/plugged')
-Plug 'Rigellute/rigel'
+Plug 'liuchengxu/vista.vim'
+Plug 'chriskempson/base16-vim'
 
 " SQL Formatter and uppercaser (I just invented the word)
 Plug 'mattn/vim-sqlfmt'
 Plug 'alcesleo/vim-uppercase-sql'
-
-Plug 'ncm2/ncm2-gtags'
 
 " Various languages syntax styles
 Plug 'sheerun/vim-polyglot'
@@ -14,7 +13,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'supercollider/scvim'
 
 " Colorizer
-" Plug 'lilydjwg/colorizer'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Indentline, might be slow
@@ -29,7 +27,7 @@ Plug 'alvan/vim-closetag'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
 Plug 'ncm2/float-preview.nvim'
 Plug 'Shougo/echodoc.vim'
 " Plug 'liuchengxu/vista.vim'
@@ -79,7 +77,7 @@ Plug 'tpope/vim-commentary'
 Plug 'luochen1990/rainbow'
 
 " Colors
-" Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 " Plug 'drewtempelmeyer/palenight.vim'
 
@@ -179,7 +177,7 @@ set completeopt=noinsert,menuone,noselect
 " nnoremap k {zz
 nnoremap <space> za
 " nnoremap <M-space> {
-set scrolloff=900
+" set scrolloff=900
 nnoremap G Gzz
 
 " Set virtualenv
@@ -192,13 +190,20 @@ set termguicolors
 set background=dark
 syntax enable
 set synmaxcol=200
-" let g:onedark_terminal_italics=1
-" colorscheme onedark
+let g:onedark_terminal_italics=1
+let base16colorspace=256
+" colorscheme base16-onedark
+colorscheme onedark
 " let g:palenight_terminal_italics=1
 " colorscheme palenight
 " colorscheme challenger_deep
 " colorscheme base16-challenger-deep
-colorscheme rigel
+" colorscheme rigel
+" Transparent background
+hi Normal guibg=NONE ctermbg=NONE
+" Hide tilde characters in the end of buffer.
+" Thanks to Neovim, this is not possible in vim
+set fillchars=eob:\  " Adding a comment here so the whitespace is not removed on save
 
 " Esc with jj
 inoremap jj <Esc>
@@ -299,8 +304,6 @@ function! OpenCurrentAsNewTab()
 endfunction
 nmap tt :call OpenCurrentAsNewTab()<CR>
 
-" set guifont=Operator\ Mono\ Nerd\ Font\ Mono
-
 """"""""""""""""""
 " Plugins configs
 """"""""""""""""""
@@ -324,23 +327,20 @@ let g:neoterm_autoinsert = 1
 let g:gitgutter_terminal_reports_focus=0
 
 " fuGITive
-nmap <silent><Leader>g :G<CR><C-w>L:vertical resize 50<CR>
+nmap <silent><Leader>g :G<CR><C-w>L:vertical resize 80<CR>
 " nmap <silent><Leader>g :Gina status<CR>
 
 " Vista
-" map <F8> :Vista!!<CR>
+map <F8> :Vista lcn<CR>
+let g:vista_sidebar_width = 40
+let g:vista_echo_cursor_strategy = "floating_win"
+let g:vista_icon_indent = ['- ', '- ']
 
 " Python highlights
 " let python_highlight_all=1
 
 " Rainbow
 let g:rainbow_active = 1
-
-" Vim tests
-nmap <silent><Leader>t <Esc>:TestNearest<CR>
-let test#strategy = 'neoterm'
-let test#python#runner = 'pytest'
-let test#python#pytest#options = '-s -vv'
 
 " Supercollider
 let g:sclangTerm = "alacritty -e"
@@ -402,12 +402,12 @@ let g:float_preview#docked = 0
 let g:LanguageClient_hoverPreview="Always"
 " let g:LanguageClient_signatureHelpOnCompleteDone=1
 " let g:LanguageClient_diagnosticsSignsMax=0
-let g:LanguageClient_useVirtualText=0
+let g:LanguageClient_useVirtualText="No"
 let g:LanguageClient_settingsPath = "/home/docler/.config/nvim/settings.json"
 let g:LanguageClient_serverCommands = {
             \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
-            \ 'python': ['python', '-m', 'pyls'],
             \ 'c': ['clangd'],
+            \ 'python': ['python', '-m', 'pyls'],
             \ 'javascript': ['typescript-language-server', '--stdio'],
             \ }
 
@@ -477,13 +477,13 @@ call defx#custom#option('_', {
             \ })
 let g:defx_icons_enable_syntax_highlight = 1
 " Change default colors
-hi link DefxIconsMarkIcon Statement
-hi link DefxIconsDirectory Type
-hi link DefxIconsParentDirectory Type
-hi link DefxIconsSymlinkDirectory Type
-hi link DefxIconsOpenedTreeIcon Type
-hi link DefxIconsNestedTreeIcon Type
-hi link DefxIconsClosedTreeIcon Type
+" hi link DefxIconsMarkIcon Statement
+" hi link DefxIconsDirectory Error
+" hi link DefxIconsParentDirectory Type
+" hi link DefxIconsSymlinkDirectory Type
+" hi link DefxIconsOpenedTreeIcon Error
+" hi link DefxIconsNestedTreeIcon Error
+" hi link DefxIconsClosedTreeIcon Error
 call defx#custom#column('filename', {
             \ 'root_marker_highlight': 'Ignore',
             \ 'min_width': 40,
@@ -527,14 +527,9 @@ noremap <silent><C-s> :Ag<CR>
 " Generate tags for :Tags command only using filtered files (no hiddend
 " directories and no gitignored files)
 let g:fzf_tags_command = 'rg --files | ctags --links=no -L-'
-let $FZF_DEFAULT_OPTS='--layout=reverse'
+let $FZF_DEFAULT_OPTS=' --color=dark --color=fg:11,bg:8,hl:1,fg+:3,bg+:8,hl+:5 --color=info:3,prompt:3,pointer:3,marker:4,spinner:11,header:6 --layout=reverse  --margin=1,4'
 let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 function! FloatingFZF()
-    " tunmap <buffer> jj
-    " tunmap <buffer> <C-h>
-    " tunmap <buffer> <C-j>
-    " tunmap <buffer> <C-k>
-    " tunmap <buffer> <C-l>
     let height = &lines - 3
     let width = float2nr(&columns - (&columns * 2 / 10))
     let col = float2nr((&columns - width) / 2)
@@ -593,27 +588,7 @@ let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_close_shortcut = '<leader>>'
 
-" Lightline
-" \ 'inactive': {
-" \   'left': [], 'right': []
-" \ },
-" let g:lightline = {
-"             \ 'active': {
-"             \   'left': [
-"             \     [ 'mode', 'paste' ],
-"             \     [ 'gitbranch', 'readonly', 'relativepath', 'modified' ]
-"             \   ],
-"             \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype' ] ]
-"             \ },
-"             \ 'component_function': {
-"             \   'gitbranch': 'fugitive#head'
-"             \ },
-"             \ }
-" let g:lightline.colorscheme = "one"
-" let g:lightline.colorscheme = "palenight"
-" let g:lightline.colorscheme = "challenger_deep"
-" let g:airline_theme = "challenger_deep"
-let g:airline_theme = 'rigel'
+let g:airline_theme = 'onedark'
 let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#hunks#enabled = 0
@@ -629,14 +604,8 @@ let g:coverage_json_report_path = 'coverage/coverage-final.json'
 let g:coverage_sign_covered = ''
 let g:coverage_sign_uncovered = ''
 
-" Neomake
-let g:neomake_open_list = 2
-let g:neomake_virtualtext_current_error = 0
-nmap <leader>n :Neomake<CR>
-
 " echodoc
 let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'floating'
 highlight link EchoDocFloat Pmenu
 let g:echodoc#events = ['CompleteDone', 'InsertEnter']
 
@@ -656,3 +625,67 @@ let g:rigel_airline = 1
 
 " Picom config file as dosini
 au BufRead,BufNewFile picom.conf set filetype=dosini
+
+" Create mappings for aerojump
+nmap <space> <Plug>(AerojumpSpace)
+
+" Floating Term
+let s:float_term_border_win = 0
+let s:float_term_win = 0
+function! FloatTerm(...)
+  " Configuration
+  let height = float2nr((&lines - 2) * 0.6)
+  let row = float2nr((&lines - height) / 2)
+  let width = float2nr(&columns * 0.6)
+  let col = float2nr((&columns - width) / 2)
+  " Border Window
+  let border_opts = {
+        \ 'relative': 'editor',
+        \ 'row': row - 1,
+        \ 'col': col - 2,
+        \ 'width': width + 4,
+        \ 'height': height + 2,
+        \ 'style': 'minimal'
+        \ }
+  " Terminal Window
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': row,
+        \ 'col': col,
+        \ 'width': width,
+        \ 'height': height,
+        \ 'style': 'minimal'
+        \ }
+  let top = "╭" . repeat("─", width + 2) . "╮"
+  let mid = "│" . repeat(" ", width + 2) . "│"
+  let bot = "╰" . repeat("─", width + 2) . "╯"
+  let lines = [top] + repeat([mid], height) + [bot]
+  let bbuf = nvim_create_buf(v:false, v:true)
+  call nvim_buf_set_lines(bbuf, 0, -1, v:true, lines)
+  let s:float_term_border_win = nvim_open_win(bbuf, v:true, border_opts)
+  let buf = nvim_create_buf(v:false, v:true)
+  let s:float_term_win = nvim_open_win(buf, v:true, opts)
+  " Styling
+  call setwinvar(s:float_term_border_win, '&winhl', 'Normal:Normal')
+  call setwinvar(s:float_term_win, '&winhl', 'Normal:Normal')
+  if a:0 == 0
+    terminal
+  else
+    " Add a prompt so the user has to press something to close the window
+    " otherwise it closes itself as soon as the job is over
+    call termopen(a:1 . "; echo 'Press anything to close' && read")
+  endif
+  startinsert
+  " Close border window when terminal window close
+  autocmd TermClose * ++once :bd! | call nvim_win_close(s:float_term_border_win, v:true)
+endfunction
+nnoremap <Leader>ta :call FloatTerm()<CR>
+
+" Vim tests
+nmap <silent><Leader>tt <Esc>:TestNearest<CR>
+let g:test#custom_strategies = {'float-term': function('FloatTerm')}
+let g:test#strategy = 'float-term'
+" let test#strategy = 'neoterm'
+let test#python#runner = 'pytest'
+let test#python#pytest#options = '-s -vv'
+

@@ -1,13 +1,13 @@
 session_name: siqtraq
 start_directory: ~/workspace/siqtraq
 windows:
-  - window_name: editor
+  - window_name: Siqtraq code
     panes:
       - pipenv run nvim
-  - window_name: free-shell
+  - window_name: zsh
     panes:
       - clear && git st
-  - window_name: docker-services
+  - window_name: services
     layout: even-vertical
     focus: True
     panes:

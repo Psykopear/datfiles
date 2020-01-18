@@ -49,7 +49,8 @@ export TERM=alacritty
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --randomize --bg-fill ~/.config/polybar/wallpaper/ &
-feh --randomize --bg-fill Pictures/FFBackground.jpg &
+# feh --randomize --bg-fill Pictures/FFBackground.jpg &
+~/.fehbg
 
 # Keys bindings, DE/WM agnostic
 #### Now started as a systemd user service,
@@ -66,7 +67,7 @@ dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XA
 polkit session
 lxsession &
 
-xrandr --dpi 141.21
+xrandr --dpi 108.79
 
 # Delete $HOME/tmp folder and create it again
 rm -rf $HOME/tmp

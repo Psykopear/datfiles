@@ -56,8 +56,10 @@ XF86AudioPrev
 
 # wallpaper
 super + alt + space
-    feh --randomize --bg-fill Pictures/FFBackground.jpg
+    betterlockscreen -w
 
+
+# feh --randomize --bg-fill Pictures/FFBackground.jpg
 # feh --randomize --bg-fill ~/.config/polybar/wallpaper/
 # feh --randomize --bg-fill .rust_wallpapers/
 
