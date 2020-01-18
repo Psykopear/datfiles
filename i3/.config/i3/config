@@ -23,7 +23,7 @@ client.focused_inactive $base00   $base0B   $base07 $base03   $base00
 client.unfocused        $base00   $base0B   $base07 $base01   $base00
 client.urgent           $base00   $base0B   $base07 $base08   $base00
 client.placeholder      $base00   $base0B   $base07 $base00   $base00
-client.background $base00
+# client.background $base00
 
 ### Borders ###
 # default_border normal 0
