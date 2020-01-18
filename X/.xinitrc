@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # X related config...
 xrdb .Xresources
@@ -33,12 +33,13 @@ xedgewarp -b &
 # Startup programs...
 libinput-gestures-setup start
 # redshift -l 43.106277:12.386502 &
-redshift &
+# redshift &
+redshift-gtk &
 picom --experimental-backends &
 # mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
-xfce4-power-manager &
+# xfce4-power-manager &
 
 # Variables
 export QT_STYLE_OVERRIDE=gtk2
@@ -49,26 +50,26 @@ export TERM=alacritty
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --randomize --bg-fill ~/.config/polybar/wallpaper/ &
-# feh --randomize --bg-fill Pictures/FFBackground.jpg &
-~/.fehbg
+# feh --bg-fill /usr/share/sddm/themes/chili/assets/background.jpg &
+betterlockscreen -w
 
 # Keys bindings, DE/WM agnostic
-#### Now started as a systemd user service,
-#### not sure it's a good idea
-# sxhkd -c /home/docler/.config/sxhkd/sxhkdrc.bspwm &
 sxhkd &
-sh ~/.config/polybar/launch.sh &
-# polybar top &
-# conky-startup.sh &
+
+# Polybar
+# sh ~/.config/polybar/launch.sh &
+# polybar main -c ~/.config/polybar/config.ini &
+sh ~/.config/polybar/launch.sh &!
+# sleep 3; sh ~/.config/polybar/launch.sh &
 
 # Hack to make gtk apps startup time human
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY &
 
-polkit session
-lxsession &
+# polkit session
+# lxsession &
 
-xrandr --dpi 108.79
-python src/ulauncher/bin/ulauncher &
+xrandr --dpi 92.56
+python ~/src/ulauncher/bin/ulauncher &
 python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
 
 # Delete $HOME/tmp folder and create it again

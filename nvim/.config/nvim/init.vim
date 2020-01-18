@@ -59,7 +59,6 @@ Plug 'luochen1990/rainbow'
 Plug 'machakann/vim-sandwich'
 " Colors
 Plug 'joshdick/onedark.vim'
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 " Neoterm
 Plug 'kassio/neoterm'
 " Javascript del cazzo
@@ -151,9 +150,9 @@ set completeopt=noinsert,menuone,noselect
 nnoremap G Gzz
 
 " Set virtualenv
-let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
-let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
-let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
+" let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
+" let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
+" let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
 
 " Colors
 set termguicolors
@@ -163,6 +162,7 @@ set synmaxcol=200
 let g:onedark_terminal_italics=1
 let base16colorspace=256
 " colorscheme base16-onedark
+" let g:onedark_terminal_italics=1
 colorscheme onedark
 " let g:palenight_terminal_italics=1
 " colorscheme palenight
@@ -539,6 +539,27 @@ let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_close_shortcut = '<leader>>'
 
 let g:airline_theme = 'onedark'
+" Lightline
+" \ 'inactive': {
+" \   'left': [], 'right': []
+" \ },
+" let g:lightline = {
+"             \ 'active': {
+"             \   'left': [
+"             \     [ 'mode', 'paste' ],
+"             \     [ 'gitbranch', 'readonly', 'relativepath', 'modified' ]
+"             \   ],
+"             \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype' ] ]
+"             \ },
+"             \ 'component_function': {
+"             \   'gitbranch': 'fugitive#head'
+"             \ },
+"             \ }
+" let g:lightline.colorscheme = "one"
+" let g:lightline.colorscheme = "palenight"
+" let g:lightline.colorscheme = "challenger_deep"
+" let g:airline_theme = "challenger_deep"
+" let g:airline_theme = 'chalk'
 let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#hunks#enabled = 0

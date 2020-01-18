@@ -53,6 +53,9 @@ font pango:OperatorMono Nerd Font 12
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Mouse wheel down toggles floating
+bindsym --release button5 floating toggle, move position 300 800
+
 # Middle button over titlebar kills window
 bindsym --release button2 kill
 
@@ -191,6 +194,7 @@ for_window [title="Calendar"] floating enable
 for_window [title="Ulauncher Preferences"] floating enable
 no_focus [title="Calendar"]
 for_window [class="QtQmlViewer"] floating enable
+for_window [class="dde-calendar"] floating enable
 for_window [class="MineTime"] floating enable
 for_window [class="qutebrowser"] floating enable
 for_window [class="cpuplot"] floating enable
