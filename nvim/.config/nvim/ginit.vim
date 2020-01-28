@@ -1,3 +1,3 @@
-GuiFont! OperatorMono Nerd Font Mono:h11
+GuiFont! OperatorMono Nerd Font Mono:h10
 GuiTabline 0
 GuiPopupmenu 0

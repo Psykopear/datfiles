@@ -1,126 +1,94 @@
 call plug#begin('~/.config/nvim/plugged')
+
+Plug 'kkvh/vim-docker-tools'
 Plug 'liuchengxu/vista.vim'
 Plug 'chriskempson/base16-vim'
-
 " SQL Formatter and uppercaser (I just invented the word)
 Plug 'mattn/vim-sqlfmt'
 Plug 'alcesleo/vim-uppercase-sql'
-
 " Various languages syntax styles
 Plug 'sheerun/vim-polyglot'
-
 " Supercollider
 Plug 'supercollider/scvim'
-
 " Colorizer
 Plug 'norcalli/nvim-colorizer.lua'
-
-" Indentline, might be slow
-" Plug 'Yggdroot/indentLine'
-" Plug 'liuchengxu/vim-clap'
-
 " Auto closing stuff
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
-
 " Lightline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Plug 'neomake/neomake'
 Plug 'ncm2/float-preview.nvim'
 Plug 'Shougo/echodoc.vim'
-" Plug 'liuchengxu/vista.vim'
-
 Plug 'autozimu/LanguageClient-neovim', {
             \ 'branch': 'next',
             \ 'do': 'bash install.sh',
             \ }
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2'
-
 " FZF
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-
 " My own plugin
 Plug 'Psykopear/neovim-package-info', { 'do': './install.sh' }
-
 " Trim whitespaces
 Plug 'ntpeters/vim-better-whitespace'
-
 " Close buffer
 Plug 'rbgrouleff/bclose.vim'
-
 " Git stuff
 " Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'samoshkin/vim-mergetool'
-
 " Test stuff
 Plug 'janko-m/vim-test'
-
 " Tmux
 Plug 'benmills/vimux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
-
 " File explorer
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-git'
 Plug 'kristijanhusak/defx-icons'
-
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
 Plug 'luochen1990/rainbow'
-
+Plug 'machakann/vim-sandwich'
 " Colors
 Plug 'joshdick/onedark.vim'
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
-" Plug 'drewtempelmeyer/palenight.vim'
-
 " Neoterm
 Plug 'kassio/neoterm'
-
 " Javascript del cazzo
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
-
 " Python
 Plug 'Vigemus/iron.nvim'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'python/black'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
 " Moar fancy icons
 Plug 'ryanoasis/vim-devicons'
-
 function! BuildComposer(info)
     if a:info.status != 'unchanged' || a:info.force
         !cargo build --release
     endif
 endfunction
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
-
 call plug#end()
 
-"""""""""""""""""""""""""
-" Neovim general settings
-"""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+" Neovim general settings "
+"""""""""""""""""""""""""""
 set encoding=utf8
-
 " Default split directions
 set splitbelow
 set splitright
-
 " Map Leader and localleader
 let mapleader=","
 let maplocalleader=","
-
 set updatetime=100
-
 "" Spaces & Tabs
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
@@ -175,7 +143,7 @@ set completeopt=noinsert,menuone,noselect
 " Keep cursor vertically centered
 " nnoremap j }zz
 " nnoremap k {zz
-nnoremap <space> za
+" nnoremap <space> za
 " nnoremap <M-space> {
 " set scrolloff=900
 nnoremap G Gzz
@@ -200,10 +168,11 @@ colorscheme onedark
 " colorscheme base16-challenger-deep
 " colorscheme rigel
 " Transparent background
-hi Normal guibg=NONE ctermbg=NONE
+" hi Normal guibg=NONE ctermbg=NONE
 " Hide tilde characters in the end of buffer.
 " Thanks to Neovim, this is not possible in vim
-set fillchars=eob:\  " Adding a comment here so the whitespace is not removed on save
+" set fillchars=eob:\ ,vert:\│ " Adding a comment here so the whitespace is not removed on save
+set fillchars=eob:\ ,vert:░
 
 " Esc with jj
 inoremap jj <Esc>
@@ -254,40 +223,18 @@ nnoremap <leader><space> :nohlsearch<CR>
 noremap <leader>h :<C-u>split<CR>
 noremap <leader>v :<C-u>vsplit<CR>
 
-" Switching windows
-" noremap <C-j> <C-w>j
-" noremap <C-S-J> <C-w>J
-" noremap <C-k> <C-w>k
-" noremap <C-S-K> <C-w>K
-" noremap <C-l> <C-w>l
-" noremap <C-S-L> <C-w>L
-" noremap <C-h> <C-w>h
-" noremap <C-S-H> <C-w>H
-
 tnoremap jj <C-\><C-n>
 " tnoremap <C-h> <C-\><C-n><C-w>h
 " tnoremap <C-j> <C-\><C-n><C-w>j
 " tnoremap <C-k> <C-\><C-n><C-w>k
 " tnoremap <C-l> <C-\><C-n><C-w>l
 
-
 " Delete previous character with backspace in normal mode
 noremap <BS> hx
-
-
-" tab switching map
-" nmap <S-Tab> :bprevious!<CR>
-" nmap <Tab> :bnext!<CR>
 
 " Close buffer
 noremap <leader>c :Bclose <CR>
 noremap <leader>bd :1,100bd<CR>
-
-" Automatically trim whitespaces on save
-" autocmd BufWritePost * StripWhitespace
-let g:better_whitespace_enabled=1
-let g:strip_whitespace_on_save=1
-let g:strip_whitespace_confirm=0
 
 " Resize
 map <silent> <A-h> <C-w><
@@ -307,6 +254,11 @@ nmap tt :call OpenCurrentAsNewTab()<CR>
 """"""""""""""""""
 " Plugins configs
 """"""""""""""""""
+
+" Automatically trim whitespaces on save
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
 
 " Neoterm
 " tnoremap <Esc> <C-\><C-n>
@@ -328,16 +280,12 @@ let g:gitgutter_terminal_reports_focus=0
 
 " fuGITive
 nmap <silent><Leader>g :G<CR><C-w>L:vertical resize 80<CR>
-" nmap <silent><Leader>g :Gina status<CR>
 
 " Vista
 map <F8> :Vista lcn<CR>
 let g:vista_sidebar_width = 40
 let g:vista_echo_cursor_strategy = "floating_win"
 let g:vista_icon_indent = ['- ', '- ']
-
-" Python highlights
-" let python_highlight_all=1
 
 " Rainbow
 let g:rainbow_active = 1
@@ -360,7 +308,6 @@ autocmd Filetype javascript,cucumber setlocal ts=2 sts=2 sw=2
 let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
-
 
 " Prettier
 let g:prettier#config#semi = 'true'
@@ -617,17 +564,13 @@ highlight EndOfBuffer guifg=bg
 
 let g:org_todo_keywords=['TODO', 'IN_PROGRESS', '|', 'DONE', 'ABANDONED']
 
-let g:languagetool_server='/usr/share/java/languagetool/languagetool-server.jar'
+" let g:languagetool_server='/usr/share/java/languagetool/languagetool-server.jar'
+" let g:rigel_airline = 1
 
 let g:vim_markdown_conceal_code_blocks = 0
 
-let g:rigel_airline = 1
-
 " Picom config file as dosini
 au BufRead,BufNewFile picom.conf set filetype=dosini
-
-" Create mappings for aerojump
-nmap <space> <Plug>(AerojumpSpace)
 
 " Floating Term
 let s:float_term_border_win = 0
