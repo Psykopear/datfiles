@@ -1,4 +1,5 @@
 call plug#begin('~/.config/nvim/plugged')
+Plug 'itchyny/calendar.vim'
 
 Plug 'kkvh/vim-docker-tools'
 Plug 'liuchengxu/vista.vim'
@@ -172,7 +173,8 @@ colorscheme onedark
 " Hide tilde characters in the end of buffer.
 " Thanks to Neovim, this is not possible in vim
 " set fillchars=eob:\ ,vert:\│ " Adding a comment here so the whitespace is not removed on save
-set fillchars=eob:\ ,vert:░
+" set fillchars=eob:\ ,vert:░
+set fillchars=eob:\ ,vert:│
 
 " Esc with jj
 inoremap jj <Esc>
@@ -632,3 +634,6 @@ let g:test#strategy = 'float-term'
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-s -vv'
 
+" Calendar settings
+" let g:calendar_google_calendar = 1
+" let g:calendar_google_task = 1

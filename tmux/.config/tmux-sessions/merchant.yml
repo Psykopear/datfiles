@@ -3,12 +3,9 @@ start_directory: ~/workspace/merchant
 shell_command_before:
   - workon merchant
 windows:
-  - window_name: editor
+  - window_name: shell
     panes:
-      - nvim
-  - window_name: free-shell
-    panes:
-      - clear && git st
+      - nvim-qt && clear && git st && bat ~/omar.md
   - window_name: docker-services
     focus: True
     panes:
