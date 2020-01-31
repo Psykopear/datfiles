@@ -2,6 +2,7 @@
 !nvim/.config
 !nvim/*
 !nvim
+nvim/.config/nvim/.netrwhist
 plugged
 # Emacs
 auto-save-list

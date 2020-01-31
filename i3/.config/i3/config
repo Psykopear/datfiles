@@ -248,16 +248,3 @@ for_window [class="Qemu-system-x86_64"] resize set 1920 1080
 for_window [class="Uzbl-core"] focus child, layout tabbed, focus
 for_window [title=".*nannou.*"] floating enable
 for_window [title=".*Add FX to.*"] floating enable
-
-# Tray
-bar {
-    i3bar_command i3bar -t
-    position               top
-    workspace_buttons      no
-    mode hide
-    colors {
-        separator            #00FFFF00
-        background           #00000000
-        statusline           #00dddd00
-    }
-}
