@@ -1,6 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
+" Gdscript syntax
+Plug 'clktmr/vim-gdscript3'
 Plug 'itchyny/calendar.vim'
-
 Plug 'kkvh/vim-docker-tools'
 Plug 'liuchengxu/vista.vim'
 Plug 'chriskempson/base16-vim'

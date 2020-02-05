@@ -5,8 +5,11 @@ super + Return
 super + shift + Return
     alacritty -e tmux
 
+super + Tab
+    ~/.config/polybar/scripts/window-switcher &
+
 super + p
-    mons -n top
+    ~/.config/polybar/scripts/monitor_layout.sh &
 
 super + shift + p
     ~/.config/polybar/launch.sh &!
