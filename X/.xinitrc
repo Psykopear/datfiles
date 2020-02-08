@@ -69,6 +69,7 @@ lxsession &
 
 xrandr --dpi 108.79
 python src/ulauncher/bin/ulauncher &
+python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
 
 # Delete $HOME/tmp folder and create it again
 rm -rf $HOME/tmp
