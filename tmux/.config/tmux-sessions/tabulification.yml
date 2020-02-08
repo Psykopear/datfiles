@@ -1,0 +1,12 @@
+session_name: tabulafever
+start_directory: ~/workspace/tabulification
+windows:
+  - window_name: shell
+    panes:
+      - poetry run nvim && clear && git st
+  - window_name: services
+    layout: even-vertical
+    focus: True
+    panes:
+      - poetry run python tabulafever/manage.py runserver
+      - docker-compose -f docker-services.yml up

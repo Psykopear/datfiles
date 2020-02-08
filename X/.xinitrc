@@ -68,6 +68,7 @@ polkit session
 lxsession &
 
 xrandr --dpi 108.79
+python src/ulauncher/bin/ulauncher &
 
 # Delete $HOME/tmp folder and create it again
 rm -rf $HOME/tmp

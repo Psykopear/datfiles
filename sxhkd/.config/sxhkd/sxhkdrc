@@ -21,8 +21,8 @@ super + shift + s
 # program launcher
 # super + o
 #     rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
-super + o
-    ~/.config/polybar/scripts/elementary-menu-alt
+# super + o
+#     ~/.config/polybar/scripts/elementary-menu-alt
 
 # Password manager
 super + shift + o

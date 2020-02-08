@@ -6,6 +6,10 @@
 #     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
 #         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
+
+# Completion
+fpath+=~/.zfunc
+
 # Path to oh-my-zsh installation.
 export ZSH=/home/docler/.oh-my-zsh
 export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:/home/docler/.nvm/versions/node/v12.4.0/bin
@@ -80,9 +84,6 @@ alias b="backblaze-b2"
 alias weather='curl -s wttr.in/perugia | head -7'
 alias weatherforecast='curl -s wttr.in/perugia | head -37 | tail -30'
 
-# alias yarn
-alias yltub='yarn lint && yarn test -u && yarn build'
-
 # trying exa
 alias ls='exa'
 
@@ -90,7 +91,8 @@ alias ls='exa'
 alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 0'
 alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
-alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim'
+alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim &!'
+# alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim-qt'
 
 # DIOPORCO
 # alias ionic='/home/docler/.nvm/versions/node/v12.4.0/lib/node_modules/ionic/bin/ionic'
@@ -192,6 +194,10 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export ANDROID_HOME=/opt/android-sdk
 export PATH=${PATH}:${ANDROID_HOME}/tools
 export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+
+
+# Poetry path
+export PATH=${PATH}:$HOME/.poetry/bin
 
 timer() {
     clear
