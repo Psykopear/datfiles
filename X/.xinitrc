@@ -34,8 +34,8 @@ xedgewarp -b &
 libinput-gestures-setup start
 # redshift -l 43.106277:12.386502 &
 # redshift &
-redshift-gtk &
-picom --experimental-backends &
+# redshift-gtk &
+# picom --experimental-backends &
 # mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
@@ -51,7 +51,7 @@ export TERM=alacritty
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --randomize --bg-fill ~/.config/polybar/wallpaper/ &
 # feh --bg-fill /usr/share/sddm/themes/chili/assets/background.jpg &
-betterlockscreen -w
+# betterlockscreen -w
 
 # Keys bindings, DE/WM agnostic
 sxhkd &
@@ -59,7 +59,7 @@ sxhkd &
 # Polybar
 # sh ~/.config/polybar/launch.sh &
 # polybar main -c ~/.config/polybar/config.ini &
-sh ~/.config/polybar/launch.sh &!
+# sh ~/.config/polybar/launch.sh &
 # sleep 3; sh ~/.config/polybar/launch.sh &
 
 # Hack to make gtk apps startup time human
@@ -69,8 +69,8 @@ dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XA
 # lxsession &
 
 xrandr --dpi 92.56
-~/src/ulauncher/ul run &
-python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
+# ~/src/ulauncher/ul run &
+# python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
 
 # Delete $HOME/tmp folder and create it again
 rm -rf $HOME/tmp

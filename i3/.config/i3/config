@@ -28,7 +28,7 @@ client.placeholder      $base00   $base0B   $base07 $base00   $base00
 ### Borders ###
 # default_border normal 0
 default_border pixel 0
-border_radius 10
+border_radius 15
 # default_floating_border pixel 3
 # bindsym $mod+semicolon exec i3-msg border color $base0D
 # bindsym $mod+semicolon exec i3-msg border pixel 5
@@ -229,3 +229,11 @@ for_window [class="Qemu-system-x86_64"] resize set 1920 1080
 for_window [class="Uzbl-core"] focus child, layout tabbed, focus
 for_window [title=".*nannou.*"] floating enable
 for_window [title=".*Add FX to.*"] floating enable
+
+# Execute things
+exec --no-startup-id "~/src/ulauncher/ul run"
+exec --no-startup-id "python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist"
+exec --no-startup-id "sh ~/.config/polybar/launch.sh"
+exec --no-startup-id "betterlockscreen -w"
+exec --no-startup-id "redshift-gtk"
+exec --no-startup-id "picom --experimental-backends"
