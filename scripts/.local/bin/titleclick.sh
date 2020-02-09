@@ -11,7 +11,7 @@ do
     x=`xdotool getmouselocation | cut -d':' -f 2 | cut -d ' ' -f 1`
     y=`xdotool getmouselocation | cut -d':' -f 3 | cut -d ' ' -f 1`
     xdotool windowmove $active_window $x $y
-    cur_state=`xinput --query-state 12 | grep "button\[1\]=" | cut -d'=' -f2`
+    cur_state=`xinput --query-state 8 | grep "button\[1\]=" | cut -d'=' -f2`
     if [[ "$prev_state" = "up" && "$cur_state" = "down" ]]; then
         keep_going=false
     fi
