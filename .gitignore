@@ -1,3 +1,10 @@
+# Ignore all files without extension in scripts/.local/bin/
+# I don't want to upload binaries since they might not work
+# across different environments
+scripts/.local/bin/*
+!scripts/.local/bin/*/
+!scripts/.local/bin/*.*
+
 # Nothing here
 !nvim/.config
 !nvim/*
@@ -12,3 +19,4 @@ projectile-bookmarks.eld
 recentf
 new-emacs/.emacs.d/var/
 tags
+
