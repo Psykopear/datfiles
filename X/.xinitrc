@@ -31,14 +31,14 @@ setxkbmap \
 xedgewarp -b &
 
 # Startup programs...
-libinput-gestures-setup start
+# libinput-gestures-setup start
 # redshift -l 43.106277:12.386502 &
-redshift &
-picom --experimental-backends &
+# redshift &
+# picom --experimental-backends &
 # mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
-xfce4-power-manager &
+# xfce4-power-manager &
 
 # Variables
 export QT_STYLE_OVERRIDE=gtk2
@@ -50,14 +50,14 @@ export TERM=alacritty
 # feh --bg-fill /home/docler/.wallpapers/space.png &
 # feh --randomize --bg-fill ~/.config/polybar/wallpaper/ &
 # feh --randomize --bg-fill Pictures/FFBackground.jpg &
-~/.fehbg
+# ~/.fehbg
 
 # Keys bindings, DE/WM agnostic
 #### Now started as a systemd user service,
 #### not sure it's a good idea
 # sxhkd -c /home/docler/.config/sxhkd/sxhkdrc.bspwm &
 sxhkd &
-sh ~/.config/polybar/launch.sh &
+# sh ~/.config/polybar/launch.sh &
 # polybar top &
 # conky-startup.sh &
 
@@ -68,8 +68,8 @@ polkit session
 lxsession &
 
 xrandr --dpi 108.79
-python src/ulauncher/bin/ulauncher &
-python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
+# ~/src/ulauncher/ul run &
+# python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
 
 # Delete $HOME/tmp folder and create it again
 rm -rf $HOME/tmp
