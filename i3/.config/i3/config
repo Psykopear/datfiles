@@ -184,7 +184,7 @@ bindsym $mod+r mode "resize"
 
 
 title_align center
-for_window [class=".*"] title_format "<b><span color='#c694ff'>»</span> %title <span color='#c694ff'>«</span></b>"
+# for_window [class=".*"] title_format "<b><span color='#c694ff'>»</span> %title <span color='#c694ff'>«</span></b>"
 for_window [title="Alacritty"] border pixel 0
 for_window [class="nvim-qt"] border pixel 0 floating enable
 for_window [title="Calendar"] floating enable
