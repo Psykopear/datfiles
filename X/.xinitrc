@@ -69,7 +69,7 @@ dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XA
 # lxsession &
 
 xrandr --dpi 92.56
-python ~/src/ulauncher/bin/ulauncher &
+~/src/ulauncher/ul run &
 python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist &
 
 # Delete $HOME/tmp folder and create it again
