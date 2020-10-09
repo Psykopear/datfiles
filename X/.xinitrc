@@ -35,14 +35,16 @@ xedgewarp -b &
 # redshift -l 43.106277:12.386502 &
 # redshift &
 # picom --experimental-backends &
-# mons -a & # Disable other displays if only one monitor
+mons -a & # Disable other displays if only one monitor
 
 # Tray area stuff
 # xfce4-power-manager &
 
 # Variables
-export QT_STYLE_OVERRIDE=gtk2
-export QT_QPA_PLATFORMTHEME=gtk2
+# export QT_STYLE_OVERRIDE=gtk2
+# export QT_QPA_PLATFORMTHEME=gtk2
+export QT_STYLE_OVERRIDE=kvantum
+export QT_QPA_PLATFORMTHEME=kvantum
 export TERM=alacritty
 
 # Set background

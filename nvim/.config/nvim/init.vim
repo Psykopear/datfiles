@@ -1,4 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
+Plug 'metakirby5/codi.vim'
+
+Plug 'https://github.com/alok/notational-fzf-vim'
 " Gdscript syntax
 Plug 'clktmr/vim-gdscript3'
 Plug 'itchyny/calendar.vim'
@@ -10,6 +13,7 @@ Plug 'mattn/vim-sqlfmt'
 Plug 'alcesleo/vim-uppercase-sql'
 " Various languages syntax styles
 Plug 'sheerun/vim-polyglot'
+Plug 'pest-parser/pest.vim'
 " Supercollider
 Plug 'supercollider/scvim'
 " Colorizer
@@ -55,7 +59,7 @@ Plug 'kristijanhusak/defx-git'
 Plug 'kristijanhusak/defx-icons'
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
-Plug 'luochen1990/rainbow'
+" Plug 'luochen1990/rainbow'
 Plug 'machakann/vim-sandwich'
 " Colors
 Plug 'joshdick/onedark.vim'
@@ -149,6 +153,7 @@ set completeopt=noinsert,menuone,noselect
 " nnoremap <M-space> {
 " set scrolloff=900
 nnoremap G Gzz
+nnoremap n nzz
 
 " Set virtualenv
 let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
@@ -237,7 +242,7 @@ noremap <BS> hx
 
 " Close buffer
 noremap <leader>c :Bclose <CR>
-noremap <leader>bd :1,100bd<CR>
+" noremap <leader>bd :1,100bd<CR>
 
 " Resize
 map <silent> <A-h> <C-w><
@@ -340,13 +345,26 @@ au FileType python imap <leader>ds <Esc>:call luaeval('require("iron").core.send
 """"""""""""""
 
 " Language client
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition({'gotoCmd': 'vsplit'})<CR>
 nnoremap <silent> gD :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 nnoremap <silent> gq :call LanguageClient#textDocument_formatting()<CR>
 nnoremap <silent> s :call LanguageClient#textDocument_signatureHelp()<CR>
+
+" augroup markdown_language_client_commands
+"     autocmd!
+"     autocmd WinLeave __LanguageClient__ ++nested call <SID>fixLanguageClientHover()
+" augroup END
+
+" function! s:fixLanguageClientHover()
+"     setlocal modifiable
+"     setlocal conceallevel=2
+"     normal i
+"     setlocal nonu nornu
+"     setlocal nomodifiable
+" endfunction
 
 let g:float_preview#docked = 0
 let g:LanguageClient_hoverPreview="Always"
@@ -355,8 +373,9 @@ let g:LanguageClient_hoverPreview="Always"
 let g:LanguageClient_useVirtualText="No"
 let g:LanguageClient_settingsPath = "/home/docler/.config/nvim/settings.json"
 let g:LanguageClient_serverCommands = {
-            \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
+            \ 'rust': ['rust-analyzer'],
             \ 'c': ['clangd'],
+            \ 'cpp': ['clangd'],
             \ 'python': ['python', '-m', 'pyls'],
             \ 'javascript': ['typescript-language-server', '--stdio'],
             \ }
@@ -485,10 +504,10 @@ function! FloatingFZF()
     let col = float2nr((&columns - width) / 2)
     let opts = {
                 \ 'relative': 'editor',
-                \ 'row': height * 0.3,
-                \ 'col': col + 30,
-                \ 'width': width * 2 / 3,
-                \ 'height': height / 2
+                \ 'row': 1,
+                \ 'col': col,
+                \ 'width': width,
+                \ 'height': height - 3
                 \ }
 
     let buf = nvim_create_buf(v:false, v:true)
@@ -638,3 +657,12 @@ let test#python#pytest#options = '-s -vv'
 " Calendar settings
 " let g:calendar_google_calendar = 1
 " let g:calendar_google_task = 1
+let g:nv_search_paths = ['~/notes']
+
+" Set jinja filetype on files under templates dirs
+augroup htmldjango_ft
+  au!
+  autocmd BufNewFile,BufRead */templates/*.html set ft=htmldjango
+augroup END
+
+" let g:codi#autocmd = "None"

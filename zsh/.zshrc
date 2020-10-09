@@ -10,9 +10,12 @@
 # Completion
 fpath+=~/.zfunc
 
+# Set history file
+export HISTFILE=/home/docler/.zsh_history
+
 # Path to oh-my-zsh installation.
-export ZSH=/home/docler/.oh-my-zsh
-export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:/home/docler/.nvm/versions/node/v12.4.0/bin
+# export ZSH=/home/docler/.oh-my-zsh
+export PATH=$PATH:~/.local/bin/:~/.yarn/bin/:~/.cargo/bin:/home/docler/.nvm/versions/node/v12.4.0/bin:~/.local/opt/google-cloud-sdk/bin
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -21,10 +24,10 @@ export NVR_CMD=nvim-qt
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="af-magic"
-ZSH_THEME="flazz"
+# ZSH_THEME="flazz"
 # ZSH_THEME="kennethreitz"
 # ZSH_THEME="norm"
-plugins=(git jump kubectl)
+# plugins=(git jump kubectl)
 
 export BAT_THEME="TwoDark"
 
@@ -32,7 +35,7 @@ export EDITOR='nvim'
 export TERMINAL='alacritty'
 export BROWSER='firefox'
 
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
 
 # Virtualenvwrapper, lazily loaded
 export WORKON_HOME=~/.virtualenvs
@@ -47,8 +50,13 @@ export ARCHFLAGS="-arch x86_64 -j13"
 
 # Function used to load tmuxp projects
 load() {
-    tmuxp load .config/tmux-sessions/$1.yml
+    tmuxp load ~/.config/tmux-sessions/$1.yml
 }
+# This function returns completion items for `load`
+loadcompletion() {
+    reply=( $(ls -1 ~/.config/tmux-sessions/ | cut -d. -f1) )
+}
+compctl -K loadcompletion load
 
 # Aliases
 alias h='howdoi -c -a'
@@ -91,7 +99,9 @@ alias ls='exa'
 alias setmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 0'
 alias unsetmouse='xinput --set-prop "SYNA2393:00 06CB:7A13 Touchpad" "libinput Disable While Typing Enabled" 1'
 
-alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim &!'
+alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim'
+alias snvimqt='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim-qt'
+# alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket alacritty -e nvim &!'
 # alias snvim='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim-qt'
 
 # DIOPORCO
@@ -151,7 +161,7 @@ change-version() {
 }
 
 # Load nvm
-source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 
 # Lazy load pythonz
 pythonz() {
@@ -245,6 +255,19 @@ _fulload() {
 
 alias fulload='_fulload; read; killall dd'
 
+# Python scratchpad using nvim and Codi
+codi() {
+  local syntax="${1:-python}"
+  shift
+  nvim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax" "$@"
+}
+
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/path.zsh.inc'; fi
@@ -255,3 +278,6 @@ if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
 source /home/docler/.config/broot/launcher/bash/br
 
 [ -f ~/.fzf.colors ] && source ~/.fzf.colors
+
+
+eval "$(starship init zsh)"

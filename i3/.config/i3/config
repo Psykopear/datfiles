@@ -28,7 +28,7 @@ client.background $base00
 ### Borders ###
 # default_border normal 0
 default_border pixel 0
-border_radius 10
+# border_radius 4
 # default_floating_border pixel 3
 # bindsym $mod+semicolon exec i3-msg border color $base0D
 # bindsym $mod+semicolon exec i3-msg border pixel 5
@@ -133,16 +133,26 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+# bindsym $mod+Shift+1 move container to workspace $ws1
+# bindsym $mod+Shift+2 move container to workspace $ws2
+# bindsym $mod+Shift+3 move container to workspace $ws3
+# bindsym $mod+Shift+4 move container to workspace $ws4
+# bindsym $mod+Shift+5 move container to workspace $ws5
+# bindsym $mod+Shift+6 move container to workspace $ws6
+# bindsym $mod+Shift+7 move container to workspace $ws7
+# bindsym $mod+Shift+8 move container to workspace $ws8
+# bindsym $mod+Shift+9 move container to workspace $ws9
+# bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -185,8 +195,12 @@ bindsym $mod+r mode "resize"
 
 title_align center
 # for_window [class=".*"] title_format "<b><span color='#c694ff'>»</span> %title <span color='#c694ff'>«</span></b>"
+for_window [class=".*"] title_format "<b>%title</b>"
 for_window [title="Alacritty"] border pixel 0
+for_window [class="Mysthea"] floating enable
+for_window [class="Take Screenshot"] floating enable
 for_window [class="nvim-qt"] border pixel 0 floating enable
+# for_window [class="Fuzzle"] border pixel 0 floating enable
 for_window [title="Calendar"] floating enable
 for_window [title="Ulauncher Preferences"] floating enable
 no_focus [title="Calendar"]
@@ -233,5 +247,9 @@ exec --no-startup-id "picom --experimental-backends"
 exec --no-startup-id "xfce4-power-manager"
 exec --no-startup-id "~/.fehbg"
 exec --no-startup-id "sh ~/.config/polybar/launch.sh"
-exec --no-startup-id "~/src/ulauncher/ul run"
-exec --no-startup-id "python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace --icon_list_format chemist"
+# exec --no-startup-id "python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace"
+exec --no-startup-id "~/src/i3autoname/target/release/i3autoname"
+exec --no-startup-id "nm-applet"
+
+# YEAH
+bindsym $mod+o exec /home/docler/src/fuzzle/target/release/fuzzle

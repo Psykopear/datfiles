@@ -33,8 +33,11 @@ txcolor=$(get_color $txbytes)
 
 if [[ $dev == "wl"* ]]; then
     icon="直"
+    icon="wifi"
 else
     icon=""
+    icon="eth"
 fi
 
-echo "$icon  %{F$rxcolor}%{F-} %{F$txcolor}%{F-}"
+# echo "$icon  %{F$rxcolor}%{F-} %{F$txcolor}%{F-}"
+echo "%{F$rxcolor}%{F-}%{F$txcolor}%{F-}"

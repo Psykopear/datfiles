@@ -18,6 +18,8 @@ super + shift + p
 super + shift + s
     xset r rate 300 65
 
+@Print
+    gnome-screenshot -c -a
 # program launcher
 # super + o
 #     rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"
@@ -48,6 +50,12 @@ XF86Audio{Raise,Lower}Volume
 
 XF86AudioMute
     ~/.local/bin/volume -np -m
+
+F12
+    xbacklight -inc 10
+
+F11
+    xbacklight -dec 10
 
 # Audio player
 XF86AudioPlay
