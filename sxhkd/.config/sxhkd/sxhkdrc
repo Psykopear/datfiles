@@ -1,6 +1,6 @@
 # terminal emulator, with tmux by default
 super + Return
-    alacritty
+    kitty
 
 super + shift + Return
     alacritty -e tmux
@@ -13,6 +13,9 @@ super + p
 
 super + shift + p
     ~/.config/polybar/launch.sh &!
+
+super + shift + t
+    kitty -e python ~/.local/bin/spotify-lyrics.py
 
 # Fix set rate
 super + shift + s
@@ -28,7 +31,10 @@ super + shift + s
 
 # Password manager
 super + shift + o
-    ~/.config/polybar/scripts/password-manager
+    bwmenu
+#    ~/.config/polybar/scripts/password-manager
+super + shift + b
+    bitwarden
 
 # gopass ls --flat | rofi -dmenu -i -p 'gopass:' -lines 5 -width 30 -location 6 -hide-scrollbar true | xargs --no-run-if-empty gopass --clip */
 

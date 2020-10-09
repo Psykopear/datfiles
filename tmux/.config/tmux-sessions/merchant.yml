@@ -1,13 +1,14 @@
 session_name: merchant
 start_directory: ~/workspace/merchant
-shell_command_before:
-  - workon merchant
 windows:
-  - window_name: shell
-    panes:
-      - nvim-qt && clear && git st && bat ~/omar.md
-  - window_name: docker-services
+  - window_name: nvim
     focus: True
     panes:
-      - docker-compose -f docker-compose-services.yml up
-      - python merchant/manage.py runserver
+      - poetry run nvim
+  - window_name: shell
+    panes:
+      - git st
+  - window_name: docker-services
+    panes:
+      - docker-compose -f docker-services.yml up
+      - poetry run python merchant/manage.py runserver

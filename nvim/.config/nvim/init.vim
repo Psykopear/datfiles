@@ -1,29 +1,44 @@
 call plug#begin('~/.config/nvim/plugged')
-Plug 'metakirby5/codi.vim'
 
-Plug 'https://github.com/alok/notational-fzf-vim'
+" OpenSCAD syntax
+Plug 'sirtaj/vim-openscad'
+
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+Plug 'jamessan/vim-gnupg'
+" Useless stuff
+Plug 'itchyny/calendar.vim'
+Plug 'danilamihailov/beacon.nvim'
+Plug 'liuchengxu/vista.vim'
+Plug 'kkvh/vim-docker-tools'
+" Plug 'chriskempson/base16-vim'
+
 " Gdscript syntax
 Plug 'clktmr/vim-gdscript3'
-Plug 'itchyny/calendar.vim'
-Plug 'kkvh/vim-docker-tools'
-Plug 'liuchengxu/vista.vim'
-Plug 'chriskempson/base16-vim'
+
 " SQL Formatter and uppercaser (I just invented the word)
 Plug 'mattn/vim-sqlfmt'
 Plug 'alcesleo/vim-uppercase-sql'
+
 " Various languages syntax styles
+let g:polyglot_disabled = ['python', 'csv']
 Plug 'sheerun/vim-polyglot'
 Plug 'pest-parser/pest.vim'
+
 " Supercollider
 Plug 'supercollider/scvim'
+
 " Colorizer
 Plug 'norcalli/nvim-colorizer.lua'
+
 " Auto closing stuff
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
-" Lightline
+
+" Statusline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Coding stuff
 Plug 'ncm2/float-preview.nvim'
 Plug 'Shougo/echodoc.vim'
 Plug 'autozimu/LanguageClient-neovim', {
@@ -32,48 +47,59 @@ Plug 'autozimu/LanguageClient-neovim', {
             \ }
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2'
+
 " FZF
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+
 " My own plugin
 Plug 'Psykopear/neovim-package-info', { 'do': './install.sh' }
+
 " Trim whitespaces
 Plug 'ntpeters/vim-better-whitespace'
+
 " Close buffer
 Plug 'rbgrouleff/bclose.vim'
+
 " Git stuff
-" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'samoshkin/vim-mergetool'
+
 " Test stuff
 Plug 'janko-m/vim-test'
+
 " Tmux
 Plug 'benmills/vimux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
+
 " File explorer
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'kristijanhusak/defx-git'
 Plug 'kristijanhusak/defx-icons'
+
 " Code and tpope stuff
 Plug 'tpope/vim-commentary'
-" Plug 'luochen1990/rainbow'
 Plug 'machakann/vim-sandwich'
+
 " Colors
 Plug 'joshdick/onedark.vim'
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+
 " Neoterm
 Plug 'kassio/neoterm'
+
 " Javascript del cazzo
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'leafgarland/typescript-vim'
+
 " Python
 Plug 'Vigemus/iron.nvim'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'python/black'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+
 " Moar fancy icons
 Plug 'ryanoasis/vim-devicons'
 function! BuildComposer(info)
@@ -106,9 +132,6 @@ set noshowmode
 set nowrap          " Wrap lines
 "" Various settings
 set shell=/bin/zsh
-set noswapfile
-set showmatch
-set incsearch
 set history=2000
 set hlsearch
 set hidden
@@ -166,7 +189,7 @@ set background=dark
 syntax enable
 set synmaxcol=200
 let g:onedark_terminal_italics=1
-let base16colorspace=256
+" let base16colorspace=256
 " colorscheme base16-onedark
 colorscheme onedark
 " let g:palenight_terminal_italics=1
@@ -184,6 +207,10 @@ set fillchars=eob:\ ,vert:│
 
 " Esc with jj
 inoremap jj <Esc>
+
+" Base64 decode/encode
+vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
+vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
 
 " Folding
 set foldlevelstart=10        " default folding level when buffer is opened
@@ -299,7 +326,7 @@ let g:vista_icon_indent = ['- ', '- ']
 let g:rainbow_active = 1
 
 " Supercollider
-let g:sclangTerm = "alacritty -e"
+let g:sclangTerm = "kitty -e"
 let g:scFlash = 1
 let g:sclangPipeApp = "~/.config/nvim/plugged/scvim/bin/start_pipe"
 let g:sclangDispatcher = "~/.config/nvim/plugged/scvim/bin/sc_dispatcher"
@@ -336,7 +363,7 @@ let g:rustfmt_autosave = 1
 
 " Python REPL
 au FileType python map <leader>ds :call luaeval('require("iron").core.send(_A[1],_A[2])', [&ft, getline(line("'{"), line("'}"))])<CR>
-au FileType python imap <leader>ds <Esc>:call luaeval('require("iron").core.send(_A[1],_A[2])', [&ft, getline(line("'{"), line("'}"))])<CR>
+au FileType python imap <leader>ds <Esc> :call luaeval('require("iron").core.send(_A[1],_A[2])', [&ft, getline(line("'{"), line("'}"))])<CR>
 " let g:iron_repl_open_cmd = "split"
 " let g:iron_repl_open_cmd = 'topright horizontal 100 split'
 
@@ -484,14 +511,17 @@ endfunction
 autocmd FileType python call MyCustomHighlights()
 
 " FZF configs
-nnoremap <silent><C-space> :Buffers<CR>
-nnoremap <silent><C-p> :FZF<CR>
-nnoremap <silent><C-t> :Tags<CR>
+" nnoremap <silent><C-space> :Buffers<CR>
+" nnoremap <silent><C-p> :FZF<CR>
+" nnoremap <silent><C-t> :Tags<CR>
+nnoremap <silent><C-space> :Clap buffers<CR>
+nnoremap <silent><C-p> :Clap files<CR>
+nnoremap <silent><C-t> :call LanguageClient#textDocument_documentSymbol()<CR>
 " Rg has problems right now (04/12/2019), it
 " hangs and seems to have a memory leak. I'm going to
 " use Ag for now, but change it back in the future
 nnoremap <leader>a :Rg <C-R><C-W><cr>
-noremap <silent><C-s> :Ag<CR>
+noremap <silent><C-s> :Rg<CR>
 
 " Generate tags for :Tags command only using filtered files (no hiddend
 " directories and no gitignored files)
@@ -523,31 +553,10 @@ function! FloatingFZF()
           \ signcolumn=no
 endfunction
 
-" Polyglot
-let g:polyglot_disabled = ['python', 'csv']
 
 " Markdown
 let g:markdown_composer_browser = 'qutebrowser'
 let g:markdown_composer_open_browser = 0
-
-" Function to toggle hiding of the statusline
-let s:hidden_all = 0
-function! ToggleHiddenAll()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
-        set noshowmode
-        set noruler
-        set laststatus=0
-        set noshowcmd
-    else
-        let s:hidden_all = 0
-        set showmode
-        set ruler
-        set laststatus=2
-        set showcmd
-    endif
-endfunction
-nnoremap <S-h> :call ToggleHiddenAll()<CR>
 
 " Closetag config
 let g:closetag_filenames = '*.html,*.js,*.jsx'
@@ -557,6 +566,7 @@ let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_close_shortcut = '<leader>>'
 
+" Airline
 let g:airline_theme = 'onedark'
 let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1
@@ -583,11 +593,6 @@ autocmd BufEnter  *  call ncm2#enable_for_buffer()
 
 " Hide ~ on blank lines
 highlight EndOfBuffer guifg=bg
-
-let g:org_todo_keywords=['TODO', 'IN_PROGRESS', '|', 'DONE', 'ABANDONED']
-
-" let g:languagetool_server='/usr/share/java/languagetool/languagetool-server.jar'
-" let g:rigel_airline = 1
 
 let g:vim_markdown_conceal_code_blocks = 0
 
@@ -648,8 +653,9 @@ nnoremap <Leader>ta :call FloatTerm()<CR>
 
 " Vim tests
 nmap <silent><Leader>tt <Esc>:TestNearest<CR>
-let g:test#custom_strategies = {'float-term': function('FloatTerm')}
-let g:test#strategy = 'float-term'
+let g:test#strategy = 'vimux'
+" let g:test#custom_strategies = {'float-term': function('FloatTerm')}
+" let g:test#strategy = 'float-term'
 " let test#strategy = 'neoterm'
 let test#python#runner = 'pytest'
 let test#python#pytest#options = '-s -vv'
@@ -665,4 +671,21 @@ augroup htmldjango_ft
   autocmd BufNewFile,BufRead */templates/*.html set ft=htmldjango
 augroup END
 
-" let g:codi#autocmd = "None"
+" I only use beacon for livecoding
+let g:beacon_enable = 0
+
+" Clap
+let g:clap_layout = { 'width': '70%', 'height': '70%', 'row': '15%', 'col': '15%', 'relative': 'editor' }
+let g:clap_popup_border = 'sharp'
+let g:clap_insert_mode_only = v:true
+let g:clap_search_box_border_style = 'nil'
+
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+set guifont=FiraCode\ Nerd\ Font\ Mono:h16
+let g:neovide_refresh_rate=75
+let g:neovide_cursor_animation_length=0.03
+let g:neovide_cursor_vfx_mode = "sonicboom"
+let g:neovide_cursor_vfx_particle_lifetime=0.2

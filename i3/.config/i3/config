@@ -197,6 +197,7 @@ title_align center
 # for_window [class=".*"] title_format "<b><span color='#c694ff'>»</span> %title <span color='#c694ff'>«</span></b>"
 for_window [class=".*"] title_format "<b>%title</b>"
 for_window [title="Alacritty"] border pixel 0
+for_window [class="Bitwarden"] floating enable
 for_window [class="Mysthea"] floating enable
 for_window [class="Take Screenshot"] floating enable
 for_window [class="nvim-qt"] border pixel 0 floating enable
@@ -243,13 +244,15 @@ for_window [title=".*Add FX to.*"] floating enable
 # Execute things
 exec --no-startup-id "libinput-gestures-setup start"
 exec --no-startup-id "redshift"
-exec --no-startup-id "picom --experimental-backends"
+# exec --no-startup-id "picom --experimental-backends -b"
 exec --no-startup-id "xfce4-power-manager"
 exec --no-startup-id "~/.fehbg"
 exec --no-startup-id "sh ~/.config/polybar/launch.sh"
-# exec --no-startup-id "python ~/repos/i3scripts/autoname_workspaces.py --norenumber_workspace"
 exec --no-startup-id "~/src/i3autoname/target/release/i3autoname"
 exec --no-startup-id "nm-applet"
+# This wonderfull tools allow to have a predefined configuration for known screens
+# and show a GUI to select the new configuration for unknown screens.
+exec --no-startup-id "/home/docler/repos/x-on-resize/x-on-resize --config \"/home/docler/repos/lilass/lilass -s \" --start"
 
 # YEAH
-bindsym $mod+o exec /home/docler/src/fuzzle/target/release/fuzzle
+bindsym $mod+o exec /home/docler/.local/bin/fuzzle

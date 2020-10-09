@@ -5,13 +5,28 @@
 # [ -n "$PS1" ] && \
 #     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
 #         eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-
-# Completion
-fpath+=~/.zfunc
+#
 
 # Set history file
 export HISTFILE=/home/docler/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=50000
+
+# History command configuration, copied from oh-my-zsh
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+
+function history {
+  # unless a number is provided, show all history events (starting from 1)
+  [[ ${@[-1]-} = *[0-9]* ]] && builtin fc -l "$@" || builtin fc -l "$@" 1
+}
+
+# Completion
+fpath+=~/.zfunc
 
 # Path to oh-my-zsh installation.
 # export ZSH=/home/docler/.oh-my-zsh
@@ -22,20 +37,81 @@ export LC_ALL=en_US.UTF-8
 # Neovim remote command
 export NVR_CMD=nvim-qt
 
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="af-magic"
-# ZSH_THEME="flazz"
-# ZSH_THEME="kennethreitz"
-# ZSH_THEME="norm"
-# plugins=(git jump kubectl)
-
 export BAT_THEME="TwoDark"
 
 export EDITOR='nvim'
 export TERMINAL='alacritty'
 export BROWSER='firefox'
 
-# source $ZSH/oh-my-zsh.sh
+eval "$(starship init zsh)"
+# Lines configured by zsh-newuser-install
+bindkey -e
+# End of lines configured by zsh-newuser-install
+unsetopt flowcontrol
+setopt menu_complete   # do not autoselect the first completion entry
+setopt auto_menu         # show completion menu on successive tab press
+setopt complete_in_word
+setopt always_to_end
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion::complete:*' use-cache 1
+export ZSH_CACHE_DIR=/home/docler/.cache/
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
+expand-or-complete-with-dots() {
+    # toggle line-wrapping off and back on again
+    [[ -n "$terminfo[rmam]" && -n "$terminfo[smam]" ]] && echoti rmam
+    print -Pn "%{%F{red}......%f%}"
+    [[ -n "$terminfo[rmam]" && -n "$terminfo[smam]" ]] && echoti smam
+
+    zle expand-or-complete
+    zle redisplay
+}
+zle -N expand-or-complete-with-dots
+bindkey "^I" expand-or-complete-with-dots
+
+autoload -Uz compinit
+compinit
+
+# Kubectl completion
+if (( $+commands[kubectl] )); then
+    __KUBECTL_COMPLETION_FILE="${ZSH_CACHE_DIR}/kubectl_completion"
+
+    if [[ ! -f $__KUBECTL_COMPLETION_FILE ]]; then
+        kubectl completion zsh >! $__KUBECTL_COMPLETION_FILE
+    fi
+
+    [[ -f $__KUBECTL_COMPLETION_FILE ]] && source $__KUBECTL_COMPLETION_FILE
+
+    unset __KUBECTL_COMPLETION_FILE
+fi
+
+
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+[ -f ~/.fzf.colors ] && source ~/.fzf.colors
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
+export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
+# export FZF_DEFAULT_COMMAND='fd --type f'
+# If current selection is a text file shows its content,
+# if it's a directory shows its content, the rest is ignored
+FZF_CTRL_T_OPTS="--preview-window wrap --preview '
+if [[ -f {} ]]; then
+    file --mime {} | grep -q \"text\/.*;\" && bat --color \"always\" {} || (tput setaf 1; file --mime {})
+elif [[ -d {} ]]; then
+    exa -l --color always {}
+else;
+    tput setaf 1; echo YOU ARE NOT SUPPOSED TO SEE THIS!
+    fi'"
+    # To apply the command to CTRL-T as well
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
 
 # Virtualenvwrapper, lazily loaded
 export WORKON_HOME=~/.virtualenvs
@@ -87,6 +163,8 @@ alias git-server='git daemon --reuseaddr --base-path=. --export-all --verbose'
 # Literal search rg
 alias rgl="rg -F"
 alias b="backblaze-b2"
+# Image cat, only works on kitty
+alias icat="kitty +kitten icat"
 
 # web services
 alias weather='curl -s wttr.in/perugia | head -7'
@@ -136,6 +214,7 @@ function extract()
 {
     if [ -f $1 ] ; then
         case $1 in
+            *.tar.xz)    tar -xf $1      ;;
             *.tar.bz2)   tar xvjf $1     ;;
             *.tar.gz)    tar xvzf $1     ;;
             *.bz2)       bunzip2 $1      ;;
@@ -155,10 +234,10 @@ function extract()
 }
 
 change-version() {
-  if [ -z $1 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
-  if [ -z $2 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
-  rg -l $1 | xargs sed -i s/$1/$2/
-}
+if [ -z $1 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
+    if [ -z $2 ]; then; echo "Usage:\n    change-version PREVIOUS_VERSION NEXT_VERSION"; return; fi;
+        rg -l $1 | xargs sed -i s/$1/$2/
+    }
 
 # Load nvm
 # source /usr/share/nvm/init-nvm.sh
@@ -167,38 +246,21 @@ change-version() {
 pythonz() {
     [ -z "$PYTHONZED" ] && {
         PYTHONZED=1
-        unset -f pythonz
-        source ~/.pythonz/etc/bashrc
-    }
+            unset -f pythonz
+            source ~/.pythonz/etc/bashrc
+        }
     pythonz $@
 }
 
 # Lazy load thefuck aliases
 fuck() {
-  [ -z "$FUCKED" ] && {
-    FUCKED=1
-    unset -f fuck;
-    eval $(thefuck --alias)
-  }
-  fuck
+    [ -z "$FUCKED" ] && {
+        FUCKED=1
+            unset -f fuck;
+            eval $(thefuck --alias)
+        }
+    fuck
 }
-
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
-export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
-# export FZF_DEFAULT_COMMAND='fd --type f'
-# If current selection is a text file shows its content,
-# if it's a directory shows its content, the rest is ignored
-FZF_CTRL_T_OPTS="--preview-window wrap --preview '
-if [[ -f {} ]]; then
-    file --mime {} | grep -q \"text\/.*;\" && bat --color \"always\" {} || (tput setaf 1; file --mime {})
-elif [[ -d {} ]]; then
-    exa -l --color always {}
-else;
-    tput setaf 1; echo YOU ARE NOT SUPPOSED TO SEE THIS!
-fi'"
-# To apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Android paths
 export ANDROID_HOME=/opt/android-sdk
@@ -214,21 +276,21 @@ timer() {
     date1=`date +%s`
     while true
     do
-       echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"
-       sleep 1
+        echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"
+        sleep 1
     done
 }
 
 # Colored man
 man() {
     LESS_TERMCAP_md=$'\e[01;31m' \
-    LESS_TERMCAP_me=$'\e[0m' \
-    LESS_TERMCAP_se=$'\e[0m' \
-    LESS_TERMCAP_so=$'\e[01;44;33m' \
-    LESS_TERMCAP_ue=$'\e[0m' \
-    LESS_TERMCAP_us=$'\e[01;32m' \
-    command man "$@"
-}
+        LESS_TERMCAP_me=$'\e[0m' \
+        LESS_TERMCAP_se=$'\e[0m' \
+        LESS_TERMCAP_so=$'\e[01;44;33m' \
+        LESS_TERMCAP_ue=$'\e[0m' \
+        LESS_TERMCAP_us=$'\e[01;32m' \
+        command man "$@"
+    }
 
 # Colored code in less
 export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
@@ -246,27 +308,27 @@ export LPASS_AGENT_TIMEOUT=28800
 # Full load test
 _fulload() {
     dd if=/dev/zero of=/dev/null \
-  | dd if=/dev/zero of=/dev/null \
-  | dd if=/dev/zero of=/dev/null \
-  | dd if=/dev/zero of=/dev/null \
-  | dd if=/dev/zero of=/dev/null \
-  | dd if=/dev/zero of=/dev/null &
-}
+        | dd if=/dev/zero of=/dev/null \
+        | dd if=/dev/zero of=/dev/null \
+        | dd if=/dev/zero of=/dev/null \
+        | dd if=/dev/zero of=/dev/null \
+        | dd if=/dev/zero of=/dev/null &
+    }
 
 alias fulload='_fulload; read; killall dd'
 
 # Python scratchpad using nvim and Codi
 codi() {
-  local syntax="${1:-python}"
-  shift
-  nvim -c \
-    "let g:startify_disable_at_vimenter = 1 |\
-    set bt=nofile ls=0 noru nonu nornu |\
-    hi ColorColumn ctermbg=NONE |\
-    hi VertSplit ctermbg=NONE |\
-    hi NonText ctermfg=0 |\
-    Codi $syntax" "$@"
-}
+    local syntax="${1:-python}"
+    shift
+    nvim -c \
+        "let g:startify_disable_at_vimenter = 1 |\
+        set bt=nofile ls=0 noru nonu nornu |\
+        hi ColorColumn ctermbg=NONE |\
+        hi VertSplit ctermbg=NONE |\
+        hi NonText ctermfg=0 |\
+        Codi $syntax" "$@"
+    }
 
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -275,9 +337,6 @@ if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/docler/tmp/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D/google-cloud-sdk/completion.zsh.inc'; fi
 
-source /home/docler/.config/broot/launcher/bash/br
 
-[ -f ~/.fzf.colors ] && source ~/.fzf.colors
-
-
-eval "$(starship init zsh)"
+# Git fuzzy
+export PATH="/home/docler/repos/git-fuzzy/bin:$PATH"

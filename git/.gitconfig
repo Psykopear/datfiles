@@ -8,6 +8,8 @@
   st = status
   sd = !git status -s --branch && git diff
   br = branch
+  ; Kitty super fancy diff
+  df = difftool --no-symlinks --dir-diff
   lg = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(yellow)- %an%C(reset)%C(auto)%d%C(reset)%n"        "%C(white)%<(100,trunc)%s%C(reset)' --all #--decorate-refs-exclude='refs/pullreqs/*'
   serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 
@@ -18,33 +20,36 @@
   default = simple
 
 [core]
-  pager = diff-so-fancy | less --tabs=4 -RFX #--pattern '^(Date|added|deleted|modified|): '
-  ; pager = delta --dark --theme="OneHalfDark"
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  ; pager = delta
   excludesfile = ~/.gitignore
   editor =  nvim
+
+; Kitty super fancy diff
+[diff]
+    tool = kitty
+    guitool = kitty.gui
+[difftool]
+    prompt = false
+    trustExitCode = true
+[difftool "kitty"]
+    cmd = kitty +kitten diff $LOCAL $REMOTE
+[difftool "kitty.gui"]
+    cmd = kitty kitty +kitten diff $LOCAL $REMOTE
+
+; [interactive]
+;     diffFilter = delta --color-only
+; [delta]
+;     features = side-by-side
+;     whitespace-error-style = 22 reverse
+;     syntax-theme = OneHalfDark
 
 [rerere]
   enabled = true
 
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
-
-[color "diff"]
-	meta = yellow
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
-
-; [merge]
-;     conflictStyle = diff3
-
 [mergetool "nvim"]
   cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

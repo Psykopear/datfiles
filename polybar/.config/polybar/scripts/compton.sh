@@ -3,9 +3,9 @@
 case "$1" in
     --toggle)
         if [ "$(pgrep -x picom)" ]; then
-            pkill picom
+            systemctl --user stop picom
         else
-            picom -b --experimental-backends
+            systemctl --user start picom
         fi
         ;;
     *)

@@ -3,11 +3,14 @@ start_directory: ~/workspace/siqtraq
 windows:
   - window_name: shell
     panes:
-      - pipenv run nvim-qt && clear && git st
+      - poetry run nvim
+  - window_name: git
+    panes:
+      - git st
   - window_name: services
     layout: even-vertical
     focus: True
     panes:
-      - pipenv run python siq/manage.py runserver
+      - poetry run python siq/manage.py runserver
       - docker-compose -f docker-services.yml up
-      - cd frontend && yarn watch
+      - yarn --cwd frontend watch
