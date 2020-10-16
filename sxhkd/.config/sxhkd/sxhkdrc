@@ -31,8 +31,8 @@ super + shift + s
 
 # Password manager
 super + shift + o
-    bwmenu
-#    ~/.config/polybar/scripts/password-manager
+    ~/.config/polybar/scripts/password-manager
+#    bwmenu
 super + shift + b
     bitwarden
 

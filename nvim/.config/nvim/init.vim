@@ -47,6 +47,7 @@ Plug 'autozimu/LanguageClient-neovim', {
             \ }
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " FZF
 Plug 'junegunn/fzf'
@@ -394,10 +395,10 @@ nnoremap <silent> s :call LanguageClient#textDocument_signatureHelp()<CR>
 " endfunction
 
 let g:float_preview#docked = 0
-let g:LanguageClient_hoverPreview="Always"
+" let g:LanguageClient_hoverPreview="Always"
 " let g:LanguageClient_signatureHelpOnCompleteDone=1
 " let g:LanguageClient_diagnosticsSignsMax=0
-let g:LanguageClient_useVirtualText="No"
+" let g:LanguageClient_useVirtualText="No"
 let g:LanguageClient_settingsPath = "/home/docler/.config/nvim/settings.json"
 let g:LanguageClient_serverCommands = {
             \ 'rust': ['rust-analyzer'],
@@ -406,7 +407,6 @@ let g:LanguageClient_serverCommands = {
             \ 'python': ['python', '-m', 'pyls'],
             \ 'javascript': ['typescript-language-server', '--stdio'],
             \ }
-
 
 " Defx
 au FileType defx call s:defx_my_settings()
@@ -590,6 +590,8 @@ let g:echodoc#events = ['CompleteDone', 'InsertEnter']
 
 " NCM2
 autocmd BufEnter  *  call ncm2#enable_for_buffer()
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Hide ~ on blank lines
 highlight EndOfBuffer guifg=bg
