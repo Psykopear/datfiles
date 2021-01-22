@@ -1,6 +1,6 @@
 # terminal emulator, with tmux by default
 super + Return
-    kitty
+    alacritty
 
 super + shift + Return
     alacritty -e tmux
@@ -15,14 +15,16 @@ super + shift + p
     ~/.config/polybar/launch.sh &!
 
 super + shift + t
-    kitty -e python ~/.local/bin/spotify-lyrics.py
+    alacritty -e python ~/.local/bin/spotify-lyrics.py
 
 # Fix set rate
 super + shift + s
     xset r rate 300 65
 
 @Print
-    gnome-screenshot -c -a
+    maim -s | xclip -selection clipboard -t image/png
+
+#    gnome-screenshot -c -a
 # program launcher
 # super + o
 #     rofi -modi combi -combi-modi drun,run,ssh,window -show combi -padding 10 -seperator-style "none"

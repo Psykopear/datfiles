@@ -1,4 +1,9 @@
 call plug#begin('~/.config/nvim/plugged')
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/lsp_extensions.nvim'
+" Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/diagnostic-nvim'
+" Plug 'nvim-treesitter/nvim-treesitter'
 
 " OpenSCAD syntax
 Plug 'sirtaj/vim-openscad'
@@ -175,19 +180,23 @@ set completeopt=noinsert,menuone,noselect
 " nnoremap k {zz
 " nnoremap <space> za
 " nnoremap <M-space> {
-" set scrolloff=900
+set scrolloff=900
 nnoremap G Gzz
 nnoremap n nzz
 
 " Set virtualenv
 let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
 let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
-let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
+" let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
+" let g:python_host_prog = '/usr/bin/python'
+" let g:python3_host_prog = '/usr/bin/python2'
+" let g:black_virtualenv = '/home/docler/.virtualenvs/neovim'
 
 " Colors
 set termguicolors
 set background=dark
 syntax enable
+filetype plugin indent on
 set synmaxcol=200
 let g:onedark_terminal_italics=1
 " let base16colorspace=256
@@ -340,7 +349,7 @@ let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 0
 
 " Js configs
-autocmd Filetype javascript,cucumber setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript,cucumber,openscad setlocal ts=2 sts=2 sw=2
 let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
@@ -381,6 +390,36 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 nnoremap <silent> gq :call LanguageClient#textDocument_formatting()<CR>
 nnoremap <silent> s :call LanguageClient#textDocument_signatureHelp()<CR>
 
+" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+" Visualize diagnostics
+let g:diagnostic_enable_virtual_text = 1
+let g:diagnostic_trimmed_virtual_text = '40'
+" Don't show diagnostics while in insert mode
+let g:diagnostic_insert_delay = 1
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+" Show diagnostic popup on cursor hold
+" autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
+
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>PrevDiagnosticCycle<cr>
+nnoremap <silent> g] <cmd>NextDiagnosticCycle<cr>
+
+" Enable type inlay hints
+" autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+" \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
+
 " augroup markdown_language_client_commands
 "     autocmd!
 "     autocmd WinLeave __LanguageClient__ ++nested call <SID>fixLanguageClientHover()
@@ -394,11 +433,11 @@ nnoremap <silent> s :call LanguageClient#textDocument_signatureHelp()<CR>
 "     setlocal nomodifiable
 " endfunction
 
-let g:float_preview#docked = 0
-" let g:LanguageClient_hoverPreview="Always"
-" let g:LanguageClient_signatureHelpOnCompleteDone=1
-" let g:LanguageClient_diagnosticsSignsMax=0
-" let g:LanguageClient_useVirtualText="No"
+" let g:float_preview#docked = 0
+let g:LanguageClient_hoverPreview="Always"
+let g:LanguageClient_signatureHelpOnCompleteDone=1
+let g:LanguageClient_diagnosticsSignsMax=0
+let g:LanguageClient_useVirtualText="No"
 let g:LanguageClient_settingsPath = "/home/docler/.config/nvim/settings.json"
 let g:LanguageClient_serverCommands = {
             \ 'rust': ['rust-analyzer'],
@@ -407,6 +446,27 @@ let g:LanguageClient_serverCommands = {
             \ 'python': ['python', '-m', 'pyls'],
             \ 'javascript': ['typescript-language-server', '--stdio'],
             \ }
+" Configure LSP
+" https://github.com/neovim/nvim-lspconfig#rust_analyzer
+" lua <<EOF
+"
+" -- nvim_lsp object
+" local nvim_lsp = require'nvim_lsp'
+"
+" -- function to attach completion and diagnostics
+" -- when setting up lsp
+" local on_attach = function(client)
+"     require'completion'.on_attach(client)
+"     require'diagnostic'.on_attach(client)
+" end
+"
+" -- Enable rust_analyzer
+" nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+" nvim_lsp.pyls.setup{}
+" nvim_lsp.tsserver.setup{}
+" nvim_lsp.clangd.setup{}
+"
+" EOF
 
 " Defx
 au FileType defx call s:defx_my_settings()
@@ -593,6 +653,17 @@ autocmd BufEnter  *  call ncm2#enable_for_buffer()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" Trigger completion with <Tab>
+" inoremap <silent><expr> <TAB>
+"   \ pumvisible() ? "\<C-n>" :
+"   \ <SID>check_back_space() ? "\<TAB>" :
+"   \ completion#trigger_completion()
+
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+
 " Hide ~ on blank lines
 highlight EndOfBuffer guifg=bg
 
@@ -691,3 +762,13 @@ let g:neovide_refresh_rate=75
 let g:neovide_cursor_animation_length=0.03
 let g:neovide_cursor_vfx_mode = "sonicboom"
 let g:neovide_cursor_vfx_particle_lifetime=0.2
+
+" Treesitter
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "all",     -- one of "all", "language", or a list of languages
+"   highlight = {
+"     enable = true,              -- false will disable the whole extension
+"   },
+" }
+" EOF

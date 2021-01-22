@@ -240,6 +240,8 @@ for_window [class="Qemu-system-x86_64"] resize set 1920 1080
 for_window [class="Uzbl-core"] focus child, layout tabbed, focus
 for_window [title=".*nannou.*"] floating enable
 for_window [title=".*Add FX to.*"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
 
 # Execute things
 exec --no-startup-id "libinput-gestures-setup start"
@@ -252,7 +254,7 @@ exec --no-startup-id "~/src/i3autoname/target/release/i3autoname"
 exec --no-startup-id "nm-applet"
 # This wonderfull tools allow to have a predefined configuration for known screens
 # and show a GUI to select the new configuration for unknown screens.
-exec --no-startup-id "/home/docler/repos/x-on-resize/x-on-resize --config \"/home/docler/repos/lilass/lilass -s \" --start"
+exec --no-startup-id "/home/docler/repos/x-on-resize/x-on-resize --config \"/home/docler/repos/lilass/lilass --no-db \" --start"
 
 # YEAH
 bindsym $mod+o exec /home/docler/.local/bin/fuzzle

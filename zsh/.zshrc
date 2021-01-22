@@ -26,7 +26,7 @@ function history {
 }
 
 # Completion
-fpath+=~/.zfunc
+# fpath+=~/.zfunc
 
 # Path to oh-my-zsh installation.
 # export ZSH=/home/docler/.oh-my-zsh
