@@ -22,7 +22,7 @@ set hlsearch
 set hidden
 " set cursorline
 set lazyredraw
-" set number
+set number
 " set nonumber
 " Use system clipboard
 set clipboard+=unnamedplus
@@ -46,8 +46,8 @@ set pumheight=10
 " Conceal
 set conceallevel=3
 " Always draw the signcolumn.
-" set signcolumn=yes
-set signcolumn=no
+set signcolumn=yes
+" set signcolumn=no
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 " set completeopt=noinsert,menuone,noselect
@@ -65,12 +65,12 @@ set scrolloff=900
 "
 " Folding
 " default folding level when buffer is opened
-set foldlevelstart=10
+" set foldlevelstart=10
 " maximum nested fold
-set foldnestmax=10
+" set foldnestmax=10
 " treesitter folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
 
 " Colors
 set termguicolors

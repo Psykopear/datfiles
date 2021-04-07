@@ -65,3 +65,6 @@ function! OpenCurrentAsNewTab()
 endfunction
 nmap tt :call OpenCurrentAsNewTab()<CR>
 
+" nvim bufferline
+nnoremap <silent>[b :BufferLineCycleNext<CR>
+nnoremap <silent>b] :BufferLineCyclePrev<CR>
