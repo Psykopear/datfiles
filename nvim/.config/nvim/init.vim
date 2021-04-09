@@ -105,7 +105,7 @@ autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ on
 
 " nnoremap <leader>tf <cmd>Telescope find_files<cr>
 " nnoremap <silent><C-p> <cmd>Telescope find_files cwd=%:p:h<cr>
-nnoremap <silent><C-p> <cmd>:lua require'telescope-config'.project_files({cwd = vim.fn.expand('%:p:h')})<cr>
+nnoremap <silent><C-p> <cmd>:lua require'config.telescope'.project_files({cwd = vim.fn.expand('%:p:h')})<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <silent><C-s> <cmd>Telescope live_grep<cr>
 " nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -142,66 +142,68 @@ let g:vim_markdown_conceal_code_blocks = 0
 " Picom config file as dosini
 au BufRead,BufNewFile picom.conf set filetype=dosini
 
-" Floating Term
-let s:float_term_border_win = 0
-let s:float_term_win = 0
-function! FloatTerm(...)
-    " Configuration
-    let height = float2nr((&lines - 2) * 0.6)
-    let row = float2nr((&lines - height) / 2)
-    let width = float2nr(&columns * 0.6)
-    let col = float2nr((&columns - width) / 2)
-    " Border Window
-    let border_opts = {
-                \ 'relative': 'editor',
-                \ 'row': row - 1,
-                \ 'col': col - 2,
-                \ 'width': width + 4,
-                \ 'height': height + 2,
-                \ 'style': 'minimal'
-                \ }
-    " Terminal Window
-    let opts = {
-                \ 'relative': 'editor',
-                \ 'row': row,
-                \ 'col': col,
-                \ 'width': width,
-                \ 'height': height,
-                \ 'style': 'minimal'
-                \ }
-    let top = "╭" . repeat("─", width + 2) . "╮"
-    let mid = "│" . repeat(" ", width + 2) . "│"
-    let bot = "╰" . repeat("─", width + 2) . "╯"
-    let lines = [top] + repeat([mid], height) + [bot]
-    let bbuf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(bbuf, 0, -1, v:true, lines)
-    let s:float_term_border_win = nvim_open_win(bbuf, v:true, border_opts)
-    let buf = nvim_create_buf(v:false, v:true)
-    let s:float_term_win = nvim_open_win(buf, v:true, opts)
-    " Styling
-    call setwinvar(s:float_term_border_win, '&winhl', 'Normal:Normal')
-    call setwinvar(s:float_term_win, '&winhl', 'Normal:Normal')
-    if a:0 == 0
-        terminal
-    else
-        " Add a prompt so the user has to press something to close the window
-        " otherwise it closes itself as soon as the job is over
-        call termopen(a:1 . "; echo 'Press anything to close' && read")
-    endif
-    startinsert
-    " Close border window when terminal window close
-    autocmd TermClose * ++once :bd! | call nvim_win_close(s:float_term_border_win, v:true)
-endfunction
-nnoremap <Leader>ta :call FloatTerm()<CR>
+" " Floating Term
+" let s:float_term_border_win = 0
+" let s:float_term_win = 0
+" function! FloatTerm(...)
+"     " Configuration
+"     let height = float2nr((&lines - 2) * 0.6)
+"     let row = float2nr((&lines - height) / 2)
+"     let width = float2nr(&columns * 0.6)
+"     let col = float2nr((&columns - width) / 2)
+"     " Border Window
+"     let border_opts = {
+"                 \ 'relative': 'editor',
+"                 \ 'row': row - 1,
+"                 \ 'col': col - 2,
+"                 \ 'width': width + 4,
+"                 \ 'height': height + 2,
+"                 \ 'style': 'minimal'
+"                 \ }
+"     " Terminal Window
+"     let opts = {
+"                 \ 'relative': 'editor',
+"                 \ 'row': row,
+"                 \ 'col': col,
+"                 \ 'width': width,
+"                 \ 'height': height,
+"                 \ 'style': 'minimal'
+"                 \ }
+"     let top = "╭" . repeat("─", width + 2) . "╮"
+"     let mid = "│" . repeat(" ", width + 2) . "│"
+"     let bot = "╰" . repeat("─", width + 2) . "╯"
+"     let lines = [top] + repeat([mid], height) + [bot]
+"     let bbuf = nvim_create_buf(v:false, v:true)
+"     call nvim_buf_set_lines(bbuf, 0, -1, v:true, lines)
+"     let s:float_term_border_win = nvim_open_win(bbuf, v:true, border_opts)
+"     let buf = nvim_create_buf(v:false, v:true)
+"     let s:float_term_win = nvim_open_win(buf, v:true, opts)
+"     " Styling
+"     call setwinvar(s:float_term_border_win, '&winhl', 'Normal:Normal')
+"     call setwinvar(s:float_term_win, '&winhl', 'Normal:Normal')
+"     if a:0 == 0
+"         terminal
+"     else
+"         " Add a prompt so the user has to press something to close the window
+"         " otherwise it closes itself as soon as the job is over
+"         call termopen(a:1 . "; echo 'Press anything to close' && read")
+"     endif
+"     startinsert
+"     " Close border window when terminal window close
+"     autocmd TermClose * ++once :bd! | call nvim_win_close(s:float_term_border_win, v:true)
+" endfunction
+" nnoremap <Leader>ta :call FloatTerm()<CR>
 
 " Vim tests
-nmap <silent><Leader>tt <Esc>:TestNearest<CR>
-let g:test#strategy = 'vimux'
+nmap <leader>tt :UltestNearest<CR>
+nmap <leader>ta :Ultest<CR>
+nmap <leader>ts :UltestSummary<CR>
+" let g:test#strategy = 'vimux'
 " let g:test#custom_strategies = {'float-term': function('FloatTerm')}
 " let g:test#strategy = 'float-term'
-" let test#strategy = 'neoterm'
+let test#strategy = 'neoterm'
 let test#python#runner = 'pytest'
-let test#python#pytest#options = '-s -vv'
+let test#python#pytest#options = '-s -vv --no-cov'
 
 " Calendar settings
 " let g:calendar_google_calendar = 1
@@ -266,17 +268,25 @@ nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 
 " Treesitter
-lua require'treesitter-config'
+lua require'config.treesitter'
 " Telescope configs
-lua require'telescope-config'.setup{}
+lua require'config.telescope'.setup{}
 " bufferline
-lua require'bufferline-config'
+lua require'config.bufferline'
 " galaxyline
-lua require'galaxyline-config'
+lua require'config.galaxyline'
 " Configure LSP
-lua require'lsp-config'
+lua require'config.lsp'
 " gitsigns
-lua require'gitsigns-config'
+lua require'config.gitsigns'
 let g:indent_blankline_char = '│'
 let g:indent_blankline_use_treesitter = v:true
+let g:indent_blankline_filetype_exclude = ['help']
+let g:indent_blankline_buftype_exclude = ['terminal']
 
+" Do not add default neoterm maps
+let g:neoterm_automap_keys = 0
+
+" ultest
+let g:ultest_max_threads = 1
+let g:ultest_output_on_line = 0

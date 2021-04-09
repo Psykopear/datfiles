@@ -1,14 +1,15 @@
+lua require'maps'
+
 " Move and center screen
-nnoremap G Gzz
-nnoremap n nzz
+" nnoremap G Gzz
+" nnoremap n nzz
 
 " Esc with jj
-inoremap jj <Esc>
+" inoremap jj <Esc>
 
 " Base64 decode/encode
-vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
-vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
-
+" vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
+" vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
 " Set unset wrap
 nmap <leader>m :set wrap!<CR>zz
 

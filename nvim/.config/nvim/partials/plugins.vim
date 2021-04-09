@@ -1,4 +1,7 @@
 call plug#begin('~/.config/nvim/plugged')
+" Test stuff
+Plug 'janko-m/vim-test'
+Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
 Plug 'neovim/nvim-lspconfig'
 Plug 'kabouzeid/nvim-lspinstall'
 Plug 'nvim-lua/lsp_extensions.nvim'
@@ -68,8 +71,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'samoshkin/vim-mergetool'
 
-" Test stuff
-Plug 'janko-m/vim-test'
 
 " File explorer
 Plug 'kyazdani42/nvim-web-devicons'
