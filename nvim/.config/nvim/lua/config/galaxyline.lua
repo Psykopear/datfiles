@@ -1,13 +1,15 @@
 local gl = require('galaxyline')
 local colors = require('galaxyline.theme').default
-colors.bg = '#282C34'
+-- colors.bg = '#282C34'
+colors.bg = '#434C5E'
 local condition = require('galaxyline.condition')
 local gls = gl.section
 gl.short_line_list = {'NvimTree','vista','dbui','packer'}
 
 gls.left[1] = {
   RainbowRed = {
-    provider = function() return '▊ ' end,
+    -- provider = function() return '▊ ' end,
+    provider = function() return '  ' end,
     highlight = {colors.blue,colors.bg}
   },
 }
@@ -157,6 +159,7 @@ gls.right[5] = {
   DiffAdd = {
     provider = 'DiffAdd',
     condition = condition.hide_in_width,
+    separator = ' ',
     icon = '  ',
     highlight = {colors.green,colors.bg},
   }
@@ -180,7 +183,8 @@ gls.right[7] = {
 
 gls.right[8] = {
   RainbowBlue = {
-    provider = function() return ' ▊' end,
+    -- provider = function() return ' ▊' end,
+    provider = function() return '  ' end,
     highlight = {colors.blue,colors.bg}
   },
 }

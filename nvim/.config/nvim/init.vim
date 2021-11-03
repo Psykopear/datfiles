@@ -2,6 +2,13 @@ runtime! partials/plugins.vim
 runtime! partials/settings.vim
 runtime! partials/maps.vim
 
+set foldmethod=indent
+"" Disabled due to a bug that makes this really slow, should be solved on
+"" master though
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
+set foldlevelstart=99
+
 set title
 let &titlestring='%t - nvim'
 
@@ -58,17 +65,6 @@ let g:jsx_ext_required = 0
 let g:used_javascript_libs = 'underscore,react'
 let g:vim_jsx_pretty_colorful_config = 1
 
-" Prettier
-let g:prettier#config#semi = 'true'
-let g:prettier#config#single_quote = 'false'
-let g:prettier#config#bracket_spacing = 'true'
-let g:prettier#config#jsx_bracket_same_line = 'false'
-let g:prettier#config#arrow_parens = 'avoid'
-let g:prettier#config#trailing_comma = 'none'
-let g:prettier#config#parser = 'babylon'
-let g:prettier#config#config_precedence = 'prefer-file'
-let g:prettier#config#prose_wrap = 'preserve'
-
 " Rust config
 let g:rustfmt_autosave = 1
 
@@ -103,13 +99,15 @@ nnoremap <silent> g] <cmd>NextDiagnosticCycle<cr>
 " \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
 autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }
 
-" nnoremap <leader>tf <cmd>Telescope find_files<cr>
-" nnoremap <silent><C-p> <cmd>Telescope find_files cwd=%:p:h<cr>
-nnoremap <silent><C-p> <cmd>:lua require'config.telescope'.project_files({cwd = vim.fn.expand('%:p:h')})<cr>
-" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <silent><C-s> <cmd>Telescope live_grep<cr>
-" nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <silent><C-space> <cmd>Telescope buffers<cr>
+" nnoremap <silent><C-p> <cmd>:lua require'config.telescope'.project_files({cwd = vim.fn.expand('%:p:h')})<cr>
+" nnoremap <silent><C-p> <cmd>:FZF<CR>
+nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
+nnoremap <c-space> <cmd>lua require('fzf-lua').buffers()<CR>
+nnoremap <c-s> <cmd>lua require('fzf-lua').live_grep()<cr>
+nnoremap <leader>a <cmd>lua require('fzf-lua').grep_cWORD()<cr>
+" nnoremap <leader>a :Telescope grep_string search=<C-R><C-W><CR>
+" nnoremap <silent><C-s> <cmd>Telescope live_grep<cr>
+" nnoremap <silent><C-space> <cmd>Telescope buffers<cr>
 nnoremap <leader>th <cmd>Telescope help_tags<cr>
 
 " Markdown
@@ -216,6 +214,13 @@ augroup htmldjango_ft
     autocmd BufNewFile,BufRead */templates/*.html set ft=htmldjango
 augroup END
 
+" Set css and xml filetypes on unity's uss and uxml
+augroup htmldjango_ft
+    au!
+    autocmd BufNewFile,BufRead *uss set ft=css
+    autocmd BufNewFile,BufRead *uxml set ft=xml
+augroup END
+
 " I only use beacon for livecoding
 let g:beacon_enable = 0
 
@@ -223,49 +228,104 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-set guifont=FiraCode\ Nerd\ Font\ Mono:h16
+" set guifont=FiraCode\ Nerd\ Font\ Mono:h14:style=Bold
+" set guifont=FiraCode\ Nerd\ Font\ Mono:h14
+set guifont=Monolisa,FiraCode\ Nerd\ Font\ Mono:h16:style=Bold
 let g:neovide_refresh_rate=75
 let g:neovide_cursor_animation_length=0.03
+let g:neovide_cursor_trail_length=1.0
 let g:neovide_cursor_vfx_mode = "sonicboom"
-let g:neovide_cursor_vfx_particle_lifetime=0.2
+" let g:neovide_cursor_vfx_mode = "railgun"
+let g:neovide_cursor_vfx_particle_lifetime=0.4
 
 " Nvim compe
-let g:compe = {}
-let g:compe.enabled = v:true
-let g:compe.autocomplete = v:true
-let g:compe.debug = v:false
-let g:compe.min_length = 1
-let g:compe.preselect = 'enable'
-let g:compe.throttle_time = 80
-let g:compe.source_timeout = 200
-let g:compe.incomplete_delay = 400
-let g:compe.max_abbr_width = 100
-let g:compe.max_kind_width = 100
-let g:compe.max_menu_width = 100
-let g:compe.documentation = v:true
-let g:compe.source = {}
-let g:compe.source.path = v:false
-let g:compe.source.buffer = v:false
-let g:compe.source.calc = v:false
-let g:compe.source.nvim_lsp = v:true
-let g:compe.source.nvim_lua = v:false
-let g:compe.source.vsnip = v:false
-let g:compe.source.emoji = v:false
+" let g:compe = {}
+" let g:compe.enabled = v:true
+" let g:compe.autocomplete = v:true
+" let g:compe.debug = v:false
+" let g:compe.min_length = 1
+" let g:compe.preselect = 'enable'
+" let g:compe.throttle_time = 80
+" let g:compe.source_timeout = 200
+" let g:compe.incomplete_delay = 400
+" let g:compe.max_abbr_width = 100
+" let g:compe.max_kind_width = 100
+" let g:compe.max_menu_width = 100
+" let g:compe.documentation = v:true
+" let g:compe.source = {}
+" let g:compe.source.path = v:true
+" let g:compe.source.tags = v:true
+" let g:compe.source.buffer = v:false
+" " let g:compe.source.calc = v:false
+" let g:compe.source.calc = v:true
+" let g:compe.source.nvim_lsp = v:true
+" let g:compe.source.nvim_lua = v:true
+" let g:compe.source.luasnip = v:false
+" let g:compe.source.vsnip = v:true
+" let g:compe.source.emoji = v:false
+" inoremap <silent><expr> <C-Space> compe#complete()
+" inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+"
 
-" Kitty
-map <silent> <C-h> :KittyNavigateLeft<cr>
-map <silent> <C-j> :KittyNavigateDown<cr>
-map <silent> <C-k> :KittyNavigateUp<cr>
-map <silent> <C-l> :KittyNavigateRight<cr>
+lua << EOF
+    local cmp = require('cmp')
+    local lspkind = require('lspkind')
+    cmp.setup {
+        mapping = {
+            ['<C-p>'] = cmp.mapping.select_prev_item(),
+            ['<C-n>'] = cmp.mapping.select_next_item(),
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.close(),
+            ['<CR>'] = cmp.mapping.confirm {
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true,
+            },
+        },
+        formatting = {
+            format = function(entry, vim_item)
+                vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
+                -- set a name for each source
+                vim_item.menu = ({
+                  buffer = "[Buffer]",
+                  nvim_lsp = "[LSP]",
+                  luasnip = "[LuaSnip]",
+                  nvim_lua = "[Lua]",
+                  latex_symbols = "[Latex]",
+                })[entry.source.name]
+                return vim_item
+            end
+        },
+        sources = {
+            { name = 'nvim_lsp' },
+            { name = "path" },
+            { name = "buffer" },
+            { name = "crates" },
+        }
+    }
+EOF
 
 " file explorer
 let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
 let g:nvim_tree_gitignore = 1 "0 by default
 let g:nvim_tree_hide_dotfiles = 1
-let g:nvim_tree_auto_close = 1
+let g:nvim_tree_highlight_opened_files = 2
+let g:nvim_tree_indent_markers = 1
+let g:nvim_tree_show_icons = {
+            \ 'git': 1,
+            \ 'folders': 1,
+            \ 'files': 1,
+            \ 'folder_arrows': 1,
+            \}
+" let g:nvim_tree_auto_close = 1
 nnoremap <leader>f :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
+let g:nvim_tree_ignore = [ '*.meta' ]
 
 " Treesitter
 lua require'config.treesitter'
@@ -274,15 +334,29 @@ lua require'config.telescope'.setup{}
 " bufferline
 lua require'config.bufferline'
 " galaxyline
-lua require'config.galaxyline'
+" lua require'config.galaxyline'
+" Winline
+lua require('wlsample.evil_line')
+" lua require('wlsample.bubble2')
+" lua require('wlfloatline').setup()
 " Configure LSP
 lua require'config.lsp'
+lua require'config.lspupdate'
 " gitsigns
 lua require'config.gitsigns'
+" LSP rooter
+" lua require'config.lsp-rooter'
+" web devicons
+lua require'config.nvim-web-devicons'
+" lua require'config.iron'
 let g:indent_blankline_char = '│'
 let g:indent_blankline_use_treesitter = v:true
+" let g:indent_blankline_show_current_context = v:true
 let g:indent_blankline_filetype_exclude = ['help']
 let g:indent_blankline_buftype_exclude = ['terminal']
+
+" nvim-autopairs
+lua require('nvim-autopairs').setup{}
 
 " Do not add default neoterm maps
 let g:neoterm_automap_keys = 0
@@ -290,3 +364,87 @@ let g:neoterm_automap_keys = 0
 " ultest
 let g:ultest_max_threads = 1
 let g:ultest_output_on_line = 0
+
+let g:scnvim_scdoc = 1
+
+" DAP and Dap-ui
+" lua require'config.dap'
+" nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+" nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+" nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+" nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+" nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+" nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+" nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+" nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+" nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+lua << EOF
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'ga', '<Cmd>Lspsaga code_action<CR>', opts)
+  -- buf_set_keymap('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', opts)
+  -- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- buf_set_keymap('n', 'gr', '<cmd>Lspsaga lsp_finder<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Add lspkind config
+  require('lspkind').init({})
+end
+
+require("flutter-tools").setup{
+   lsp = { on_attach = on_attach }
+}
+
+EOF
+
+lua << EOF
+  require("trouble").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
+nnoremap <leader>xx <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+
+lua << EOF
+require("headlines").setup()
+EOF
+
+lua << EOF
+require("nvim-tree").setup()
+EOF
+
+let g:instant_username = "Docler"

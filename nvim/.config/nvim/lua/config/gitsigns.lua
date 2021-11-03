@@ -1,1 +1,3 @@
-require('gitsigns').setup({})
+require('gitsigns').setup({
+  -- word_diff = true,
+})
