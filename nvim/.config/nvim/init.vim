@@ -13,8 +13,8 @@ set title
 let &titlestring='%t - nvim'
 
 " Set virtualenv
-let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
-let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
+" let g:python_host_prog = '/home/docler/.virtualenvs/neovim-python2/bin/python'
+" let g:python3_host_prog = '/home/docler/.virtualenvs/neovim/bin/python'
 
 """"""""""""""""""
 " Plugins configs
@@ -310,9 +310,10 @@ lua << EOF
 EOF
 
 " file explorer
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
 let g:nvim_tree_gitignore = 1 "0 by default
-let g:nvim_tree_hide_dotfiles = 1
+" let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
+" let g:nvim_tree_ignore = [ '*.meta' ]
+" let g:nvim_tree_hide_dotfiles = 1
 let g:nvim_tree_highlight_opened_files = 2
 let g:nvim_tree_indent_markers = 1
 let g:nvim_tree_show_icons = {
@@ -325,7 +326,55 @@ let g:nvim_tree_show_icons = {
 nnoremap <leader>f :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
-let g:nvim_tree_ignore = [ '*.meta' ]
+
+lua << EOF
+  require('nvim-tree').setup {
+    disable_netrw = true,
+    hijack_netrw = true,
+    open_on_setup = false,
+    ignore_ft_on_setup = {},
+    update_to_buf_dir = {
+      enable = true,
+      auto_open = true,
+    },
+    auto_close = false,
+    open_on_tab = false,
+    hijack_cursor = false,
+    update_cwd = false,
+    diagnostics = {
+      enable = false,
+      icons = {
+        hint = "",
+        info = "",
+        warning = "",
+        error = "",
+      }
+    },
+    update_focused_file = {
+      enable = false,
+      update_cwd = false,
+      ignore_list = {}
+    },
+    system_open = {
+      cmd = nil,
+      args = {}
+    },
+    view = {
+      width = 30,
+      height = 30,
+      side = 'left',
+      auto_resize = false,
+      mappings = {
+        custom_only = false,
+        list = {}
+      }
+    },
+    filters = {
+      dotfiles = true,
+      custom = {'node_modules', '*.meta' }
+    }
+  }
+EOF
 
 " Treesitter
 lua require'config.treesitter'
@@ -448,3 +497,6 @@ require("nvim-tree").setup()
 EOF
 
 let g:instant_username = "Docler"
+lua << EOF
+require('rust-tools').setup({})
+EOF

@@ -20,7 +20,7 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'folke/trouble.nvim'
 
 "Git
-" Plug 'lewis6991/gitsigns.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'TimUntersberger/neogit'
 " Plug 'samoshkin/vim-mergetool'
 
@@ -63,7 +63,7 @@ Plug 'windwp/windline.nvim'
 Plug 'akinsho/nvim-bufferline.lua'
 
 " Coding stuff
-" Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'lukas-reineke/headlines.nvim'
 
 " Trim whitespaces
