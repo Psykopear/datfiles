@@ -19,4 +19,4 @@ require("telescope").setup({
 })
 
 -- load extensions
-require("telescope").load_extension("flutter")
+-- require("telescope").load_extension("flutter")

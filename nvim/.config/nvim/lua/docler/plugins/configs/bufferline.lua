@@ -1,4 +1,4 @@
-local colors = require("tokyonight.colors").setup({})
+local colors = require("nord.colors")
 
 require("bufferline").setup({
 	options = {
@@ -19,12 +19,11 @@ require("bufferline").setup({
 			return s
 		end,
 		show_buffer_close_icons = true,
-		show_close_icon = true,
+		show_close_icon = false,
 		separator_style = "thin",
     max_name_length = 14,
     max_prefix_length = 13,
 		tab_size = 20,
-		numbers = "ordinal",
 	},
 	-- colors setup
 	-- for additional highlights see :help bufferline-highlights

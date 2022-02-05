@@ -1,4 +1,4 @@
-local colors = require("tokyonight.colors").setup({})
+local colors = require("nord.colors")
 local lsp = require("feline.providers.lsp")
 
 -- icons and style taken from nvchad
@@ -385,10 +385,10 @@ table.insert(components.active[3], {
 	},
 })
 
-require("feline").setup({
-	colors = {
-		bg = colors.bg_dark,
-		fg = colors.fg,
-	},
-	components = components,
-})
+-- require("feline").setup({
+-- 	colors = {
+-- 		bg = colors.bg_dark,
+-- 		fg = colors.fg,
+-- 	},
+-- 	components = components,
+-- })

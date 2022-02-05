@@ -7,24 +7,15 @@ end
 vim.cmd([[packadd packer.nvim]])
 
 require("packer").startup(function()
-	use({
-		"wbthomason/packer.nvim",
-		opt = true,
-	})
+	use({ "wbthomason/packer.nvim", opt = true })
 
 	-- themes, ux and style
+	use({ "shaunsingh/nord.nvim" })
 	use({
-		"folke/tokyonight.nvim",
-	})
-
-	use({
-		"famiu/feline.nvim",
+		"windwp/windline.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
-		config = function()
-			require("docler.plugins.configs.statusline")
-		end,
+    config = require('wlsample.evil_line')
 	})
-
 	use({
 		"akinsho/nvim-bufferline.lua",
 		requires = "kyazdani42/nvim-web-devicons",
@@ -35,14 +26,12 @@ require("packer").startup(function()
 			require("docler.plugins.mappings.bufferline")
 		end,
 	})
-
 	use({
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
 			require("docler.plugins.configs.blankline")
 		end,
 	})
-
 	use({
 		"norcalli/nvim-colorizer.lua",
 		config = function()
@@ -95,6 +84,7 @@ require("packer").startup(function()
 		end,
 	})
 
+
 	use({
 		"neovim/nvim-lspconfig",
 		requires = "williamboman/nvim-lsp-installer",
@@ -102,6 +92,8 @@ require("packer").startup(function()
 			require("docler.plugins.configs.lspconfig")
 		end,
 	})
+
+  use({ "folke/lua-dev.nvim" })
 
 	-- completion sources
 	use({ "saadparwaiz1/cmp_luasnip" })
@@ -118,6 +110,14 @@ require("packer").startup(function()
 		end,
 	})
 
+  use {
+    'saecki/crates.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('crates').setup()
+    end,
+  }
+
 	-- file managing , picker, fuzzy finder
 	use({
 		"kyazdani42/nvim-tree.lua",
@@ -130,6 +130,11 @@ require("packer").startup(function()
 			require("docler.plugins.mappings.nvimtree")
 		end,
 	})
+
+	use({
+    "knubie/vim-kitty-navigator",
+    -- config = vim.cmd([[let g:kitty_navigator_no_mappings = 1]])
+  })
 
 	use({
 		"nvim-telescope/telescope.nvim",

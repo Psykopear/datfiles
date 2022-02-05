@@ -11,3 +11,4 @@ vim.g.nvim_tree_show_icons = {
 	folders = 1,
 	files = 1,
 }
+require'nvim-tree'.setup {}

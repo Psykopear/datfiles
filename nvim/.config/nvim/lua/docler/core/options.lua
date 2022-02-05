@@ -1,8 +1,13 @@
 vim.g.mapleader = " "
 
 -- Set the colorscheme
--- vim.opt.termguicolors = true
--- vim.cmd("colorscheme tokyonight")
+vim.opt.termguicolors = true
+-- Nord config
+vim.g.nord_contrast = true
+vim.g.nord_borders = true
+vim.g.nord_disable_background = false
+vim.g.nord_italic = true
+require('nord').set()
 
 -- Indentation options
 local indent = 2
@@ -22,6 +27,9 @@ vim.opt.hidden = true
 
 -- Enable mouse support on all modes
 vim.opt.mouse = "a"
+
+-- No swapfile
+vim.opt.swapfile = false
 
 -- Folding
 vim.opt.foldenable = true
