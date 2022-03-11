@@ -1,5 +1,9 @@
 vim.g.mapleader = " "
 
+-- Set guifont for neovide
+-- vim.opt.guifont = "MonoLisa Medium:h8"
+vim.opt.guifont = "MonoLisa:h8"
+vim.g.neovide_cursor_vfx_mode = "pixiedust"
 -- Set the colorscheme
 vim.opt.termguicolors = true
 -- Nord config

@@ -14,6 +14,8 @@ local check_back_space = function()
 	end
 end
 
+require'lspconfig'.gdscript.setup{capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())}
+
 cmp.setup({
 	-- snippet = {
 	-- 	expand = function(args)

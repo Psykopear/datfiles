@@ -85,6 +85,7 @@ require("packer").startup(function()
   use { "folke/lua-dev.nvim" }
 
  	-- completion sources
+  use { "habamax/vim-godot" }
  	use { "saadparwaiz1/cmp_luasnip" }
  	use { "hrsh7th/cmp-nvim-lua" }
  	use { "hrsh7th/cmp-nvim-lsp" }
