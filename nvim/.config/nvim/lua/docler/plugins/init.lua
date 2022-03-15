@@ -38,6 +38,14 @@ require("packer").startup(function()
  			require("colorizer").setup()
  		end,
  	}
+  use {
+    "sunjon/shade.nvim",
+ 		config = function()
+      require("shade").setup({
+        overlay_opacity = 60,
+      })
+ 		end,
+  }
 
  	-- Git utilities
  	use {
@@ -55,6 +63,18 @@ require("packer").startup(function()
  			require("docler.plugins.configs.neogit")
  		end,
  	}
+
+  use {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function ()
+      require"octo".setup()
+    end
+  }
 
  	-- highlighting
  	use {
@@ -83,6 +103,7 @@ require("packer").startup(function()
  	}
 
   use { "folke/lua-dev.nvim" }
+  use { "simrat39/rust-tools.nvim" }
 
  	-- completion sources
   use { "habamax/vim-godot" }
@@ -164,6 +185,8 @@ require("packer").startup(function()
  			require("docler.plugins.configs.nvimcomment")
  		end,
  	}
+  -- Testing
+  use { "rcarriga/vim-ultest", requires = {"vim-test/vim-test"}, run = ":UpdateRemotePlugins" }
 end)
 
 -- Auto compile when there are changes in plugins.lua

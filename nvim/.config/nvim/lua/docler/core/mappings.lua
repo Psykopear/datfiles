@@ -22,3 +22,31 @@ vim.api.nvim_set_keymap("", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
 
 -- disable highlight when esc is pressed
 vim.api.nvim_set_keymap("n", "<Esc>", ":noh <CR>", { noremap = true, silent = true })
+
+-- Set guifont for neovide
+-- Font size change
+local font = "MonoLisa"
+local fontSize = 8
+vim.opt.guifont = font .. ':h' .. fontSize
+
+local function setCurrentFont()
+	vim.o.guifont = font .. ':h' .. fontSize
+	vim.cmd[[sleep 200m]]
+	vim.cmd[[redraw]]
+	print(vim.o.guifont)
+end
+
+setCurrentFont()
+
+function BiggerFont()
+	fontSize = fontSize + 1
+	setCurrentFont()
+end
+
+function SmallerFont()
+	fontSize = fontSize - 1
+	setCurrentFont()
+end
+
+vim.api.nvim_set_keymap('', '<C-=>', '<cmd>lua BiggerFont()<cr>', {})
+vim.api.nvim_set_keymap('', '<C-->', '<cmd>lua SmallerFont()<cr>', {})
