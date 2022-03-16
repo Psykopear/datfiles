@@ -187,6 +187,18 @@ require("packer").startup(function()
  	}
   -- Testing
   use { "rcarriga/vim-ultest", requires = {"vim-test/vim-test"}, run = ":UpdateRemotePlugins" }
+  -- Supercollider
+  use { 'davidgranstrom/scnvim' }
+  use { 'davidgranstrom/telescope-scdoc.nvim' }
+  -- Terminal
+  use {
+    's1n7ax/nvim-terminal',
+    config = function()
+        vim.o.hidden = true
+        require('nvim-terminal').setup()
+    end,
+  }
+  use { 'nyngwang/NeoRoot.lua' }
 end)
 
 -- Auto compile when there are changes in plugins.lua
