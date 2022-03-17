@@ -4,7 +4,7 @@ export.setup = function()
   local actions = require('telescope.actions')
   local telescope = require('telescope')
   local trouble = require("trouble.providers.telescope")
-  telescope.load_extension("flutter")
+  -- telescope.load_extension("flutter")
   telescope.setup{
     defaults = {
       mappings = {

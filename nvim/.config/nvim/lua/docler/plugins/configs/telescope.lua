@@ -29,6 +29,6 @@ require("telescope").setup({
 
 -- load extensions
 -- require("telescope").load_extension("flutter")
-require("telescope").load_extension("scdoc")
-require("telescope").load_extension('project')
-require("telescope").load_extension('file_browser')
+-- require("telescope").load_extension("scdoc")
+-- require("telescope").load_extension('project')
+-- require("telescope").load_extension('file_browser')

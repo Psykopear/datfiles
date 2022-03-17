@@ -3,17 +3,11 @@ vim.api.nvim_set_keymap("v", "<F2>", 'c<c-r>=system("base64 -w 0", @")<cr><esc>'
 vim.api.nvim_set_keymap("v", "<F3>", 'c<c-r>=system("base64 -d", @")<cr>', { noremap = true })
 
 -- better window movement
--- vim.api.nvim_set_keymap("n", "<C-h>", ":echo 'ciao'<CR>", {noremap = true})
--- vim.api.nvim_set_keymap("n", "<C-j>", ":KittyNavigateDown<CR>", {noremap = true})
--- vim.api.nvim_set_keymap("n", "<C-k>", ":KittyNavigateUp<CR>", {noremap = true})
--- vim.api.nvim_set_keymap("n", "<C-l>", ":KittyNavigateRight<CR>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>h", ":<C-u>split<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>v", ":<C-u>vsplit<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>w", ":w<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>x", ":x<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { silent = true })
--- vim.api.nvim_set_keymap('n', 'G', 'Gzz', { silent = true })
--- vim.api.nvim_set_keymap('n', 'n', 'nzz', { silent = true })
 vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { silent = true })
 
 -- move through wrapped lines with j/k
@@ -33,10 +27,7 @@ local function setCurrentFont()
 	vim.o.guifont = font .. ':h' .. fontSize
 	vim.cmd[[sleep 200m]]
 	vim.cmd[[redraw]]
-	print(vim.o.guifont)
 end
-
-setCurrentFont()
 
 function BiggerFont()
 	fontSize = fontSize + 1

@@ -36,7 +36,7 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local enhance_server_opts = {
+-- local enhance_server_opts = {
   -- None of this works, I was trying to disable proc_macro in rust_analyzer
   -- so I wouldn't get all the "proc_macro not expanded" warnings on external proc macros
   -- ["rust_analyzer"] = function(opts)
@@ -57,13 +57,13 @@ local enhance_server_opts = {
   --     }
   --   }
   -- end,
-}
+-- }
 
 require('nvim-lsp-installer').on_server_ready(function(server)
   local opts = { on_attach = on_attach }
-  if enhance_server_opts[server.name] then
-    enhance_server_opts[server.name](opts)
-  end
+  -- if enhance_server_opts[server.name] then
+  --   enhance_server_opts[server.name](opts)
+  -- end
 
   if server.name == "sumneko_lua" then
     opts = require("lua-dev").setup({ lspconfig = { on_attach = on_attach, diagnostics = { globals = { "use" } } } })
