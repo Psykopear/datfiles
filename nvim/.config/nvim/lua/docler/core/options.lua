@@ -22,9 +22,8 @@ vim.opt.clipboard = { "unnamedplus", "unnamed" }
 -- Allow modified buffers in background
 vim.opt.hidden = true
 
--- Show trailing spaces and tabs
--- vim.opt.list = true
--- vim.opt.listchars = { trail = "·", tab = "»·" }
+-- DO NOT SHOW THE FUCKING TILDE at the end of the buffer, thanks
+vim.o.fcs="eob: "
 
 -- Enable mouse support on all modes
 vim.opt.mouse = "a"

@@ -134,6 +134,8 @@ require("packer").startup(function()
  		end,
  	}
  	use { "knubie/vim-kitty-navigator" }
+
+  -- Telescope stuff
  	use{
  		"nvim-telescope/telescope.nvim",
  		requires = { "nvim-lua/plenary.nvim" },
@@ -144,6 +146,15 @@ require("packer").startup(function()
  			require("docler.plugins.mappings.telescope")
  		end,
  	}
+  use {
+    "nvim-telescope/telescope-file-browser.nvim",
+ 		requires = { "nvim-telescope/telescope.nvim" },
+  }
+  use {
+    "nvim-telescope/telescope-project.nvim",
+ 		requires = { "nvim-telescope/telescope.nvim" },
+  }
+
  	use {
  		"folke/trouble.nvim",
  		requires = "kyazdani42/nvim-web-devicons",
@@ -155,15 +166,23 @@ require("packer").startup(function()
  		end,
  	}
 
- 	use {
- 		"glepnir/dashboard-nvim",
- 		config = function()
- 			require("docler.plugins.configs.dashboard")
- 		end,
- 		setup = function()
- 			require("docler.plugins.mappings.dashboard")
- 		end,
- 	}
+  use {
+    "startup-nvim/startup.nvim",
+    requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
+    config = function()
+      require("docler.plugins.configs.startup")
+      -- require("startup").setup({ theme = "dashboard" })
+    end
+  }
+ 	-- use {
+ 	-- 	"glepnir/dashboard-nvim",
+ 	-- 	config = function()
+ 	-- 		require("docler.plugins.configs.dashboard")
+ 	-- 	end,
+ 	-- 	setup = function()
+ 	-- 		require("docler.plugins.mappings.dashboard")
+ 	-- 	end,
+ 	-- }
 
  	-- Trim traling spaces and whitelines at the end of files
  	use {
@@ -199,6 +218,15 @@ require("packer").startup(function()
     end,
   }
   use { 'nyngwang/NeoRoot.lua' }
+  -- Stabilize window contents (see README of the plugin)
+  use {
+    "luukvbaal/stabilize.nvim",
+    config = function()
+      require("stabilize").setup({
+        nested = "QuickFixCmdPost,DiagnosticChanged *"
+      })
+    end
+  }
 end)
 
 -- Auto compile when there are changes in plugins.lua

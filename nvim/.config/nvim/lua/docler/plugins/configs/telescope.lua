@@ -16,8 +16,19 @@ require("telescope").setup({
 			},
 		},
 	},
+  extensions = {
+    project = {
+      base_dirs = {
+        { '~/src', max_depth = 2 },
+        { '~/workspace', max_depth = 2 },
+        { '~/repos', max_depth = 2 },
+      },
+    }
+  }
 })
 
 -- load extensions
 -- require("telescope").load_extension("flutter")
 require("telescope").load_extension("scdoc")
+require("telescope").load_extension('project')
+require("telescope").load_extension('file_browser')
