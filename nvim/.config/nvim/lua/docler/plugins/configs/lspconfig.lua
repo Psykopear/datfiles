@@ -37,28 +37,18 @@ local on_attach = function(client, bufnr)
 end
 
 -- local enhance_server_opts = {
-  -- None of this works, I was trying to disable proc_macro in rust_analyzer
-  -- so I wouldn't get all the "proc_macro not expanded" warnings on external proc macros
-  -- ["rust_analyzer"] = function(opts)
-  --   opts.settings = {
-  --     proc_macro = false,
-  --     experimental = {
-  --       procAttrMacros = false
-  --     },
-  --     ["rust-analyzer.experimental.procAttrMacros"] = false,
-  --     ["experimental.procAttrMacros"] = false,
-  --     ["proc_macro.enable"] = false,
-  --     ["rust-analyzer.proc_macro.enable"] = false,
-  --     ["rust-analyzer"] = {
-  --       procMacro = false,
-  --       experimental = {
-  --         procAttrMacros = false
-  --       }
-  --     }
-  --   }
-  -- end,
+--   -- None of this works, I was trying to disable proc_macro in rust_analyzer
+--   -- so I wouldn't get all the "proc_macro not expanded" warnings on external proc macros
+--   ["rust_analyzer"] = function(opts)
+--     opts.settings = {
+--       ["rust-analyzer"] = {
+--         procMacro = { enable = false },
+--       }
+--     }
+--   end,
 -- }
 
+local coq = require("coq")
 require('nvim-lsp-installer').on_server_ready(function(server)
   local opts = { on_attach = on_attach }
   -- if enhance_server_opts[server.name] then
@@ -66,22 +56,23 @@ require('nvim-lsp-installer').on_server_ready(function(server)
   -- end
 
   if server.name == "sumneko_lua" then
-    opts = require("lua-dev").setup({ lspconfig = { on_attach = on_attach, diagnostics = { globals = { "use" } } } })
+    opts = require("lua-dev").setup(coq.lsp_ensure_capabilities({ lspconfig = { on_attach = on_attach, diagnostics = { globals = { "use" } } } }))
   end
   if server.name == "rust_analyzer" then
     -- Initialize the LSP via rust-tools instead
-    require("rust-tools").setup {
+    require("rust-tools").setup(coq.lsp_ensure_capabilities({
       -- The "server" property provided in rust-tools setup function are the
       -- settings rust-tools will provide to lspconfig during init.
       -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
       -- with the user's own settings (opts).
       server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-    }
+      -- tools = { inlay_hints = { highlight = "Todo" } }
+    }))
     server:attach_buffers()
     -- Only if standalone support is needed
     require("rust-tools").start_standalone_if_required()
   else
-    server:setup(opts)
+    server:setup(coq.lsp_ensure_capabilities(opts))
   end
   vim.cmd [[ do User LspAttachBuffers ]]
 end)

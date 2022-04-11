@@ -3,12 +3,15 @@ vim.g.mapleader = " "
 vim.g.neovide_cursor_vfx_mode = "pixiedust"
 -- Set the colorscheme
 vim.opt.termguicolors = true
+-- vim.cmd([[colorscheme adwaita]])
+-- vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme paper")
 -- Nord config
-vim.g.nord_contrast = true
-vim.g.nord_borders = true
-vim.g.nord_disable_background = false
-vim.g.nord_italic = true
-require('nord').set()
+-- vim.g.nord_contrast = true
+-- vim.g.nord_borders = true
+-- vim.g.nord_disable_background = false
+-- vim.g.nord_italic = true
+-- require('nord').set()
 
 -- Indentation options
 local indent = 2
@@ -17,7 +20,7 @@ vim.opt.shiftwidth = indent
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 
-vim.opt.clipboard = { "unnamedplus", "unnamed" }
+-- vim.opt.clipboard = { "unnamedplus", "unnamed" }
 
 -- Allow modified buffers in background
 vim.opt.hidden = true
@@ -41,3 +44,5 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
 vim.opt.number = true
 
 vim.opt.updatetime = 500
+
+vim.opt.laststatus = 3

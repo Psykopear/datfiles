@@ -8,24 +8,36 @@ vim.cmd([[packadd packer.nvim]])
 
 require("packer").startup(function()
   use { "wbthomason/packer.nvim", opt = true }
+  -- Motion
+  use { "ggandor/lightspeed.nvim" }
   -- themes, ux and style
   use { "shaunsingh/nord.nvim" }
+  use { "EdenEast/nightfox.nvim"} -- Packer
+  use { "YorickPeterse/vim-paper" }
+  use {
+      "mcchrish/zenbones.nvim",
+      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+      -- In Vim, compat mode is turned on as Lush only works in Neovim.
+      requires = "rktjmp/lush.nvim"
+  }
+  -- use { 'Mofiqul/adwaita.nvim' }
   use { "windwp/windline.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require('wlsample.evil_line')
     end
   }
-  use {
-    "akinsho/nvim-bufferline.lua",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("docler.plugins.configs.bufferline")
-    end,
-    setup = function()
-      require("docler.plugins.mappings.bufferline")
-    end,
-  }
+  -- use {
+  --   "akinsho/nvim-bufferline.lua",
+  --   requires = "kyazdani42/nvim-web-devicons",
+  --   config = function()
+  --     require("docler.plugins.configs.bufferline")
+  --   end,
+  --   setup = function()
+  --     require("docler.plugins.mappings.bufferline")
+  --   end,
+  -- }
   use {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
@@ -40,14 +52,14 @@ require("packer").startup(function()
       require("colorizer").setup()
     end,
   }
-  use {
-    "sunjon/shade.nvim",
-    config = function()
-      require("shade").setup({
-        overlay_opacity = 60,
-      })
-    end,
-  }
+  -- use {
+  --   "sunjon/shade.nvim",
+  --   config = function()
+  --     require("shade").setup({
+  --       overlay_opacity = 60,
+  --     })
+  --   end,
+  -- }
 
   -- Git utilities
   use {
@@ -93,12 +105,43 @@ require("packer").startup(function()
 
   -- completion
   use {
-    "hrsh7th/nvim-cmp",
-    requires = { "onsails/lspkind-nvim" },
+    'ms-jpq/coq_nvim',
+    branch = 'coq',
+    setup = function()
+      local coq_settings = {
+        ["auto_start"] = "shut-up",
+        ["keymap.jump_to_mark"] = ""
+      };
+      vim.api.nvim_set_var("coq_settings", coq_settings)
+    end
+  }
+  use {
+    'ms-jpq/chadtree',
+    branch = 'chad',
+    run = 'python3 -m chadtree deps',
+    setup = function()
+      local chadtree_settings = {
+        ["keymap.primary"] = {"o"},
+        ["keymap.open_sys"] = {"<CR>"},
+        ["view.width"] = 30,
+      };
+      vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
+    end,
     config = function()
-      require("docler.plugins.configs.cmp")
+      vim.api.nvim_set_keymap("n", "<C-n>", "<cmd>CHADopen<CR>", { noremap = true })
     end,
   }
+  -- use { 'echasnovski/mini.nvim', branch = 'stable', config = function()
+  --
+  --   require("mini.completion").setup({})
+  -- end}
+  -- use {
+  --   "hrsh7th/nvim-cmp",
+  --   requires = { "onsails/lspkind-nvim" },
+  --   config = function()
+  --     require("docler.plugins.configs.cmp")
+  --   end,
+  -- }
 
   use {
     "neovim/nvim-lspconfig",
@@ -108,21 +151,11 @@ require("packer").startup(function()
     end,
   }
 
-  use {
-    "folke/lua-dev.nvim",
-  }
-  use {
-    "simrat39/rust-tools.nvim",
-  }
+  use { "folke/lua-dev.nvim" }
+  use { "simrat39/rust-tools.nvim" }
 
   -- -- completion sources
   use { "habamax/vim-godot" }
-  use { "saadparwaiz1/cmp_luasnip" }
-  use { "hrsh7th/cmp-nvim-lua" }
-  use { "hrsh7th/cmp-nvim-lsp" }
-  use { "hrsh7th/cmp-buffer" }
-  use { "hrsh7th/cmp-path" }
-
   use {
     'saecki/crates.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
@@ -132,18 +165,18 @@ require("packer").startup(function()
   }
 
   -- file managing , picker, fuzzy finder
-  use {
-    "kyazdani42/nvim-tree.lua",
-    requires = { "kyazdani42/nvim-web-devicons" },
-    -- Lazy load
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    config = function()
-      require("docler.plugins.configs.nvimtree")
-    end,
-    setup = function()
-      require("docler.plugins.mappings.nvimtree")
-    end,
-  }
+  -- use {
+  --   "kyazdani42/nvim-tree.lua",
+  --   requires = { "kyazdani42/nvim-web-devicons" },
+  --   -- Lazy load
+  --   cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+  --   config = function()
+  --     require("docler.plugins.configs.nvimtree")
+  --   end,
+  --   setup = function()
+  --     require("docler.plugins.mappings.nvimtree")
+  --   end,
+  -- }
   use { "knubie/vim-kitty-navigator" }
 
   -- Telescope stuff
@@ -228,6 +261,27 @@ require("packer").startup(function()
   use {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
+  }
+  -- Organize your life
+  use {
+    "nvim-neorg/neorg",
+    config = function()
+      require('neorg').setup({
+        load = {
+          ["core.defaults"] = {},
+          ["core.norg.concealer"] = {},
+          ["core.norg.dirman"] = {
+            config = {
+              workspaces = {
+                work = "~/notes/work",
+                home = "~/notes/home",
+              }
+            }
+          }
+        }
+      })
+    end,
+    requires = "nvim-lua/plenary.nvim"
   }
 end)
 

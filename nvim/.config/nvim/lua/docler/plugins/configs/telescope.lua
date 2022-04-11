@@ -16,6 +16,11 @@ require("telescope").setup({
 			},
 		},
 	},
+  pickers = {
+    lsp_code_actions = {
+      theme = "cursor",
+    }
+  },
   extensions = {
     project = {
       base_dirs = {
