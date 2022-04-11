@@ -33,19 +33,19 @@ local fontSize = 15
 vim.opt.guifont = font .. ':h' .. fontSize
 
 local function setCurrentFont()
-	vim.o.guifont = font .. ':h' .. fontSize
-	vim.cmd[[sleep 200m]]
-	vim.cmd[[redraw]]
+  vim.o.guifont = font .. ':h' .. fontSize
+  vim.cmd [[sleep 200m]]
+  vim.cmd [[redraw]]
 end
 
 function BiggerFont()
-	fontSize = fontSize + 1
-	setCurrentFont()
+  fontSize = fontSize + 1
+  setCurrentFont()
 end
 
 function SmallerFont()
-	fontSize = fontSize - 1
-	setCurrentFont()
+  fontSize = fontSize - 1
+  setCurrentFont()
 end
 
 vim.api.nvim_set_keymap('', '<C-=>', '<cmd>lua BiggerFont()<cr>', {})

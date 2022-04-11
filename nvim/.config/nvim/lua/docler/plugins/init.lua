@@ -10,34 +10,21 @@ require("packer").startup(function()
   use { "wbthomason/packer.nvim", opt = true }
   -- Motion
   use { "ggandor/lightspeed.nvim" }
+
   -- themes, ux and style
   use { "shaunsingh/nord.nvim" }
-  use { "EdenEast/nightfox.nvim"} -- Packer
+  use { "EdenEast/nightfox.nvim" } -- Packer
   use { "YorickPeterse/vim-paper" }
   use {
-      "mcchrish/zenbones.nvim",
-      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-      -- In Vim, compat mode is turned on as Lush only works in Neovim.
-      requires = "rktjmp/lush.nvim"
+    "mcchrish/zenbones.nvim",
+    requires = "rktjmp/lush.nvim"
   }
-  -- use { 'Mofiqul/adwaita.nvim' }
   use { "windwp/windline.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require('wlsample.evil_line')
     end
   }
-  -- use {
-  --   "akinsho/nvim-bufferline.lua",
-  --   requires = "kyazdani42/nvim-web-devicons",
-  --   config = function()
-  --     require("docler.plugins.configs.bufferline")
-  --   end,
-  --   setup = function()
-  --     require("docler.plugins.mappings.bufferline")
-  --   end,
-  -- }
   use {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
@@ -52,14 +39,6 @@ require("packer").startup(function()
       require("colorizer").setup()
     end,
   }
-  -- use {
-  --   "sunjon/shade.nvim",
-  --   config = function()
-  --     require("shade").setup({
-  --       overlay_opacity = 60,
-  --     })
-  --   end,
-  -- }
 
   -- Git utilities
   use {
@@ -89,8 +68,8 @@ require("packer").startup(function()
       'nvim-telescope/telescope.nvim',
       'kyazdani42/nvim-web-devicons',
     },
-    config = function ()
-      require"octo".setup()
+    config = function()
+      require "octo".setup()
     end
   }
 
@@ -116,13 +95,19 @@ require("packer").startup(function()
     end
   }
   use {
+    'ms-jpq/coq.thirdparty',
+    -- config = function()
+    --   require("coq_3p")({ { src = "nvimlua", short_name = "nLUA" }, })
+    -- end
+  }
+  use {
     'ms-jpq/chadtree',
     branch = 'chad',
     run = 'python3 -m chadtree deps',
     setup = function()
       local chadtree_settings = {
-        ["keymap.primary"] = {"o"},
-        ["keymap.open_sys"] = {"<CR>"},
+        ["keymap.primary"] = { "o" },
+        ["keymap.open_sys"] = { "<CR>" },
         ["view.width"] = 30,
       };
       vim.api.nvim_set_var("chadtree_settings", chadtree_settings)
@@ -131,17 +116,6 @@ require("packer").startup(function()
       vim.api.nvim_set_keymap("n", "<C-n>", "<cmd>CHADopen<CR>", { noremap = true })
     end,
   }
-  -- use { 'echasnovski/mini.nvim', branch = 'stable', config = function()
-  --
-  --   require("mini.completion").setup({})
-  -- end}
-  -- use {
-  --   "hrsh7th/nvim-cmp",
-  --   requires = { "onsails/lspkind-nvim" },
-  --   config = function()
-  --     require("docler.plugins.configs.cmp")
-  --   end,
-  -- }
 
   use {
     "neovim/nvim-lspconfig",
@@ -154,7 +128,7 @@ require("packer").startup(function()
   use { "folke/lua-dev.nvim" }
   use { "simrat39/rust-tools.nvim" }
 
-  -- -- completion sources
+  -- completion sources
   use { "habamax/vim-godot" }
   use {
     'saecki/crates.nvim',
@@ -180,7 +154,7 @@ require("packer").startup(function()
   use { "knubie/vim-kitty-navigator" }
 
   -- Telescope stuff
-  use{
+  use {
     "nvim-telescope/telescope.nvim",
     -- cmd = "Telescope",
     requires = { "nvim-lua/plenary.nvim" },
@@ -213,7 +187,7 @@ require("packer").startup(function()
 
   use {
     "startup-nvim/startup.nvim",
-    requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
+    requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
     config = function()
       require("docler.plugins.configs.startup")
     end
@@ -242,7 +216,7 @@ require("packer").startup(function()
   -- Testing
   use {
     "rcarriga/vim-ultest",
-    requires = {"vim-test/vim-test"},
+    requires = { "vim-test/vim-test" },
     run = ":UpdateRemotePlugins"
   }
   -- Supercollider

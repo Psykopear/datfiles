@@ -26,7 +26,7 @@ vim.opt.autoindent = true
 vim.opt.hidden = true
 
 -- DO NOT SHOW THE FUCKING TILDE at the end of the buffer, thanks
-vim.o.fcs="eob: "
+vim.o.fcs = "eob: "
 
 -- Enable mouse support on all modes
 vim.opt.mouse = "a"

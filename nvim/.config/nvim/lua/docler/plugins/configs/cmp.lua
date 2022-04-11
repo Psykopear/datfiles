@@ -45,26 +45,26 @@ cmp.setup({
       -- cmp.config.compare.kind,
     }
   },
-	formatting = {
-		format = function(entry, vim_item)
-			-- fancy icons and a name of kind
-			vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
-			-- set a name for each source
-			vim_item.menu = ({
-				nvim_lsp = "[LSP]",
-				buffer = "[Buffer]",
-				-- luasnip = "[LuaSnip]",
-				nvim_lua = "[Lua]",
-				path = "[Path]",
-			})[entry.source.name]
+  formatting = {
+    format = function(entry, vim_item)
+      -- fancy icons and a name of kind
+      vim_item.kind = lspkind.presets.default[vim_item.kind] .. " " .. vim_item.kind
+      -- set a name for each source
+      vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        buffer = "[Buffer]",
+        -- luasnip = "[LuaSnip]",
+        nvim_lua = "[Lua]",
+        path = "[Path]",
+      })[entry.source.name]
 
-			return vim_item
-		end,
-	},
-	-- You can set mappings if you want
-	mapping = {
-		-- ["<C-p>"] = cmp.mapping.select_prev_item(),
-		-- ["<C-n>"] = cmp.mapping.select_next_item(),
+      return vim_item
+    end,
+  },
+  -- You can set mappings if you want
+  mapping = {
+    -- ["<C-p>"] = cmp.mapping.select_prev_item(),
+    -- ["<C-n>"] = cmp.mapping.select_next_item(),
     -- ['<Tab>'] = function(fallback)
     --   if not cmp.select_next_item() then
     --     if vim.bo.buftype ~= 'prompt' and has_words_before() then
@@ -109,16 +109,16 @@ cmp.setup({
 
 
 
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.close(),
-		["<CR>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
-	},
-   snippet = {
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<CR>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }),
+  },
+  snippet = {
     -- We recommend using *actual* snippet engine.
     -- It's a simple implementation so it might not work in some of the cases.
     expand = function(args)
@@ -129,11 +129,11 @@ cmp.setup({
       local surround = string.match(line_text, '%S.*') or ''
       local surround_end = surround:sub(col)
 
-      replace[1] = surround:sub(0, col - 1)..replace[1]
-      replace[#replace] = replace[#replace]..(#surround_end > 1 and ' ' or '')..surround_end
+      replace[1] = surround:sub(0, col - 1) .. replace[1]
+      replace[#replace] = replace[#replace] .. (#surround_end > 1 and ' ' or '') .. surround_end
       if indent ~= '' then
         for i, line in ipairs(replace) do
-          replace[i] = indent..line
+          replace[i] = indent .. line
         end
       end
 
@@ -141,11 +141,11 @@ cmp.setup({
     end,
   },
 
-	-- You should specify your *installed* sources.
-	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "nvim_lua" },
-		{ name = "path" },
-		    { name = "crates" },
-	},
+  -- You should specify your *installed* sources.
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
+    { name = "path" },
+    { name = "crates" },
+  },
 })

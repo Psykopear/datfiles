@@ -3,6 +3,7 @@ local on_attach = function(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
+
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
@@ -35,7 +36,6 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 end
-
 -- local enhance_server_opts = {
 --   -- None of this works, I was trying to disable proc_macro in rust_analyzer
 --   -- so I wouldn't get all the "proc_macro not expanded" warnings on external proc macros
@@ -56,7 +56,24 @@ require('nvim-lsp-installer').on_server_ready(function(server)
   -- end
 
   if server.name == "sumneko_lua" then
-    opts = require("lua-dev").setup(coq.lsp_ensure_capabilities({ lspconfig = { on_attach = on_attach, diagnostics = { globals = { "use" } } } }))
+    opts = require("lua-dev").setup(coq.lsp_ensure_capabilities({
+      lspconfig = {
+        on_attach = on_attach,
+        diagnostics = { globals = { "use" } },
+        --       settings = {
+        --
+        -- format = {
+        --   enable = true,
+        --   -- Put format options here
+        --   -- NOTE: the value should be STRING!!
+        --   defaultConfig = {
+        --     indent_style = "space",
+        --     indent_size = "2",
+        --   }
+        -- },
+        -- }
+      },
+    }))
   end
   if server.name == "rust_analyzer" then
     -- Initialize the LSP via rust-tools instead
