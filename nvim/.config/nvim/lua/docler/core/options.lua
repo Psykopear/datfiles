@@ -20,6 +20,7 @@ vim.opt.shiftwidth = indent
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 
+vim.opt.clipboard = { "unnamedplus" }
 -- vim.opt.clipboard = { "unnamedplus", "unnamed" }
 
 -- Allow modified buffers in background

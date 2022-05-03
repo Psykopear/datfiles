@@ -28,11 +28,17 @@ require("telescope").setup({
         { '~/workspace', max_depth = 2 },
         { '~/repos', max_depth = 2 },
       },
+    },
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+      }
     }
   }
 })
 
 -- load extensions
+require("telescope").load_extension("ui-select")
 -- require("telescope").load_extension("flutter")
 -- require("telescope").load_extension("scdoc")
 -- require("telescope").load_extension('project')

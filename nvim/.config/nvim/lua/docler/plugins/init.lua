@@ -13,7 +13,7 @@ require("packer").startup(function()
 
   -- themes, ux and style
   use { "shaunsingh/nord.nvim" }
-  use { "EdenEast/nightfox.nvim" } -- Packer
+  use { "EdenEast/nightfox.nvim" }
   use { "YorickPeterse/vim-paper" }
   use {
     "mcchrish/zenbones.nvim",
@@ -48,6 +48,7 @@ require("packer").startup(function()
       require("docler.plugins.configs.gitsigns")
     end,
   }
+  use { "emmanueltouzery/agitator.nvim" }
 
   use {
     "TimUntersberger/neogit",
@@ -165,6 +166,7 @@ require("packer").startup(function()
       require("docler.plugins.mappings.telescope")
     end,
   }
+  use {'nvim-telescope/telescope-ui-select.nvim' }
   use {
     "nvim-telescope/telescope-file-browser.nvim",
     requires = { "nvim-telescope/telescope.nvim" },
