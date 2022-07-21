@@ -48,8 +48,12 @@ require("packer").startup(function()
       require("docler.plugins.configs.gitsigns")
     end,
   }
-  use { "emmanueltouzery/agitator.nvim" }
-
+  use {
+    "emmanueltouzery/agitator.nvim",
+    config = function()
+      vim.api.nvim_set_keymap("n", "<space>gb", "<cmd>lua require('agitator').git_blame_toggle()<CR>", {  })
+    end
+  }
   use {
     "TimUntersberger/neogit",
     -- Lazy loading
@@ -59,6 +63,7 @@ require("packer").startup(function()
       require("docler.plugins.configs.neogit")
     end,
   }
+  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
   use {
     'pwntester/octo.nvim',
@@ -81,6 +86,11 @@ require("packer").startup(function()
     config = function()
       require("docler.plugins.configs.treesitter")
     end,
+  }
+  use {
+    "madskjeldgaard/sclang-format.nvim",
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function() require"sclang-format".setup() end
   }
 
   -- completion
@@ -125,6 +135,13 @@ require("packer").startup(function()
       require("docler.plugins.configs.lspconfig")
     end,
   }
+  -- use {
+  --   'akinsho/flutter-tools.nvim',
+  --   requires = 'nvim-lua/plenary.nvim',
+  --   config = function()
+  --     require("flutter-tools").setup({fvm = true})
+  --   end,
+  -- }
 
   use { "folke/lua-dev.nvim" }
   use { "simrat39/rust-tools.nvim" }

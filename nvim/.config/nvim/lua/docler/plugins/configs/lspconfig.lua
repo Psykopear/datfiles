@@ -25,16 +25,20 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>k", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
   buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
   buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+  -- buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+  buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+  buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 
   -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
+  -- if client.resolved_capabilities.document_formatting then
+  -- if client.server_capabilities.document_formatting then
+  --   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+  -- -- elseif client.resolved_capabilities.document_range_formatting then
+  -- elseif client.server_capabilities.document_range_formatting then
+  --   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  -- end
 end
 -- local enhance_server_opts = {
 --   -- None of this works, I was trying to disable proc_macro in rust_analyzer
@@ -75,7 +79,34 @@ require('nvim-lsp-installer').on_server_ready(function(server)
       },
     }))
   end
-  if server.name == "rust_analyzer" then
+  if server.name == "arduino_language_server" then
+
+    local arduino_lsp_path = "/home/docler/.local/share/nvim/lsp_servers/arduino_language_server/"
+    server:setup(coq.lsp_ensure_capabilities({
+      on_attach = on_attach,
+      cmd = {
+        arduino_lsp_path .. "arduino-language-server",
+        "-fqbn",
+        "esp32:esp32:esp32",
+        "-cli-config",
+        "/home/docler/.config/arduino-cli/arduino-cli.yaml",
+        "-cli-daemon-addr",
+        "127.0.0.1:50051",
+        "-cli-daemon-instance",
+        "1",
+        -- "-cli",
+        -- arduino_lsp_path .. "arduino-cli/arduino-cli",
+        "-clangd",
+        arduino_lsp_path .. "/home/docler/.local/share/nvim/lsp_servers/clangd/clangd/bin/clangd",
+      } }))
+    -- something
+    -- server:setup(coq.lsp_ensure_capabilities({
+    --   cmd = {
+    --     "/home/docler/.local/share/nvim/lsp_servers/arduino_language_server/arduino-language-server",
+    --     "-cli-config", "/home/docler/.config/arduino-cli/arduino-cli.yaml",
+    --   }
+    -- }))
+  elseif server.name == "rust_analyzer" then
     -- Initialize the LSP via rust-tools instead
     require("rust-tools").setup(coq.lsp_ensure_capabilities({
       -- The "server" property provided in rust-tools setup function are the

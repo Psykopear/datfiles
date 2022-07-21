@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 vim.g.neovide_cursor_vfx_mode = "pixiedust"
 -- Set the colorscheme
